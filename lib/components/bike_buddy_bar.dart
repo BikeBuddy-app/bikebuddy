@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends AppBar {
-  final Text title;
-  CustomAppBar({required this.title})
+  CustomAppBar({super.key})
       : super(
-          title: title,
+          title: Center(child: Text("BikeBuddy")),
         );
 }

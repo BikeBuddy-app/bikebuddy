@@ -1,3 +1,5 @@
+import 'package:bike_buddy/pages/ride_page.dart';
+import 'package:bike_buddy/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 
 import 'pages/main_page.dart';
@@ -17,6 +19,8 @@ class BikeBuddy extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => MainPage(),
+        '/ride': (context) => RidePage(),
+        '/settings': (context) => SettingsPage(),
       },
     );
   }
