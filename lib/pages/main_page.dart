@@ -1,5 +1,6 @@
 import 'package:bike_buddy/components/bike_buddy_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -22,7 +23,7 @@ class _MainPageState extends State<MainPage> {
               flex: 2,
               child: Container(
                 color: Colors.red,
-                child: Center(child: Text("Searchbar")),
+                child: Center(child: Text(AppLocalizations.of(context)!.search)),
               ),
             ),
             Expanded(
@@ -39,7 +40,7 @@ class _MainPageState extends State<MainPage> {
                   Icon(
                     IconData(0xe1d2, fontFamily: 'MaterialIcons'),
                   ),
-                  Text("jedz"),
+                  Text(AppLocalizations.of(context)!.start_training),
                 ]),
               ),
             ),
@@ -50,14 +51,14 @@ class _MainPageState extends State<MainPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    TextButton(onPressed: () {}, child: Text("trasa")),
-                    TextButton(onPressed: () {}, child: Text("historia")),
-                    TextButton(onPressed: () {}, child: Text("osiagniecia")),
+                    TextButton(onPressed: () {}, child: Text(AppLocalizations.of(context)!.m_path)),
+                    TextButton(onPressed: () {}, child: Text(AppLocalizations.of(context)!.m_history)),
+                    TextButton(onPressed: () {}, child: Text(AppLocalizations.of(context)!.m_achievements)),
                     TextButton(
                         onPressed: () => {
                               Navigator.pushNamed(context, '/settings'),
                             },
-                        child: Text("ustawienia"))
+                        child: Text(AppLocalizations.of(context)!.m_settings))
                   ],
                 ),
               ),
