@@ -32,3 +32,33 @@ pipelines:
             - flutter analyze
             - flutter test ./test
             - flutter build apk
+  custom:
+    BuildAPKonRunner:
+      - step:
+          name: Get dependencies
+          runs-on:
+            - self.hosted
+            - linux
+          script:
+            - flutter pub get
+      - step:
+          name: Static code analyzes
+          runs-on:
+            - self.hosted
+            - linux
+          script:
+            - flutter analyze
+      - step:
+          name: Run unit tests
+          runs-on:
+            - self.hosted
+            - linux
+          script:
+            - flutter test ./test
+      - step:
+          name: Build APK
+          runs-on:
+            - self.hosted
+            - linux
+          script:
+            - flutter build apk
