@@ -16,3 +16,17 @@ pipelines:
             - flutter analyze
             - flutter test ./test
             - flutter build apk
+          artifacts:
+            - "build/app/outputs/bundle/release/*"
+  tags:
+    '*.*.*':
+      - step:
+          name: Build a flutter version
+          size: 2x
+          script:
+            - flutter pub get
+            - flutter analyze
+            - flutter test ./test
+            - flutter build apk
+          artifacts:
+            - "build/app/outputs/bundle/release/*"
