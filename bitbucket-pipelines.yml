@@ -10,6 +10,9 @@ pipelines:
     '**':
       - step:
           name: Build a flutter version
+          runs-on:
+            - self.hosted
+            - linux
           size: 2x
           script:
             - flutter pub get
@@ -22,6 +25,9 @@ pipelines:
     '*.*.*':
       - step:
           name: Build a flutter version
+          runs-on:
+            - self.hosted
+            - linux
           size: 2x
           script:
             - flutter pub get
