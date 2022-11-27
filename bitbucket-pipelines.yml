@@ -41,6 +41,13 @@ pipelines:
             - flutter pub get
             - flutter test ./test
             - flutter build apk
+    BuildAPKonBitbucket:
+      - step:
+          name: Build APK
+          script:
+            - flutter pub get
+            - flutter test ./test
+            - flutter build apk
     BuildAPKonRunnerWithAnalyze:
       - step:
           name: Build APK
