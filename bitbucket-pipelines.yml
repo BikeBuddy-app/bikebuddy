@@ -19,8 +19,6 @@ pipelines:
             - flutter analyze
             - flutter test ./test
             - flutter build apk
-          artifacts:
-            - "build/app/outputs/bundle/release/*"
   tags:
     '*.*.*':
       - step:
@@ -34,5 +32,3 @@ pipelines:
             - flutter analyze
             - flutter test ./test
             - flutter build apk
-          artifacts:
-            - "build/app/outputs/bundle/release/*"
