@@ -33,23 +33,23 @@ pipelines:
   custom:
     BuildAPKonRunner:
       - step:
-          name: Get dependencies
+          name: Build APK
           runs-on:
             - self.hosted
             - linux
           script:
             - flutter pub get
-      - step:
-          name: Run unit tests
-          runs-on:
-            - self.hosted
-            - linux
-          script:
             - flutter test ./test
+            - flutter build apk
+  custom:
+    BuildAPKonRunnerWithAnalyze:
       - step:
           name: Build APK
           runs-on:
             - self.hosted
             - linux
           script:
+            - flutter pub get
+            - flutter test ./test
             - flutter build apk
+            - flutter analyze
