@@ -1,0 +1,30 @@
+{
+    "language": "English",
+    "@language": {
+        "description": "The current Language"
+    },
+    "m_path": "path",
+    "@m_path": {
+        "description": "Menu option text for path"
+    },
+    "m_history": "history",
+    "@m_history": {
+        "description": "Menu option text for trainings history"
+    },
+    "m_achievements": "achievements",
+    "@m_achievements": {
+        "description": "Menu option text for achievements"
+    },
+    "m_settings": "settings",
+    "@m_settings": {
+        "description": "Menu option text for settings"
+    },
+    "search": "search",
+    "@search": {
+        "description": "Text displayed in the search bard"
+    },
+    "start_training": "start",
+    "@start_training": {
+        "description": "Text displayed on main screen to start the training"
+    }
+}
