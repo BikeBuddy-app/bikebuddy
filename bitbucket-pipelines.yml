@@ -41,7 +41,6 @@ pipelines:
             - flutter pub get
             - flutter test ./test
             - flutter build apk
-  custom:
     BuildAPKonRunnerWithAnalyze:
       - step:
           name: Build APK
