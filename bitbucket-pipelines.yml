@@ -16,7 +16,6 @@ pipelines:
           size: 2x
           script:
             - flutter pub get
-            - flutter analyze
             - flutter test ./test
             - flutter build apk
   tags:
@@ -29,7 +28,6 @@ pipelines:
           size: 2x
           script:
             - flutter pub get
-            - flutter analyze
             - flutter test ./test
             - flutter build apk
   custom:
@@ -41,13 +39,6 @@ pipelines:
             - linux
           script:
             - flutter pub get
-      - step:
-          name: Static code analyzes
-          runs-on:
-            - self.hosted
-            - linux
-          script:
-            - flutter analyze
       - step:
           name: Run unit tests
           runs-on:
