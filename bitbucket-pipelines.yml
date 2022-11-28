@@ -17,7 +17,7 @@ pipelines:
           script:
             - flutter pub get
             - flutter test ./test
-            - flutter build apk
+            - flutter build apk -no-tree-shake-icons
   tags:
     '*.*.*':
       - step:
@@ -29,7 +29,7 @@ pipelines:
           script:
             - flutter pub get
             - flutter test ./test
-            - flutter build apk
+            - flutter build apk -no-tree-shake-icons
   custom:
     BuildAPKonRunner:
       - step:
@@ -40,14 +40,14 @@ pipelines:
           script:
             - flutter pub get
             - flutter test ./test
-            - flutter build apk
+            - flutter build apk -no-tree-shake-icons
     BuildAPKonBitbucket:
       - step:
           name: Build APK
           script:
             - flutter pub get
             - flutter test ./test
-            - flutter build apk
+            - flutter build apk -no-tree-shake-icons
     BuildAPKonRunnerWithAnalyze:
       - step:
           name: Build APK
@@ -57,5 +57,5 @@ pipelines:
           script:
             - flutter pub get
             - flutter test ./test
-            - flutter build apk
+            - flutter build apk -no-tree-shake-icons
             - flutter analyze
