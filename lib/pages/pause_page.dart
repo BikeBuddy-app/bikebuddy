@@ -17,8 +17,8 @@ class _PausePageState extends State<PausePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            const Text(
+          children: const <Widget>[
+            Text(
               'Text for test',
             ),
           ],

@@ -22,7 +22,7 @@ class _RidePageState extends State<RidePage> {
               flex: 3,
               child: Container(
                 color: Colors.green,
-                child: Center(
+                child: const Center(
                   child: Text("69km/h"),
                 ),
               ),
@@ -36,13 +36,13 @@ class _RidePageState extends State<RidePage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                      child: Text("21:37"),
+                      child: const Text("21:37"),
                     ),
                     Container(
-                      child: Text("420km"),
+                      child: const Text("420km"),
                     ),
                     Container(
-                      child: Text("42.0"),
+                      child: const Text("42.0"),
                     ),
                   ],
                 ),
@@ -52,7 +52,7 @@ class _RidePageState extends State<RidePage> {
               flex: 15,
               child: Image.asset("images/map.png"),
             ),
-            Expanded(
+            const Expanded(
               flex: 2,
               child: Icon(
                 IconData(0xe47c, fontFamily: 'MaterialIcons'),
