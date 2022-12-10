@@ -19,7 +19,6 @@ pipelines:
           size: 2x
           script:
             - flutter pub get
-            - flutter test ./test
             - flutter build apk --no-tree-shake-icons
           artifacts:
           - build/app/outputs/flutter-apk/*.apk
@@ -33,7 +32,6 @@ pipelines:
           size: 2x
           script:
             - flutter pub get
-            - flutter test ./test
             - flutter build apk -no-tree-shake-icons
   custom:
     BuildAPKonRunner:
@@ -47,7 +45,6 @@ pipelines:
             - linux
           script:
             - flutter pub get
-            - flutter test ./test
             - flutter build apk --no-tree-shake-icons
           artifacts:
           - build/app/outputs/flutter-apk/*.apk
@@ -59,7 +56,6 @@ pipelines:
           name: Build APK
           script:
             - flutter pub get
-            - flutter test ./test
             - flutter build apk --no-tree-shake-icons
           artifacts:
           - build/app/outputs/flutter-apk/*.apk
