@@ -9,6 +9,9 @@ pipelines:
   pull-requests:
     '**':
       - step:
+          caches:
+            - gradle
+            - android-sdk
           name: Build a flutter version
           runs-on:
             - self.hosted
@@ -16,8 +19,9 @@ pipelines:
           size: 2x
           script:
             - flutter pub get
-            - flutter test ./test
-            - flutter build apk -no-tree-shake-icons
+            - flutter build apk --no-tree-shake-icons
+          artifacts:
+          - build/app/outputs/flutter-apk/*.apk
   tags:
     '*.*.*':
       - step:
@@ -28,34 +32,35 @@ pipelines:
           size: 2x
           script:
             - flutter pub get
-            - flutter test ./test
             - flutter build apk -no-tree-shake-icons
   custom:
     BuildAPKonRunner:
       - step:
+          caches:
+            - gradle
+            - android-sdk
           name: Build APK
           runs-on:
             - self.hosted
             - linux
           script:
             - flutter pub get
-            - flutter test ./test
-            - flutter build apk -no-tree-shake-icons
+            - flutter build apk --no-tree-shake-icons
+          artifacts:
+          - build/app/outputs/flutter-apk/*.apk
     BuildAPKonBitbucket:
       - step:
+          caches:
+            - gradle
+            - android-sdk
           name: Build APK
           script:
             - flutter pub get
-            - flutter test ./test
-            - flutter build apk -no-tree-shake-icons
-    BuildAPKonRunnerWithAnalyze:
-      - step:
-          name: Build APK
-          runs-on:
-            - self.hosted
-            - linux
-          script:
-            - flutter pub get
-            - flutter test ./test
-            - flutter build apk -no-tree-shake-icons
-            - flutter analyze
+            - flutter build apk --no-tree-shake-icons
+          artifacts:
+          - build/app/outputs/flutter-apk/*.apk
+          
+definitions:
+    caches:
+        android-sdk: android-sdk
+
