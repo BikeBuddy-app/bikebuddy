@@ -37,7 +37,7 @@ class _MainPageState extends State<MainPage> {
                   Navigator.pushNamed(context, '/ride'),
                 },
                 child: Column(children: [
-                  Icon(
+                  const Icon(
                     IconData(0xe1d2, fontFamily: 'MaterialIcons'),
                   ),
                   Text(AppLocalizations.of(context)!.start_training),
