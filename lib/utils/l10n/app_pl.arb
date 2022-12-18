@@ -1,0 +1,18 @@
+{
+    "language": "polski",
+
+    "m_path": "trasa",
+    "m_history": "historia",
+    "m_achievements": "osiągnięcia",
+    "m_settings": "ustawienia",
+
+    "search": "szukaj",
+    "start_training": "jedź",
+    "language_title": "Język",
+
+    "set_notifications": "Włącz powiadomienia aplikacji",
+    "set_darkmode": "Tryb ciemny",
+    "set_distance_unit": "Jednostka odległości",
+    "set_placeholder": "Lorem ipsum"
+
+}
