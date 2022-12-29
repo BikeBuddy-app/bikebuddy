@@ -26,5 +26,27 @@
     "start_training": "start",
     "@start_training": {
         "description": "Text displayed on main screen to start the training"
+    },
+
+    "language_title": "Language",
+    "@language_title": {
+           "description": "Title in settings"
+    },
+
+    "set_notifications": "Enable app notifications",
+    "@set_notifications": {
+           "description": "Text displayed in settings screen"
+    },
+    "set_darkmode": "Dark mode",
+    "@set_darkmode": {
+           "description": "Text displayed in settings screen"
+    },
+    "set_distance_unit": "Distance unit",
+    "@set_distance_unit": {
+           "description": "Text displayed in settings screen"
+    },
+    "set_placeholder": "Lorem ipsum",
+    "@set_placeholder": {
+           "description": "Text displayed in settings screen"
     }
 }

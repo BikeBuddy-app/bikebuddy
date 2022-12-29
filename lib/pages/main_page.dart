@@ -10,8 +10,10 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+
   @override
   Widget build(BuildContext context) {
+    var translations = AppLocalizations.of(context);
     return Scaffold(
       appBar: CustomAppBar(),
       body: Center(
@@ -23,7 +25,7 @@ class _MainPageState extends State<MainPage> {
               flex: 2,
               child: Container(
                 color: Colors.red,
-                child: Center(child: Text(AppLocalizations.of(context)!.search)),
+                child: Center(child: Text(translations!.search)),
               ),
             ),
             Expanded(
@@ -40,7 +42,7 @@ class _MainPageState extends State<MainPage> {
                   const Icon(
                     IconData(0xe1d2, fontFamily: 'MaterialIcons'),
                   ),
-                  Text(AppLocalizations.of(context)!.start_training),
+                  Text(translations.start_training),
                 ]),
               ),
             ),
@@ -51,14 +53,14 @@ class _MainPageState extends State<MainPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    TextButton(onPressed: () {}, child: Text(AppLocalizations.of(context)!.m_path)),
-                    TextButton(onPressed: () {}, child: Text(AppLocalizations.of(context)!.m_history)),
-                    TextButton(onPressed: () {}, child: Text(AppLocalizations.of(context)!.m_achievements)),
+                    TextButton(onPressed: () {}, child: Text(translations.m_path)),
+                    TextButton(onPressed: () {}, child: Text(translations.m_history)),
+                    TextButton(onPressed: () {}, child: Text(translations.m_achievements)),
                     TextButton(
                         onPressed: () => {
                               Navigator.pushNamed(context, '/settings'),
                             },
-                        child: Text(AppLocalizations.of(context)!.m_settings))
+                        child: Text(translations.m_settings))
                   ],
                 ),
               ),
