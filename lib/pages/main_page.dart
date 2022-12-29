@@ -3,6 +3,8 @@ import 'package:bike_buddy/pages/ride_page.dart';
 import 'package:bike_buddy/pages/settings/settings_page.dart';
 import 'package:bike_buddy/pages/trip_history.dart';
 import 'package:flutter/material.dart';
+import 'package:bike_buddy/components/bb_appbar.dart';
+import 'package:bike_buddy/components/bb_drawer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MainPage extends StatefulWidget {
@@ -15,69 +17,38 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
-    var translations = AppLocalizations.of(context);
     return Scaffold(
-      appBar: CustomAppBar(),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Expanded(
-              flex: 2,
-              child: Container(
-                color: Colors.red,
-                child: Center(child: Text(translations!.search)),
-              ),
-            ),
-            Expanded(
-              flex: 12,
-              child: Image.asset("images/map.png"),
-            ),
-            Expanded(
-              flex: 2,
-              child: GestureDetector(
-                onTap: () => {
-                  Navigator.pushNamed(context, RidePage.routeName),
-                },
-                child: Column(children: [
-                  const Icon(
-                    IconData(0xe1d2, fontFamily: 'MaterialIcons'),
-                  ),
-                  Text(translations.start_training),
-                ]),
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Container(
-                color: Colors.green,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    TextButton(
-                        onPressed: () {}, child: Text(translations.m_path)),
-                    TextButton(
-                        onPressed: () => {
-                              Navigator.pushNamed(context, TripHistoryPage.routeName),
-                            },
-                        child: Text(translations.m_history)),
-                    TextButton(
-                        onPressed: () {},
-                        child: Text(translations.m_achievements)),
-                    TextButton(
-                        onPressed: () => {
-                              Navigator.pushNamed(
-                                  context, SettingsPage.routeName),
-                            },
-                        child: Text(translations.m_settings))
-                  ],
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
+        appBar: BBAppBar(context),
+        drawer: BBDrawer(context),
+        body: Stack(children: [
+          Container(
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage("images/map1.png"), fit: BoxFit.cover)),
+          ),
+          Positioned.fill(
+              child: Align(
+                  alignment: const Alignment(.0, .6),
+                  child: TextButton(
+                    onPressed: () => {Navigator.pushNamed(context, "/ride")},
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.grey),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(100.0),
+                                    side: const BorderSide(
+                                        color: Color.fromARGB(
+                                            255, 111, 111, 111))))),
+                    child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 30.0, vertical: 10.0),
+                        child: Text(
+                            AppLocalizations.of(context)!.start_training,
+                            style: const TextStyle(
+                                color: Color.fromARGB(255, 40, 40, 40)))),
+                  )))
+        ]));
   }
 }

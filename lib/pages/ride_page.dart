@@ -1,7 +1,12 @@
+<<<<<<< HEAD
 import 'dart:async';
 
 import 'package:bike_buddy/components/bike_buddy_bar.dart';
+=======
+>>>>>>> daff7c9 (Initial commit)
 import 'package:flutter/material.dart';
+import 'package:bike_buddy/components/bb_appbar.dart';
+import 'package:bike_buddy/components/bb_drawer.dart';
 
 import '../components/CustomRoundButton.dart';
 
@@ -97,6 +102,7 @@ class _RidePageState extends State<RidePage> {
 
   @override
   Widget build(BuildContext context) {
+<<<<<<< HEAD
     String strDigits(int n) => n.toString().padLeft(2, '0');
     final String hours = strDigits(trainingDuration.inHours);
     final String minutes = strDigits(trainingDuration.inMinutes.remainder(60));
@@ -136,6 +142,22 @@ class _RidePageState extends State<RidePage> {
                       ],
                     ),
                   ),
+=======
+    return Scaffold(
+      appBar: BBAppBar(context),
+      drawer: BBDrawer(context),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Expanded(
+              flex: 3,
+              child: Container(
+                color: Colors.green,
+                child: const Center(
+                  child: Text("69km/h"),
+>>>>>>> daff7c9 (Initial commit)
                 ),
                 Expanded(
                   flex: 3,
