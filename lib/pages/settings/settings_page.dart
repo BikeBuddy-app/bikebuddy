@@ -9,7 +9,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../constants/general_constants.dart';
 
 class SettingsPage extends StatefulWidget {
-  const SettingsPage({Key? key}) : super(key: key);
+  const SettingsPage({super.key});
+
+  static const String routeName = '/settings';
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
@@ -26,8 +28,7 @@ class _SettingsPageState extends State<SettingsPage> {
         appBar: CustomAppBar(),
         body: Center(
             child: Column(children: [
-          Consumer<SettingsScreenNotifier>(
-              builder: (context, notifier, child) {
+          Consumer<SettingsScreenNotifier>(builder: (context, notifier, child) {
             var translations = AppLocalizations.of(context);
             return SettingsList(
               shrinkWrap: true,
@@ -36,7 +37,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   title: Text(translations!.m_settings),
                   tiles: [
                     SettingsTile.navigation(
-                      leading: Icon(Icons.language),
+                      leading: const Icon(Icons.language),
                       title: Text(translations.language_title),
                       value: Text(translations.language),
                       onPressed: (BuildContext context) {
@@ -50,12 +51,14 @@ class _SettingsPageState extends State<SettingsPage> {
                                             title: Text(
                                                 language['name'].toString()),
                                             onTap: () {
-                                              notifier.updateApplicationLanguage(language['code'].toString());
+                                              notifier
+                                                  .updateApplicationLanguage(
+                                                      language['code']
+                                                          .toString());
                                               Navigator.pop(context);
                                             },
                                           ))
-                                      .toList()
-                                  );
+                                      .toList());
                             });
                       },
                     ),
@@ -64,7 +67,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         setState(() => _notifications = value);
                       },
                       initialValue: _notifications,
-                      leading: Icon(Icons.notifications),
+                      leading: const Icon(Icons.notifications),
                       title: Text(translations.set_notifications),
                     ),
                     SettingsTile.switchTile(
@@ -72,7 +75,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         notifier.toggleApplicationTheme(value);
                       },
                       initialValue: notifier.isDarkModeEnabled,
-                      leading: Icon(Icons.nightlight),
+                      leading: const Icon(Icons.nightlight),
                       title: Text(translations.set_darkmode),
                     ),
                     SettingsTile.switchTile(
@@ -80,11 +83,11 @@ class _SettingsPageState extends State<SettingsPage> {
                         setState(() => _functionality = value);
                       },
                       initialValue: _functionality,
-                      leading: Icon(Icons.ac_unit_sharp),
+                      leading: const Icon(Icons.ac_unit_sharp),
                       title: Text(translations.set_placeholder),
                     ),
                     SettingsTile.navigation(
-                      leading: Icon(Icons.edit_road),
+                      leading: const Icon(Icons.edit_road),
                       title: Text(translations.set_distance_unit),
                       value: Text(_distanceUnit),
                       onPressed: (BuildContext context) {
@@ -95,13 +98,14 @@ class _SettingsPageState extends State<SettingsPage> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: SUPPORTED_DISTANCE_UNITS
                                       .map((unit) => ListTile(
-                                    title: Text( unit ),
-                                    onTap: () {
-                                      setState(() => _distanceUnit = unit);
-                                      Navigator.pop(context);
-                                    },
-                                  )).toList()
-                              );
+                                            title: Text(unit),
+                                            onTap: () {
+                                              setState(
+                                                  () => _distanceUnit = unit);
+                                              Navigator.pop(context);
+                                            },
+                                          ))
+                                      .toList());
                             });
                       },
                     ),

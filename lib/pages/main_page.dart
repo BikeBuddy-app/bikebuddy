@@ -1,4 +1,6 @@
 import 'package:bike_buddy/components/bike_buddy_bar.dart';
+import 'package:bike_buddy/pages/ride_page.dart';
+import 'package:bike_buddy/pages/settings/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -10,7 +12,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-
   @override
   Widget build(BuildContext context) {
     var translations = AppLocalizations.of(context);
@@ -36,7 +37,7 @@ class _MainPageState extends State<MainPage> {
               flex: 2,
               child: GestureDetector(
                 onTap: () => {
-                  Navigator.pushNamed(context, '/ride'),
+                  Navigator.pushNamed(context, RidePage.routeName),
                 },
                 child: Column(children: [
                   const Icon(
@@ -53,12 +54,17 @@ class _MainPageState extends State<MainPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    TextButton(onPressed: () {}, child: Text(translations.m_path)),
-                    TextButton(onPressed: () {}, child: Text(translations.m_history)),
-                    TextButton(onPressed: () {}, child: Text(translations.m_achievements)),
+                    TextButton(
+                        onPressed: () {}, child: Text(translations.m_path)),
+                    TextButton(
+                        onPressed: () {}, child: Text(translations.m_history)),
+                    TextButton(
+                        onPressed: () {},
+                        child: Text(translations.m_achievements)),
                     TextButton(
                         onPressed: () => {
-                              Navigator.pushNamed(context, '/settings'),
+                              Navigator.pushNamed(
+                                  context, SettingsPage.routeName),
                             },
                         child: Text(translations.m_settings))
                   ],
