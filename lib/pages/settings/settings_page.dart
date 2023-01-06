@@ -1,10 +1,10 @@
-import 'package:bike_buddy/components/bike_buddy_bar.dart';
 import 'package:bike_buddy/pages/settings/settings_screen_notifier.dart';
 import 'package:bike_buddy/utils/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:bike_buddy/components/bb_appbar.dart';
 
 import '../../constants/general_constants.dart';
 
@@ -25,7 +25,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CustomAppBar(),
+        appBar: BBAppBar(context),
         body: Center(
             child: Column(children: [
           Consumer<SettingsScreenNotifier>(builder: (context, notifier, child) {

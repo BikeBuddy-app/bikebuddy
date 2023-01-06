@@ -6,7 +6,6 @@ import 'package:bike_buddy/components/bike_buddy_bar.dart';
 >>>>>>> daff7c9 (Initial commit)
 import 'package:flutter/material.dart';
 import 'package:bike_buddy/components/bb_appbar.dart';
-import 'package:bike_buddy/components/bb_drawer.dart';
 
 import '../components/CustomRoundButton.dart';
 
@@ -145,7 +144,6 @@ class _RidePageState extends State<RidePage> {
 =======
     return Scaffold(
       appBar: BBAppBar(context),
-      drawer: BBDrawer(context),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -1,7 +1,9 @@
-import 'package:bike_buddy/components/bike_buddy_bar.dart';
 import 'package:bike_buddy/pages/ride_page.dart';
+<<<<<<< HEAD
 import 'package:bike_buddy/pages/settings/settings_page.dart';
 import 'package:bike_buddy/pages/trip_history.dart';
+=======
+>>>>>>> e787163 (Conflicts & fixes)
 import 'package:flutter/material.dart';
 import 'package:bike_buddy/components/bb_appbar.dart';
 import 'package:bike_buddy/components/bb_drawer.dart';
@@ -9,6 +11,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
+
+  static const String routeName = '/main';
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -30,7 +34,8 @@ class _MainPageState extends State<MainPage> {
               child: Align(
                   alignment: const Alignment(.0, .6),
                   child: TextButton(
-                    onPressed: () => {Navigator.pushNamed(context, "/ride")},
+                    onPressed: () =>
+                        {Navigator.pushNamed(context, RidePage.routeName)},
                     style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.all<Color>(Colors.grey),
