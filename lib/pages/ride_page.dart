@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 class RidePage extends StatefulWidget {
   const RidePage({super.key});
 
+  static const String routeName = '/ride';
+
   @override
   State<RidePage> createState() => _RidePageState();
 }
@@ -34,16 +36,10 @@ class _RidePageState extends State<RidePage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      child: const Text("21:37"),
-                    ),
-                    Container(
-                      child: const Text("420km"),
-                    ),
-                    Container(
-                      child: const Text("42.0"),
-                    ),
+                  children: const [
+                    Text("21:37"),
+                    Text("420km"),
+                    Text("42.0"),
                   ],
                 ),
               ),
