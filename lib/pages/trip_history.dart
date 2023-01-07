@@ -58,7 +58,9 @@ class TripListWidget extends StatelessWidget {
                   TextButton(
                     child: const Text('Details',
                         style: TextStyle(color: Colors.white10)),
-                    onPressed: () {/* ... */},
+                    onPressed: () {
+                      /* ... */
+                    },
                   ),
                   const SizedBox(width: 8),
                 ],

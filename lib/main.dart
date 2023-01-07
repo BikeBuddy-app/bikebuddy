@@ -1,8 +1,7 @@
 import 'package:bike_buddy/pages/ride_page.dart';
-import 'package:bike_buddy/pages/settings_page.dart';
-import 'package:bike_buddy/pages/trip_history.dart';
 import 'package:bike_buddy/pages/settings/settings_page.dart';
 import 'package:bike_buddy/pages/settings/settings_screen_notifier.dart';
+import 'package:bike_buddy/pages/trip_history.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
