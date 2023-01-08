@@ -14,7 +14,7 @@ class _TripHistoryPageState extends State<TripHistoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BBAppBar(context),
+      appBar: BBAppBar(),
       body: const TripListWidget(),
     );
   }

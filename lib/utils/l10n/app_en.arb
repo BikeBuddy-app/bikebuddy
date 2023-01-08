@@ -48,5 +48,9 @@
     "set_placeholder": "Lorem ipsum",
     "@set_placeholder": {
            "description": "Text displayed in settings screen"
+    },
+    "h_ride_details": "Your ride",
+    "@h_ride_details": {
+           "description": "Header in ride details page"
     }
 }

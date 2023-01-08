@@ -106,7 +106,7 @@ class _RidePageState extends State<RidePage> {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        appBar: BBAppBar.hideBackArrow(context),
+        appBar: BBAppBar.hideBackArrow(),
         body: Container(
           decoration: BoxDecoration(
               image: DecorationImage(

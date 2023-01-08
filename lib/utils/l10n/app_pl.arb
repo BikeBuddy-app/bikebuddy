@@ -13,6 +13,8 @@
     "set_notifications": "Włącz powiadomienia aplikacji",
     "set_darkmode": "Tryb ciemny",
     "set_distance_unit": "Jednostka odległości",
-    "set_placeholder": "Lorem ipsum"
+    "set_placeholder": "Lorem ipsum",
+
+    "h_ride_details": "Twój przejazd"
 
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class BBAppBar extends AppBar {
-  BBAppBar(BuildContext context, {super.key})
+  BBAppBar({super.key})
       : super(
             title: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -22,7 +22,7 @@ class BBAppBar extends AppBar {
                   ]))
             ]));
 
-  BBAppBar.hideBackArrow(BuildContext context, {super.key})
+  BBAppBar.hideBackArrow({super.key})
       : super(
             automaticallyImplyLeading: false,
             title: Row(mainAxisAlignment: MainAxisAlignment.center, children: <

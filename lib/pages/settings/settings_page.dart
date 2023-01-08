@@ -25,7 +25,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: BBAppBar(context),
+        appBar: BBAppBar(),
         body: Center(
             child: Column(children: [
           Consumer<SettingsScreenNotifier>(builder: (context, notifier, child) {
