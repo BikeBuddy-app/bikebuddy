@@ -1,8 +1,5 @@
 import 'package:bike_buddy/pages/settings/settings_page.dart';
-<<<<<<< HEAD
 import 'package:bike_buddy/pages/trip_history.dart';
-=======
->>>>>>> e787163 (Conflicts & fixes)
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

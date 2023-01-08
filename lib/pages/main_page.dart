@@ -1,9 +1,4 @@
 import 'package:bike_buddy/pages/ride_page.dart';
-<<<<<<< HEAD
-import 'package:bike_buddy/pages/settings/settings_page.dart';
-import 'package:bike_buddy/pages/trip_history.dart';
-=======
->>>>>>> e787163 (Conflicts & fixes)
 import 'package:flutter/material.dart';
 import 'package:bike_buddy/components/bb_appbar.dart';
 import 'package:bike_buddy/components/bb_drawer.dart';
