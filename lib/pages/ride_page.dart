@@ -1,7 +1,6 @@
 import 'dart:async';
-
-import 'package:bike_buddy/components/bike_buddy_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:bike_buddy/components/bb_appbar.dart';
 
 import '../components/CustomRoundButton.dart';
 
@@ -104,7 +103,6 @@ class _RidePageState extends State<RidePage> {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        appBar: CustomAppBar.hideBackArrow(),
         body: Container(
           decoration: BoxDecoration(
               image: DecorationImage(

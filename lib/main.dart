@@ -27,7 +27,7 @@ class BikeBuddy extends StatelessWidget {
       return MaterialApp(
         title: 'BikeBuddy',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.grey,
         ),
         debugShowCheckedModeBanner: false,
         darkTheme: ThemeData.dark(),
