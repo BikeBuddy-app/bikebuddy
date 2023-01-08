@@ -5,4 +5,10 @@ class CustomAppBar extends AppBar {
       : super(
           title: const Center(child: Text("BikeBuddy")),
         );
+
+  CustomAppBar.hideBackArrow({super.key})
+      : super(
+          title: const Center(child: Text("BikeBuddy")),
+          automaticallyImplyLeading: false,
+        );
 }
