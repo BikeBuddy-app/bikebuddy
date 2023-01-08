@@ -1,3 +1,4 @@
+import 'package:bike_buddy/pages/ride_details_page.dart';
 import 'package:bike_buddy/pages/ride_page.dart';
 import 'package:bike_buddy/pages/settings/settings_page.dart';
 import 'package:bike_buddy/pages/settings/settings_screen_notifier.dart';
@@ -38,6 +39,7 @@ class BikeBuddy extends StatelessWidget {
           RidePage.routeName: (context) => const RidePage(),
           SettingsPage.routeName: (context) => const SettingsPage(),
           TripHistoryPage.routeName: (context) => const TripHistoryPage(),
+          RideDetailsPage.routeName: (context) => const RideDetailsPage(),
         },
         supportedLocales: L10n.all,
         locale: Locale(notifier.applicationLanguage),
