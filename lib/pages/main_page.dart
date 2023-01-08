@@ -1,7 +1,7 @@
-import 'package:bike_buddy/pages/ride_page.dart';
-import 'package:flutter/material.dart';
 import 'package:bike_buddy/components/bb_appbar.dart';
 import 'package:bike_buddy/components/bb_drawer.dart';
+import 'package:bike_buddy/pages/ride_page.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MainPage extends StatefulWidget {

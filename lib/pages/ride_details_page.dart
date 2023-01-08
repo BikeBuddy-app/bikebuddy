@@ -1,6 +1,5 @@
+import 'package:bike_buddy/components/bb_appbar.dart';
 import 'package:flutter/material.dart';
-
-import '../components/bike_buddy_bar.dart';
 
 class RideDetailsPage extends StatefulWidget {
   const RideDetailsPage({Key? key}) : super(key: key);
@@ -15,7 +14,7 @@ class _RideDetailsPageState extends State<RideDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(),
+      appBar: BBAppBar(context),
       body: Container(),
     );
   }
