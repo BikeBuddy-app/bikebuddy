@@ -1,4 +1,5 @@
 import 'package:bike_buddy/components/bb_appbar.dart';
+import 'package:bike_buddy/pages/ride_details_page.dart';
 import 'package:flutter/material.dart';
 
 class TripHistoryPage extends StatefulWidget {
@@ -59,7 +60,7 @@ class TripListWidget extends StatelessWidget {
                     child: const Text('Details',
                         style: TextStyle(color: Colors.white10)),
                     onPressed: () {
-                      /* ... */
+                      Navigator.pushNamed(context, RideDetailsPage.routeName);
                     },
                   ),
                   const SizedBox(width: 8),
