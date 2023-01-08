@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:bike_buddy/pages/ride_details_page.dart';
 import 'package:flutter/material.dart';
 import 'package:bike_buddy/components/bb_appbar.dart';
 
@@ -17,7 +18,7 @@ class _RidePageState extends State<RidePage> {
   bool isRideActive = true;
 
   Timer? countdownTimer;
-  Duration trainingDuration = Duration(seconds: 0);
+  Duration trainingDuration = const Duration(seconds: 0);
 
   @override
   void initState() {
@@ -27,7 +28,7 @@ class _RidePageState extends State<RidePage> {
 
   void startTimer() {
     countdownTimer =
-        Timer.periodic(Duration(seconds: 1), (_) => increaseTimer());
+        Timer.periodic(const Duration(seconds: 1), (_) => increaseTimer());
   }
 
   void stopTimer() {
@@ -90,7 +91,9 @@ class _RidePageState extends State<RidePage> {
         size: 48,
       ),
       backgroundColor: Colors.redAccent,
-      onLongPress: () {}, //route to details page here
+      onLongPress: () {
+        Navigator.pushReplacementNamed(context, RideDetailsPage.routeName);
+      },
     ),
   ];
 
@@ -103,6 +106,7 @@ class _RidePageState extends State<RidePage> {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
+        appBar: BBAppBar.hideBackArrow(),
         body: Container(
           decoration: BoxDecoration(
               image: DecorationImage(

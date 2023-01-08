@@ -14,7 +14,7 @@ class _PausePageState extends State<PausePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BBAppBar(context),
+      appBar: BBAppBar(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

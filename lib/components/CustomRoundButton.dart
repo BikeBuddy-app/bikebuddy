@@ -41,6 +41,7 @@ class CustomRoundButton extends StatelessWidget {
     return ElevatedButton(
       style: buttonStyle,
       onPressed: onPressed,
+      onLongPress: onLongPress,
       child: icon,
     );
   }

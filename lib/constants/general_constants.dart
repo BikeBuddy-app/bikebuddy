@@ -1,5 +1,3 @@
-// ignore_for_file: constant_identifier_names
-
 import 'package:flutter/material.dart';
 
 const List<String> SUPPORTED_DISTANCE_UNITS = ["kilometer", "mile"];
