@@ -18,7 +18,7 @@ class _RidePageState extends State<RidePage> {
   bool isRideActive = true;
 
   Timer? countdownTimer;
-  Duration trainingDuration = Duration(seconds: 0);
+  Duration trainingDuration = const Duration(seconds: 0);
 
   @override
   void initState() {
@@ -28,7 +28,7 @@ class _RidePageState extends State<RidePage> {
 
   void startTimer() {
     countdownTimer =
-        Timer.periodic(Duration(seconds: 1), (_) => increaseTimer());
+        Timer.periodic(const Duration(seconds: 1), (_) => increaseTimer());
   }
 
   void stopTimer() {
@@ -106,7 +106,7 @@ class _RidePageState extends State<RidePage> {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        appBar: BBAppBar(context),
+        appBar: BBAppBar.hideBackArrow(context),
         body: Container(
           decoration: BoxDecoration(
               image: DecorationImage(
