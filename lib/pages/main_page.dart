@@ -1,6 +1,7 @@
 import 'package:bike_buddy/components/bike_buddy_bar.dart';
 import 'package:bike_buddy/pages/ride_page.dart';
 import 'package:bike_buddy/pages/settings/settings_page.dart';
+import 'package:bike_buddy/pages/trip_history.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -57,7 +58,10 @@ class _MainPageState extends State<MainPage> {
                     TextButton(
                         onPressed: () {}, child: Text(translations.m_path)),
                     TextButton(
-                        onPressed: () {}, child: Text(translations.m_history)),
+                        onPressed: () => {
+                              Navigator.pushNamed(context, TripHistoryPage.routeName),
+                            },
+                        child: Text(translations.m_history)),
                     TextButton(
                         onPressed: () {},
                         child: Text(translations.m_achievements)),
