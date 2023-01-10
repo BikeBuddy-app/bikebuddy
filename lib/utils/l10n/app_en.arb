@@ -11,6 +11,10 @@
     "@m_history": {
         "description": "Menu option text for trainings history"
     },
+    "m_user": "user",
+    "@m_user": {
+        "description": "Menu option text for user profile"
+    },
     "m_achievements": "achievements",
     "@m_achievements": {
         "description": "Menu option text for achievements"

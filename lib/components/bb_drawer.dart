@@ -1,5 +1,6 @@
 import 'package:bike_buddy/pages/settings/settings_page.dart';
 import 'package:bike_buddy/pages/trip_history.dart';
+import 'package:bike_buddy/pages/user_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -36,12 +37,11 @@ class BBDrawer extends Drawer {
                       image: AssetImage("images/drawer_header.jpeg"),
                       fit: BoxFit.cover)),
               child: Text("Menu")),
-          BBDrawerTextButton(context, AppLocalizations.of(context)!.m_path,
-              ""),
-          BBDrawerTextButton(
-              context, AppLocalizations.of(context)!.m_history, TripHistoryPage.routeName),
-          BBDrawerTextButton(
-              context, AppLocalizations.of(context)!.m_achievements, ""),
+          BBDrawerTextButton(context, AppLocalizations.of(context)!.m_path, ""),
+          BBDrawerTextButton(context, AppLocalizations.of(context)!.m_history,
+              TripHistoryPage.routeName),
+          BBDrawerTextButton(context, AppLocalizations.of(context)!.m_user,
+              UserPage.routeName),
           BBDrawerTextButton(context, AppLocalizations.of(context)!.m_settings,
               SettingsPage.routeName)
         ]));

@@ -22,7 +22,8 @@ class _RideDetailsPageState extends State<RideDetailsPage> {
           Center(
               child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 20.0),
-                  child: Text(translations.h_ride_details, style: TextStyle(fontSize: 30)))),
+                  child: Text(translations.h_ride_details,
+                      style: TextStyle(fontSize: 30)))),
           Card(
             child: Text(
                 "Lorem ipsum dolor sit amet,,\n\n\n consectetur adipiscing elit"),
