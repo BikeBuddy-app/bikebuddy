@@ -37,7 +37,6 @@ class BBDrawer extends Drawer {
                       image: AssetImage("images/drawer_header.jpeg"),
                       fit: BoxFit.cover)),
               child: Text("Menu")),
-          BBDrawerTextButton(context, AppLocalizations.of(context)!.m_path, ""),
           BBDrawerTextButton(context, AppLocalizations.of(context)!.m_history,
               TripHistoryPage.routeName),
           BBDrawerTextButton(context, AppLocalizations.of(context)!.m_user,
