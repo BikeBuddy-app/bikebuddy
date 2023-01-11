@@ -1,5 +1,5 @@
 import 'package:bike_buddy/components/bb_appbar.dart';
-import 'package:bike_buddy/components/bb_drawer.dart';
+import 'package:bike_buddy/components/drawer/bb_drawer.dart';
 import 'package:bike_buddy/pages/ride_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -18,7 +18,7 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: BBAppBar(),
-        drawer: BBDrawer(context),
+        drawer: const BBDrawer(),
         body: Stack(children: [
           Container(
             decoration: const BoxDecoration(
