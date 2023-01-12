@@ -1,6 +1,7 @@
+import 'package:flutter/material.dart';
+
 import 'package:bike_buddy/components/bb_appbar.dart';
 import 'package:bike_buddy/pages/ride_details_page.dart';
-import 'package:flutter/material.dart';
 
 class TripHistoryPage extends StatefulWidget {
   const TripHistoryPage({super.key});
@@ -14,9 +15,9 @@ class TripHistoryPage extends StatefulWidget {
 class _TripHistoryPageState extends State<TripHistoryPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       appBar: BBAppBar(),
-      body: const TripListWidget(),
+      body: TripListWidget(),
     );
   }
 }

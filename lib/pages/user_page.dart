@@ -1,10 +1,11 @@
-import 'package:bike_buddy/components/bb_appbar.dart';
 import 'package:flutter/material.dart';
 
-class UserPage extends StatefulWidget {
-  static const routeName = '/user';
+import 'package:bike_buddy/components/bb_appbar.dart';
 
+class UserPage extends StatefulWidget {
   const UserPage({super.key});
+
+  static const routeName = '/user';
 
   @override
   State<UserPage> createState() => _UserPageState();
@@ -16,10 +17,10 @@ class _UserPageState extends State<UserPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BBAppBar(),
+      appBar: const BBAppBar(),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
+        children: [
           SizedBox(
             width: double.infinity,
             height: 220,
@@ -139,15 +140,15 @@ class _UserPageState extends State<UserPage> {
 }
 
 class StatsTile extends StatelessWidget {
-  final String title;
-  final String value;
-  final Icon icon;
-
   const StatsTile(
       {required this.icon,
       required this.title,
       required this.value,
       super.key});
+
+  final Icon icon;
+  final String title;
+  final String value;
 
   @override
   Widget build(BuildContext context) {
@@ -173,9 +174,9 @@ class StatsTile extends StatelessWidget {
 class XPBar extends StatelessWidget {
   const XPBar({super.key});
 
-  final xp = 21;
-  final totalXp = 37;
   final level = 69;
+  final totalXp = 37;
+  final xp = 21;
 
   @override
   Widget build(BuildContext context) {

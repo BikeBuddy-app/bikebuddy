@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:bike_buddy/components/bb_appbar.dart';
 
 class PausePage extends StatefulWidget {
@@ -14,7 +15,7 @@ class _PausePageState extends State<PausePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BBAppBar(),
+      appBar: const BBAppBar(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

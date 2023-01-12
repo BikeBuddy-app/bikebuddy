@@ -1,9 +1,9 @@
 import 'dart:async';
-import 'package:bike_buddy/pages/ride_details_page.dart';
 import 'package:flutter/material.dart';
-import 'package:bike_buddy/components/bb_appbar.dart';
 
-import '../components/CustomRoundButton.dart';
+import 'package:bike_buddy/components/bb_appbar.dart';
+import 'package:bike_buddy/components/custom_round_button.dart';
+import 'package:bike_buddy/pages/ride_details_page.dart';
 
 class RidePage extends StatefulWidget {
   const RidePage({super.key});
@@ -27,8 +27,10 @@ class _RidePageState extends State<RidePage> {
   }
 
   void startTimer() {
-    countdownTimer =
-        Timer.periodic(const Duration(seconds: 1), (_) => increaseTimer());
+    countdownTimer = Timer.periodic(
+      const Duration(seconds: 1),
+      (_) => increaseTimer(),
+    );
   }
 
   void stopTimer() {
@@ -37,7 +39,7 @@ class _RidePageState extends State<RidePage> {
 
   void resetTimer() {
     stopTimer();
-    setState(() => trainingDuration = Duration(seconds: 0));
+    setState(() => trainingDuration = const Duration(seconds: 0));
   }
 
   void increaseTimer() {
@@ -64,33 +66,31 @@ class _RidePageState extends State<RidePage> {
 
   late final List<Widget> activeRideButtons = [
     CustomRoundButton.large(
-        onPressed: () {
-          pauseButtonHandler();
-        },
-        icon: const Icon(
-          Icons.pause,
-          size: 60,
-        )),
+      icon: const Icon(
+        Icons.pause,
+        size: 60,
+      ),
+      onPressed: () => pauseButtonHandler(),
+    ),
   ];
 
   late final List<Widget> inactiveRideButtons = [
     CustomRoundButton.large(
-        onPressed: () => resumeButtonHandler(),
-        icon: const Icon(
-          Icons.play_arrow,
-          size: 60,
-        ),
-        backgroundColor: Colors.green),
-    const SizedBox(
-      width: 10,
+      backgroundColor: Colors.green,
+      icon: const Icon(
+        Icons.play_arrow,
+        size: 60,
+      ),
+      onPressed: () => resumeButtonHandler(),
     ),
+    const SizedBox(width: 10),
     CustomRoundButton.medium(
-      onPressed: () {},
+      backgroundColor: Colors.redAccent,
       icon: const Icon(
         Icons.stop,
         size: 48,
       ),
-      backgroundColor: Colors.redAccent,
+      onPressed: () {},
       onLongPress: () {
         Navigator.pushReplacementNamed(context, RideDetailsPage.routeName);
       },
@@ -106,13 +106,14 @@ class _RidePageState extends State<RidePage> {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        appBar: BBAppBar.hideBackArrow(),
+        appBar: const BBAppBar.hideBackArrow(),
         body: Container(
-          decoration: BoxDecoration(
-              image: DecorationImage(
-            image: AssetImage("images/map.png"),
-            fit: BoxFit.cover,
-          )),
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: AssetImage("images/map.png"),
+            ),
+          ),
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -126,15 +127,9 @@ class _RidePageState extends State<RidePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Container(
-                          child: Text("$hours:$minutes:$seconds"),
-                        ),
-                        Container(
-                          child: const Text("420km"),
-                        ),
-                        Container(
-                          child: const Text("42.0"),
-                        ),
+                        Text("$hours:$minutes:$seconds"),
+                        const Text("420km"),
+                        const Text("42.0"),
                       ],
                     ),
                   ),
@@ -161,11 +156,12 @@ class _RidePageState extends State<RidePage> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       CustomRoundButton.small(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.location_pin,
-                            size: 25,
-                          ))
+                        icon: const Icon(
+                          Icons.location_pin,
+                          size: 25,
+                        ),
+                        onPressed: () {},
+                      )
                     ],
                   ),
                 ),
