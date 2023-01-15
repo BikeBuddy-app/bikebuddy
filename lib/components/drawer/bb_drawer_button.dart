@@ -9,20 +9,22 @@ class DrawerButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () => {Navigator.pushNamed(context, navigateTo)},
+      onPressed: () => Navigator.pushNamed(context, navigateTo),
       child: ListTile(
         title: Center(
           child: Text.rich(
             TextSpan(
               children: <TextSpan>[
                 TextSpan(
-                    text: text[0],
-                    style: const TextStyle(color: Colors.red)),
+                  text: text[0],
+                  style: const TextStyle(color: Colors.red),
+                ),
                 TextSpan(text: text.substring(1))
               ],
             ),
           ),
         ),
-      ),);
+      ),
+    );
   }
 }

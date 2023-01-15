@@ -10,7 +10,6 @@ class SettingsScreenNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-
   get applicationLanguage => _applicationLanguage;
   void updateApplicationLanguage(String countryCode) {
     _applicationLanguage = countryCode;
