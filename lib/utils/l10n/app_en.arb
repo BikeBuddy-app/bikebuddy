@@ -56,5 +56,30 @@
     "h_ride_details": "Your ride",
     "@h_ride_details": {
            "description": "Header in ride details page"
+    },
+    "u_statistics": "Statistics",
+    "@u_statistics_details": {
+           "description": "Header for statistics container in user page"
+    },
+    "u_distance": "Distance traveled:",
+    "@u_distance_details": {
+           "description": "Distance tile title in user page"
+    },
+    "u_calories": "Calories burned:",
+    "@u_calories_details": {
+        "description": "Calories tile title in user page"
+    },
+    "u_time": "Time spent on bike:",
+    "@u_time_details": {
+        "description": "Time tile title in user page"
+    },
+    "u_streak": "Streak length:",
+    "@u_streak_details": {
+        "description": "Streak tile title in user page"
+    },
+    "u_max_distance": "Longest distance:",
+    "@u_max_distance_details": {
+        "description": "Max distance tile title in user page"
     }
+    
 }
