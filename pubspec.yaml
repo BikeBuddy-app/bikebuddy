@@ -18,7 +18,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   settings_ui: 2.0.2
   sticky_headers: "^0.1.8"
-  shared_preferences: "2.0.20"
 
 dev_dependencies:
   flutter_test:

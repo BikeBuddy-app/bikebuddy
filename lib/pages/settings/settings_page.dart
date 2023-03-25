@@ -69,6 +69,14 @@ class _SettingsPageState extends State<SettingsPage> {
                           },
                         ),
                         SettingsTile.switchTile(
+                          initialValue: _notifications,
+                          leading: const Icon(Icons.notifications),
+                          title: Text(translations.set_notifications),
+                          onToggle: (value) {
+                            setState(() => _notifications = value);
+                          },
+                        ),
+                        SettingsTile.switchTile(
                           initialValue: notifier.isDarkModeEnabled,
                           leading: const Icon(Icons.nightlight),
                           title: Text(translations.set_darkmode),
@@ -76,10 +84,18 @@ class _SettingsPageState extends State<SettingsPage> {
                             notifier.toggleApplicationTheme(value);
                           },
                         ),
+                        SettingsTile.switchTile(
+                          initialValue: _functionality,
+                          leading: const Icon(Icons.ac_unit_sharp),
+                          title: Text(translations.set_placeholder),
+                          onToggle: (value) {
+                            setState(() => _functionality = value);
+                          },
+                        ),
                         SettingsTile.navigation(
                           leading: const Icon(Icons.edit_road),
                           title: Text(translations.set_distance_unit),
-                          value: Text(notifier.distanceUnit),
+                          value: Text(_distanceUnit),
                           onPressed: (BuildContext context) {
                             showModalBottomSheet(
                               context: context,
@@ -91,8 +107,8 @@ class _SettingsPageState extends State<SettingsPage> {
                                         (unit) => ListTile(
                                           title: Text(unit),
                                           onTap: () {
-                                            notifier.updateDistanceUnit(unit);
-                                            setState(() => _distanceUnit = unit);
+                                            setState(
+                                                () => _distanceUnit = unit);
                                             Navigator.pop(context);
                                           },
                                         ),
