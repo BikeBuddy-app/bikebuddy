@@ -1,3 +1,4 @@
+import 'package:bike_buddy/utils/shared_prefs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -13,7 +14,12 @@ import 'package:bike_buddy/pages/settings/settings_screen_notifier.dart';
 
 import '/utils/l10n/l10n.dart';
 
-void main() {
+void main() async {
+  // Required for async calls in `main`
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await SharedPrefs.init();
+
   runApp(ChangeNotifierProvider(
     create: (context) => SettingsScreenNotifier(),
     child: const BikeBuddy(),
