@@ -16,6 +16,12 @@
     "set_distance_unit": "Jednostka odległości",
     "set_placeholder": "Lorem ipsum",
 
-    "h_ride_details": "Twój przejazd"
+    "h_ride_details": "Twój przejazd",
 
+    "u_statistics": "Statystyki",
+    "u_distance": "Przejechany dystans:",
+    "u_calories": "Spalone kalorie:",
+    "u_time": "Czas jazdy:",
+    "u_streak": "Dni pod rząd:",
+    "u_max_distance": "Najdłuższy przejazd:"
 }
