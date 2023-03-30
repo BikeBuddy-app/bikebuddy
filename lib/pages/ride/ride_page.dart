@@ -16,12 +16,13 @@ class RidePage extends StatefulWidget {
 }
 
 class _RidePageState extends State<RidePage> {
-  Location location = Location();
+  Location? location;
   bool isRideActive = true;
 
   RideTimer? timer;
 
   String timerDisplay = "00:00:00";
+  String locationDisplay = "None";
 
   @override
   void initState() {
@@ -30,6 +31,9 @@ class _RidePageState extends State<RidePage> {
           timerDisplay = newDisplayValue;
         }));
     timer!.start();
+    location = Location((String newLocationValue) => setState(() {
+      locationDisplay = newLocationValue;
+    }));
   }
 
   void resumeButtonHandler() {
@@ -125,7 +129,7 @@ class _RidePageState extends State<RidePage> {
                 ),
                 Expanded(
                   flex: 15,
-                  child: Container(),
+                  child: Text(locationDisplay),
                 ),
                 Expanded(
                   flex: 2,
