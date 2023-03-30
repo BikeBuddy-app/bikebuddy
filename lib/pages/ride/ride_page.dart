@@ -1,9 +1,10 @@
-import 'dart:async';
-import 'package:flutter/material.dart';
-
 import 'package:bike_buddy/components/bb_appbar.dart';
 import 'package:bike_buddy/components/custom_round_button.dart';
+import 'package:bike_buddy/pages/ride/ride_timer.dart';
 import 'package:bike_buddy/pages/ride_details_page.dart';
+import 'package:flutter/material.dart';
+
+import '../../services/location.dart';
 
 class RidePage extends StatefulWidget {
   const RidePage({super.key});
@@ -15,53 +16,34 @@ class RidePage extends StatefulWidget {
 }
 
 class _RidePageState extends State<RidePage> {
+  Location location = Location();
   bool isRideActive = true;
 
-  Timer? countdownTimer;
-  Duration trainingDuration = const Duration(seconds: 0);
+  RideTimer? timer;
+
+  String timerDisplay = "00:00:00";
 
   @override
   void initState() {
     super.initState();
-    startTimer();
-  }
-
-  void startTimer() {
-    countdownTimer = Timer.periodic(
-      const Duration(seconds: 1),
-      (_) => increaseTimer(),
-    );
-  }
-
-  void stopTimer() {
-    setState(() => countdownTimer!.cancel());
-  }
-
-  void resetTimer() {
-    stopTimer();
-    setState(() => trainingDuration = const Duration(seconds: 0));
-  }
-
-  void increaseTimer() {
-    const increaseSecondsBy = 1;
-    setState(() {
-      final seconds = trainingDuration.inSeconds + increaseSecondsBy;
-      trainingDuration = Duration(seconds: seconds);
-    });
+    timer = RideTimer((String newDisplayValue) => setState(() {
+          timerDisplay = newDisplayValue;
+        }));
+    timer!.start();
   }
 
   void resumeButtonHandler() {
     setState(() {
       isRideActive = true;
-      startTimer();
     });
+    timer!.start();
   }
 
   void pauseButtonHandler() {
     setState(() {
       isRideActive = false;
-      stopTimer();
     });
+    timer!.pause();
   }
 
   late final List<Widget> activeRideButtons = [
@@ -99,10 +81,6 @@ class _RidePageState extends State<RidePage> {
 
   @override
   Widget build(BuildContext context) {
-    String strDigits(int n) => n.toString().padLeft(2, '0');
-    final String hours = strDigits(trainingDuration.inHours);
-    final String minutes = strDigits(trainingDuration.inMinutes.remainder(60));
-    final String seconds = strDigits(trainingDuration.inSeconds.remainder(60));
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
@@ -127,7 +105,7 @@ class _RidePageState extends State<RidePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text("$hours:$minutes:$seconds"),
+                        Text(timerDisplay),
                         const Text("420km"),
                         const Text("42.0"),
                       ],
