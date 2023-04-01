@@ -5,6 +5,7 @@ import 'package:bike_buddy/pages/ride_details_page.dart';
 import 'package:flutter/material.dart';
 
 import '../../services/location.dart';
+import '../../services/locator.dart';
 
 class RidePage extends StatefulWidget {
   const RidePage({super.key});
@@ -16,7 +17,7 @@ class RidePage extends StatefulWidget {
 }
 
 class _RidePageState extends State<RidePage> {
-  Location? location;
+  Locator? location;
   bool isRideActive = true;
 
   RideTimer? timer;
@@ -31,9 +32,10 @@ class _RidePageState extends State<RidePage> {
           timerDisplay = newDisplayValue;
         }));
     timer!.start();
-    location = Location((String newLocationValue) => setState(() {
-      locationDisplay = newLocationValue;
+    location = Locator((Location newLocationValue) => setState(() {
+      locationDisplay = newLocationValue.asString();
     }));
+    location!.start();
   }
 
   void resumeButtonHandler() {
@@ -78,6 +80,7 @@ class _RidePageState extends State<RidePage> {
       ),
       onPressed: () {},
       onLongPress: () {
+        location!.stop();
         Navigator.pushReplacementNamed(context, RideDetailsPage.routeName);
       },
     ),
