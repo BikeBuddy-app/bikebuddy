@@ -44,7 +44,7 @@ class _RidePageState extends State<RidePage> {
   void initializeTimer() {
     timer = Timer(
       (timerValue) => setState(() {
-        this.timerValue = timerValue;
+        this.timerValue = timerValue.toString();
       }),
     );
     timer.start();
