@@ -1,15 +1,15 @@
-import 'dart:async';
+import 'dart:async' as flutter_timer;
 
-class RideTimer {
-  Timer? timer;
+class Timer {
+  late flutter_timer.Timer _timer;
   Duration duration = const Duration(seconds: 0);
   final Duration interval = const Duration(seconds: 1);
   final void Function(String timerValue) changeCallback;
 
-  RideTimer(this.changeCallback);
+  Timer(this.changeCallback);
 
   void start() {
-    timer = Timer.periodic(
+    _timer = flutter_timer.Timer.periodic(
       interval,
       (timer) {
         duration += interval;
@@ -18,8 +18,16 @@ class RideTimer {
     );
   }
 
+  void resume() {
+    start();
+  }
+
   void pause() {
-    timer!.cancel();
+    _timer.cancel();
+  }
+
+  void stop() {
+    _timer.cancel();
   }
 
   @override

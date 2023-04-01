@@ -1,6 +1,6 @@
 import 'package:bike_buddy/components/bb_appbar.dart';
 import 'package:bike_buddy/components/custom_round_button.dart';
-import 'package:bike_buddy/pages/ride/ride_timer.dart';
+import 'package:bike_buddy/services/timer.dart';
 import 'package:bike_buddy/pages/ride_details_page.dart';
 import 'package:flutter/material.dart';
 
@@ -17,39 +17,57 @@ class RidePage extends StatefulWidget {
 }
 
 class _RidePageState extends State<RidePage> {
-  Locator? location;
   bool isRideActive = true;
 
-  RideTimer? timer;
+  late Timer timer;
+  late Locator location;
 
-  String timerDisplay = "00:00:00";
-  String locationDisplay = "None";
+  String timerValue = "00:00:00";
+  String currentLocation = "GPS does not work";
 
   @override
   void initState() {
+    initializeTimer();
+    initializeLocator();
     super.initState();
-    timer = RideTimer((String newDisplayValue) => setState(() {
-          timerDisplay = newDisplayValue;
-        }));
-    timer!.start();
-    location = Locator((Location newLocationValue) => setState(() {
-      locationDisplay = newLocationValue.asString();
-    }));
-    location!.start();
+  }
+
+  void initializeLocator() {
+    location = Locator(
+      (Location currentLocation) => setState(() {
+        this.currentLocation = currentLocation.asString();
+      }),
+    );
+    location.start();
+  }
+
+  void initializeTimer() {
+    timer = Timer(
+      (timerValue) => setState(() {
+        this.timerValue = timerValue;
+      }),
+    );
+    timer.start();
   }
 
   void resumeButtonHandler() {
     setState(() {
       isRideActive = true;
     });
-    timer!.start();
+    timer.resume();
   }
 
   void pauseButtonHandler() {
     setState(() {
       isRideActive = false;
     });
-    timer!.pause();
+    timer.pause();
+  }
+
+  void stopButtonHandler() {
+    location.stop();
+    timer.stop();
+    Navigator.pushReplacementNamed(context, RideDetailsPage.routeName);
   }
 
   late final List<Widget> activeRideButtons = [
@@ -58,7 +76,7 @@ class _RidePageState extends State<RidePage> {
         Icons.pause,
         size: 60,
       ),
-      onPressed: () => pauseButtonHandler(),
+      onPressed: pauseButtonHandler,
     ),
   ];
 
@@ -69,7 +87,7 @@ class _RidePageState extends State<RidePage> {
         Icons.play_arrow,
         size: 60,
       ),
-      onPressed: () => resumeButtonHandler(),
+      onPressed: resumeButtonHandler,
     ),
     const SizedBox(width: 10),
     CustomRoundButton.medium(
@@ -79,10 +97,7 @@ class _RidePageState extends State<RidePage> {
         size: 48,
       ),
       onPressed: () {},
-      onLongPress: () {
-        location!.stop();
-        Navigator.pushReplacementNamed(context, RideDetailsPage.routeName);
-      },
+      onLongPress: stopButtonHandler,
     ),
   ];
 
@@ -112,7 +127,7 @@ class _RidePageState extends State<RidePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(timerDisplay),
+                        Text(timerValue),
                         const Text("420km"),
                         const Text("42.0"),
                       ],
@@ -132,7 +147,7 @@ class _RidePageState extends State<RidePage> {
                 ),
                 Expanded(
                   flex: 15,
-                  child: Text(locationDisplay),
+                  child: Text(currentLocation),
                 ),
                 Expanded(
                   flex: 2,

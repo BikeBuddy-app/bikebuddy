@@ -7,7 +7,7 @@ import 'package:geolocator/geolocator.dart';
 import 'location.dart';
 
 class Locator {
-  StreamSubscription<Position>? positionStream;
+  late StreamSubscription<Position> _positionStream;
 
   final void Function(Location location) changeCallback;
 
@@ -17,20 +17,28 @@ class Locator {
     LocationPermission permission = await Geolocator.requestPermission();
     if (permission != LocationPermission.denied) {
       try {
-        positionStream =
-            Geolocator.getPositionStream(locationSettings: kLocationSettings)
-                .listen((Position? position) {
-          if (position != null) {
-            changeCallback(Location(position));
-          }
-        });
+        listenToPositionChanges();
       } catch (e) {
-        debugPrint(e.toString());
+        debugPrint(
+          e.toString(),
+        );
       }
     }
   }
 
+  void listenToPositionChanges() {
+    _positionStream =
+        Geolocator.getPositionStream(locationSettings: kLocationSettings)
+            .listen((Position? position) {
+      if (position != null) {
+        changeCallback(
+          Location(position),
+        );
+      }
+    });
+  }
+
   void stop() {
-    positionStream?.cancel();
+    _positionStream.cancel();
   }
 }
