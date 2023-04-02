@@ -3,7 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:bike_buddy/components/bb_appbar.dart';
 import 'package:bike_buddy/components/drawer/bb_drawer.dart';
-import 'package:bike_buddy/pages/ride_page.dart';
+import 'package:bike_buddy/pages/ride/ride_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});

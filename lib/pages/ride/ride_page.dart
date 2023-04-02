@@ -1,9 +1,10 @@
-import 'dart:async';
-import 'package:flutter/material.dart';
-
 import 'package:bike_buddy/components/bb_appbar.dart';
 import 'package:bike_buddy/components/custom_round_button.dart';
 import 'package:bike_buddy/pages/ride_details_page.dart';
+import 'package:bike_buddy/services/timer.dart';
+import 'package:flutter/material.dart';
+
+import '../../services/locator.dart';
 
 class RidePage extends StatefulWidget {
   const RidePage({super.key});
@@ -17,51 +18,55 @@ class RidePage extends StatefulWidget {
 class _RidePageState extends State<RidePage> {
   bool isRideActive = true;
 
-  Timer? countdownTimer;
-  Duration trainingDuration = const Duration(seconds: 0);
+  late Timer timer;
+  late Locator locator;
+
+  String timerValue = "00:00:00";
+  String currentPosition = "GPS does not work";
 
   @override
   void initState() {
+    initializeTimer();
+    initializeLocator();
     super.initState();
-    startTimer();
   }
 
-  void startTimer() {
-    countdownTimer = Timer.periodic(
-      const Duration(seconds: 1),
-      (_) => increaseTimer(),
+  void initializeLocator() {
+    locator = Locator(
+      (currentPosition) => setState(() {
+        this.currentPosition = currentPosition.toString();
+      }),
     );
+    locator.start();
   }
 
-  void stopTimer() {
-    setState(() => countdownTimer!.cancel());
-  }
-
-  void resetTimer() {
-    stopTimer();
-    setState(() => trainingDuration = const Duration(seconds: 0));
-  }
-
-  void increaseTimer() {
-    const increaseSecondsBy = 1;
-    setState(() {
-      final seconds = trainingDuration.inSeconds + increaseSecondsBy;
-      trainingDuration = Duration(seconds: seconds);
-    });
+  void initializeTimer() {
+    timer = Timer(
+      (timerValue) => setState(() {
+        this.timerValue = timerValue.toString();
+      }),
+    );
+    timer.start();
   }
 
   void resumeButtonHandler() {
     setState(() {
       isRideActive = true;
-      startTimer();
     });
+    timer.resume();
   }
 
   void pauseButtonHandler() {
     setState(() {
       isRideActive = false;
-      stopTimer();
     });
+    timer.pause();
+  }
+
+  void stopButtonHandler() {
+    locator.stop();
+    timer.stop();
+    Navigator.pushReplacementNamed(context, RideDetailsPage.routeName);
   }
 
   late final List<Widget> activeRideButtons = [
@@ -70,7 +75,7 @@ class _RidePageState extends State<RidePage> {
         Icons.pause,
         size: 60,
       ),
-      onPressed: () => pauseButtonHandler(),
+      onPressed: pauseButtonHandler,
     ),
   ];
 
@@ -81,7 +86,7 @@ class _RidePageState extends State<RidePage> {
         Icons.play_arrow,
         size: 60,
       ),
-      onPressed: () => resumeButtonHandler(),
+      onPressed: resumeButtonHandler,
     ),
     const SizedBox(width: 10),
     CustomRoundButton.medium(
@@ -91,18 +96,12 @@ class _RidePageState extends State<RidePage> {
         size: 48,
       ),
       onPressed: () {},
-      onLongPress: () {
-        Navigator.pushReplacementNamed(context, RideDetailsPage.routeName);
-      },
+      onLongPress: stopButtonHandler,
     ),
   ];
 
   @override
   Widget build(BuildContext context) {
-    String strDigits(int n) => n.toString().padLeft(2, '0');
-    final String hours = strDigits(trainingDuration.inHours);
-    final String minutes = strDigits(trainingDuration.inMinutes.remainder(60));
-    final String seconds = strDigits(trainingDuration.inSeconds.remainder(60));
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
@@ -127,7 +126,7 @@ class _RidePageState extends State<RidePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text("$hours:$minutes:$seconds"),
+                        Text(timerValue),
                         const Text("420km"),
                         const Text("42.0"),
                       ],
@@ -147,7 +146,7 @@ class _RidePageState extends State<RidePage> {
                 ),
                 Expanded(
                   flex: 15,
-                  child: Container(),
+                  child: Text(currentPosition),
                 ),
                 Expanded(
                   flex: 2,
