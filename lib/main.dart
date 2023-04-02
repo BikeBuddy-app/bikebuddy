@@ -9,13 +9,17 @@ import 'package:bike_buddy/pages/ride_details_page.dart';
 import 'package:bike_buddy/pages/trip_history.dart';
 import 'package:bike_buddy/pages/user_page.dart';
 import 'package:bike_buddy/pages/settings/settings_page.dart';
-import 'package:bike_buddy/pages/settings/settings_screen_notifier.dart';
+import 'package:bike_buddy/utils/settings_manager.dart';
+import 'package:bike_buddy/utils/l10n/l10n.dart';
+import 'package:bike_buddy/utils/local_storage_service.dart';
 
-import '/utils/l10n/l10n.dart';
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-void main() {
+  await LocalStorageService.init();
+
   runApp(ChangeNotifierProvider(
-    create: (context) => SettingsScreenNotifier(),
+    create: (context) => SettingsManager(),
     child: const BikeBuddy(),
   ));
 }
@@ -25,33 +29,30 @@ class BikeBuddy extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<SettingsScreenNotifier>(
-        builder: (context, notifier, child) {
-      return MaterialApp(
-        title: 'BikeBuddy',
-        theme: ThemeData(
-          primarySwatch: Colors.grey,
-        ),
-        debugShowCheckedModeBanner: false,
-        darkTheme: ThemeData.dark(),
-        themeMode:
-            notifier.isDarkModeEnabled ? ThemeMode.dark : ThemeMode.light,
-        routes: {
-          '/': (context) => const MainPage(),
-          RidePage.routeName: (context) => const RidePage(),
-          UserPage.routeName: (context) => const UserPage(),
-          SettingsPage.routeName: (context) => const SettingsPage(),
-          TripHistoryPage.routeName: (context) => const TripHistoryPage(),
-          RideDetailsPage.routeName: (context) => const RideDetailsPage(),
-        },
-        supportedLocales: L10n.all,
-        locale: Locale(notifier.applicationLanguage),
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-      );
-    });
+    final settings = context.watch<SettingsManager>();
+    return MaterialApp(
+      title: 'BikeBuddy',
+      theme: ThemeData(
+        primarySwatch: Colors.grey,
+      ),
+      debugShowCheckedModeBanner: false,
+      darkTheme: ThemeData.dark(),
+      themeMode: settings.isDarkModeEnabled ? ThemeMode.dark : ThemeMode.light,
+      routes: {
+        '/': (context) => const MainPage(),
+        RidePage.routeName: (context) => const RidePage(),
+        UserPage.routeName: (context) => const UserPage(),
+        SettingsPage.routeName: (context) => const SettingsPage(),
+        TripHistoryPage.routeName: (context) => const TripHistoryPage(),
+        RideDetailsPage.routeName: (context) => const RideDetailsPage(),
+      },
+      supportedLocales: L10n.all,
+      locale: Locale(settings.applicationLanguage),
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+    );
   }
 }
