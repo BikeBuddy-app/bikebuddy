@@ -1,10 +1,9 @@
 import 'package:bike_buddy/components/bb_appbar.dart';
 import 'package:bike_buddy/components/custom_round_button.dart';
-import 'package:bike_buddy/services/timer.dart';
 import 'package:bike_buddy/pages/ride_details_page.dart';
+import 'package:bike_buddy/services/timer.dart';
 import 'package:flutter/material.dart';
 
-import '../../services/location.dart';
 import '../../services/locator.dart';
 
 class RidePage extends StatefulWidget {
@@ -20,10 +19,10 @@ class _RidePageState extends State<RidePage> {
   bool isRideActive = true;
 
   late Timer timer;
-  late Locator location;
+  late Locator locator;
 
   String timerValue = "00:00:00";
-  String currentLocation = "GPS does not work";
+  String currentPosition = "GPS does not work";
 
   @override
   void initState() {
@@ -33,12 +32,12 @@ class _RidePageState extends State<RidePage> {
   }
 
   void initializeLocator() {
-    location = Locator(
-      (Location currentLocation) => setState(() {
-        this.currentLocation = currentLocation.asString();
+    locator = Locator(
+      (currentPosition) => setState(() {
+        this.currentPosition = currentPosition.toString();
       }),
     );
-    location.start();
+    locator.start();
   }
 
   void initializeTimer() {
@@ -65,7 +64,7 @@ class _RidePageState extends State<RidePage> {
   }
 
   void stopButtonHandler() {
-    location.stop();
+    locator.stop();
     timer.stop();
     Navigator.pushReplacementNamed(context, RideDetailsPage.routeName);
   }
@@ -147,7 +146,7 @@ class _RidePageState extends State<RidePage> {
                 ),
                 Expanded(
                   flex: 15,
-                  child: Text(currentLocation),
+                  child: Text(currentPosition),
                 ),
                 Expanded(
                   flex: 2,

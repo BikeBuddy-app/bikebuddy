@@ -1,6 +1,6 @@
 import 'dart:async' as flutter_timer;
 
-import 'package:bike_buddy/services/standard_duration.dart';
+import 'package:bike_buddy/models/standard_duration.dart';
 
 class Timer {
   late flutter_timer.Timer _timer;

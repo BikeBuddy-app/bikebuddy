@@ -4,12 +4,10 @@ import 'package:bike_buddy/constants/location_constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
 
-import 'location.dart';
-
 class Locator {
   late StreamSubscription<Position> _positionStream;
 
-  final void Function(Location location) changeCallback;
+  final void Function(Position position) changeCallback;
 
   Locator(this.changeCallback);
 
@@ -32,7 +30,7 @@ class Locator {
             .listen((Position? position) {
       if (position != null) {
         changeCallback(
-          Location(position),
+          position,
         );
       }
     });
