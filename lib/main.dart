@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
+import 'package:bike_buddy/adapters/ride_item.dart';
 import 'package:bike_buddy/pages/main_page.dart';
 import 'package:bike_buddy/pages/ride/ride_page.dart';
 import 'package:bike_buddy/pages/ride_details_page.dart';
@@ -17,6 +19,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await LocalStorageService.init();
+  
+  await Hive.initFlutter();
+  await Hive.openBox('ride_items');
+  Hive.registerAdapter(RideItemAdapter());
 
   runApp(ChangeNotifierProvider(
     create: (context) => SettingsManager(),

@@ -1,8 +1,10 @@
 import 'package:bike_buddy/components/bb_appbar.dart';
 import 'package:bike_buddy/components/custom_round_button.dart';
+import 'package:bike_buddy/adapters/ride_item.dart';
 import 'package:bike_buddy/pages/ride_details_page.dart';
 import 'package:bike_buddy/services/timer.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../services/locator.dart';
 
@@ -66,7 +68,15 @@ class _RidePageState extends State<RidePage> {
   void stopButtonHandler() {
     locator.stop();
     timer.stop();
+    saveCurrentRide();
+
     Navigator.pushReplacementNamed(context, RideDetailsPage.routeName);
+  }
+
+  Future<void> saveCurrentRide() async {
+    var rideItemsBox = Hive.box("ride_items");
+    var rideItem = RideItem(locator, timer);
+    await rideItemsBox.add(rideItem);
   }
 
   late final List<Widget> activeRideButtons = [
