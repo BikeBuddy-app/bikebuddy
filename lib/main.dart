@@ -21,8 +21,10 @@ void main() async {
   await LocalStorageService.init();
   
   await Hive.initFlutter();
-  await Hive.openBox('ride_items');
+  Hive.registerAdapter(PositionTimestampAdapter());
   Hive.registerAdapter(RideItemAdapter());
+  
+  await Hive.openBox('ride_items');
 
   runApp(ChangeNotifierProvider(
     create: (context) => SettingsManager(),

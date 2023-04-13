@@ -7,8 +7,9 @@ class Timer {
   Duration _duration = const Duration(seconds: 0);
   final Duration interval = const Duration(seconds: 1);
   final void Function(Duration) changeCallback;
+  final void Function() savePositionTimestamp;
 
-  Timer(this.changeCallback);
+  Timer(this.changeCallback, this.savePositionTimestamp);
 
   void start() {
     _timer = flutter_timer.Timer.periodic(
@@ -16,6 +17,7 @@ class Timer {
       (timer) {
         _duration += interval;
         changeCallback(StandardDuration(_duration));
+        savePositionTimestamp();
       },
     );
   }

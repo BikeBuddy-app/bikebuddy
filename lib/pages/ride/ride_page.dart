@@ -24,13 +24,26 @@ class _RidePageState extends State<RidePage> {
   late Locator locator;
 
   String timerValue = "00:00:00";
-  String currentPosition = "GPS does not work";
+  String currentPosition = "None";
+
+  var rideItemsBox = Hive.box("ride_items");
+  var rideItem = RideItem();
 
   @override
   void initState() {
     initializeTimer();
     initializeLocator();
     super.initState();
+  }
+
+  void savePositionTimestamp(){
+    var positionTimestamp = PositionTimestamp(timerValue, currentPosition);
+    rideItem.add(positionTimestamp);
+  }
+
+  void saveCurrentRide() {
+    debugPrint("${rideItem.positionTimestamps}");
+    rideItemsBox.add(rideItem);
   }
 
   void initializeLocator() {
@@ -47,6 +60,7 @@ class _RidePageState extends State<RidePage> {
       (timerValue) => setState(() {
         this.timerValue = timerValue.toString();
       }),
+      savePositionTimestamp
     );
     timer.start();
   }
@@ -71,12 +85,6 @@ class _RidePageState extends State<RidePage> {
     saveCurrentRide();
 
     Navigator.pushReplacementNamed(context, RideDetailsPage.routeName);
-  }
-
-  Future<void> saveCurrentRide() async {
-    var rideItemsBox = Hive.box("ride_items");
-    var rideItem = RideItem(locator, timer);
-    await rideItemsBox.add(rideItem);
   }
 
   late final List<Widget> activeRideButtons = [

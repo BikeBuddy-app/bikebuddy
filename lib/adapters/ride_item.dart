@@ -1,15 +1,25 @@
-import 'package:bike_buddy/services/locator.dart';
-import 'package:bike_buddy/services/timer.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 part 'ride_item.g.dart';
 
-@HiveType(typeId: 0)
-class RideItem {
-  @HiveField(0)
-  late Locator locator;
+@HiveType(typeId: 1)
+class PositionTimestamp {
   @HiveField(1)
-  late Timer timer;
+  String timestamp;
+  @HiveField(2)
+  String position;
 
-  RideItem(this.locator, this.timer);
+  PositionTimestamp(this.timestamp, this.position);
+}
+
+@HiveType(typeId: 2)
+class RideItem {
+  @HiveField(3)
+  List positionTimestamps;
+
+  RideItem() : positionTimestamps = List.empty(growable: true);
+
+  void add(PositionTimestamp positionTimestamp){
+    positionTimestamps.add(positionTimestamp);
+  }
 }
