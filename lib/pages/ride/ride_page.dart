@@ -1,8 +1,10 @@
 import 'package:bike_buddy/components/bb_appbar.dart';
 import 'package:bike_buddy/components/custom_round_button.dart';
+import 'package:bike_buddy/hive/entities/ride_item.dart';
 import 'package:bike_buddy/pages/ride_details_page.dart';
 import 'package:bike_buddy/services/timer.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../services/locator.dart';
 
@@ -22,13 +24,25 @@ class _RidePageState extends State<RidePage> {
   late Locator locator;
 
   String timerValue = "00:00:00";
-  String currentPosition = "GPS does not work";
+  String currentPosition = "None";
+
+  var rideItemsBox = Hive.box("ride_items");
+  var rideItem = RideItem();
 
   @override
   void initState() {
     initializeTimer();
     initializeLocator();
     super.initState();
+  }
+
+  void savePositionTimestamp(){
+    var positionTimestamp = PositionTimestamp(timerValue, currentPosition);
+    rideItem.add(positionTimestamp);
+  }
+
+  void saveCurrentRide() {
+    rideItemsBox.add(rideItem);
   }
 
   void initializeLocator() {
@@ -45,6 +59,7 @@ class _RidePageState extends State<RidePage> {
       (timerValue) => setState(() {
         this.timerValue = timerValue.toString();
       }),
+      savePositionTimestamp
     );
     timer.start();
   }
@@ -66,6 +81,8 @@ class _RidePageState extends State<RidePage> {
   void stopButtonHandler() {
     locator.stop();
     timer.stop();
+    saveCurrentRide();
+
     Navigator.pushReplacementNamed(context, RideDetailsPage.routeName);
   }
 
