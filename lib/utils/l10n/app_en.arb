@@ -57,6 +57,26 @@
     "@h_ride_details": {
            "description": "Header in ride details page"
     },
+    "h_ride_details_total_distance": "Distance traveled",
+    "@h_ride_details_total_distance": {
+            "description": "Ride details card total distance caption"
+    },
+    "h_ride_details_ride_duration": "Ride duration",
+        "@h_ride_details_ride_duration": {
+            "description": "Ride details card ride duration caption"
+    },
+    "h_ride_details_maximum_speed": "Max speed",
+        "@h_ride_details_maximum_speed": {
+            "description": "Ride details card maximum speed caption"
+    },
+    "h_ride_details_average_speed": "Average speed",
+        "@h_ride_details_average_speed": {
+            "description": "Ride details card average speed caption"
+    },
+    "h_ride_details_calories_burnt": "Calories burnt",
+        "@h_ride_details_calories_burnt": {
+            "description": "Ride details card calories burnt caption"
+    },
     "u_statistics": "Statistics",
     "@u_statistics_details": {
            "description": "Header for statistics container in user page"
