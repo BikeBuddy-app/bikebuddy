@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'ride_item.dart';
+part of '../entities/ride_item.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator

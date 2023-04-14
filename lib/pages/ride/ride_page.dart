@@ -1,6 +1,6 @@
 import 'package:bike_buddy/components/bb_appbar.dart';
 import 'package:bike_buddy/components/custom_round_button.dart';
-import 'package:bike_buddy/adapters/ride_item.dart';
+import 'package:bike_buddy/hive/entities/ride_item.dart';
 import 'package:bike_buddy/pages/ride_details_page.dart';
 import 'package:bike_buddy/services/timer.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +42,6 @@ class _RidePageState extends State<RidePage> {
   }
 
   void saveCurrentRide() {
-    debugPrint("${rideItem.positionTimestamps}");
     rideItemsBox.add(rideItem);
   }
 

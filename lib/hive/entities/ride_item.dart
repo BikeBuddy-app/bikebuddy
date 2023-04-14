@@ -1,6 +1,6 @@
 import 'package:hive_flutter/hive_flutter.dart';
 
-part 'ride_item.g.dart';
+part '../adapters/ride_item.g.dart';
 
 @HiveType(typeId: 1)
 class PositionTimestamp {
