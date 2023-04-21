@@ -17,6 +17,11 @@
     "set_placeholder": "Lorem ipsum",
 
     "h_ride_details": "Twój przejazd",
+    "h_ride_details_total_distance": "Przebyty dystans",
+    "h_ride_details_ride_duration": "Czas jazdy",
+    "h_ride_details_maximum_speed": "Maksymalna prędkość",
+    "h_ride_details_average_speed": "Średnia prędkość",
+    "h_ride_details_calories_burnt": "Spalone kalorie",
 
     "u_statistics": "Statystyki",
     "u_distance": "Przejechany dystans:",
