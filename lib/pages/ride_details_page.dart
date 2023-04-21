@@ -21,6 +21,7 @@ class _RideDetailsPageState extends State<RideDetailsPage> {
       color: Colors.black,
     );
     const DetailValTextStyle = TextStyle(fontSize: TextSize);
+    const double MapBorderRadius = 10.0;
     final translations = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: const BBAppBar(),
@@ -104,7 +105,10 @@ class _RideDetailsPageState extends State<RideDetailsPage> {
                   ),
                   const SizedBox(height: TextSize * 2),
                   Center(
-                      child: Image.asset("images/map1.png", fit: BoxFit.cover)
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(MapBorderRadius),
+                          child: Image.asset("images/map1.png", fit: BoxFit.cover)
+                      )
                   ),
                 ],
               ),
