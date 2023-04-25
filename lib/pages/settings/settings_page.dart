@@ -45,18 +45,16 @@ class _SettingsPageState extends State<SettingsPage> {
                               mainAxisSize: MainAxisSize.min,
                               children: L10n.languages
                                   .map(
-                                    (language) =>
-                                    ListTile(
+                                    (language) => ListTile(
                                       title: Text(
                                         language['name'].toString(),
                                       ),
                                       onTap: () {
-                                        settings.applicationLanguage =
-                                            language['code'].toString();
+                                        settings.applicationLanguage = language['code'].toString();
                                         Navigator.pop(context);
                                       },
                                     ),
-                              )
+                                  )
                                   .toList(),
                             );
                           },
@@ -83,15 +81,14 @@ class _SettingsPageState extends State<SettingsPage> {
                               mainAxisSize: MainAxisSize.min,
                               children: SUPPORTED_DISTANCE_UNITS
                                   .map(
-                                    (unit) =>
-                                    ListTile(
+                                    (unit) => ListTile(
                                       title: Text(unit),
                                       onTap: () {
                                         settings.distanceUnit = unit;
                                         Navigator.pop(context);
                                       },
                                     ),
-                              )
+                                  )
                                   .toList(),
                             );
                           },
@@ -104,6 +101,7 @@ class _SettingsPageState extends State<SettingsPage> {
             )
           ],
         ),
-      ),);
+      ),
+    );
   }
 }

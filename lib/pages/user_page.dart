@@ -25,6 +25,7 @@ class _UserPageState extends State<UserPage> {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     final localization = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: const BBAppBar(),
@@ -38,9 +39,7 @@ class _UserPageState extends State<UserPage> {
                 FractionallySizedBox(
                   alignment: Alignment.topCenter,
                   heightFactor: 0.7,
-                  child: Container(
-                    color: Colors.grey.shade500,
-                  ),
+                  child: Container(color: Theme.of(context).colorScheme.primaryContainer),
                 ),
                 Align(
                   alignment: Alignment.bottomCenter,
@@ -68,7 +67,7 @@ class _UserPageState extends State<UserPage> {
               padding: const EdgeInsets.all(10.0),
               child: Text(
                 username,
-                style: const TextStyle(fontSize: 18),
+                style: textTheme.headlineSmall,
               ),
             ),
           ),
@@ -82,8 +81,8 @@ class _UserPageState extends State<UserPage> {
               width: MediaQuery.of(context).size.width * 0.85,
               margin: const EdgeInsets.only(bottom: 30),
               decoration: BoxDecoration(
-                color: Colors.grey.shade400,
-                border: Border.all(color: Colors.grey.shade700, width: 5),
+                color: Theme.of(context).colorScheme.primaryContainer,
+                border: Border.all(color: Theme.of(context).colorScheme.onTertiary, width: 5),
                 borderRadius: BorderRadius.circular(15),
               ),
               child: LayoutBuilder(
@@ -97,13 +96,10 @@ class _UserPageState extends State<UserPage> {
                           child: Text(
                             localization.u_statistics,
                             textAlign: TextAlign.center,
+                            style: textTheme.titleMedium,
                           ),
                         ),
                         Switch(
-                          activeColor: Colors.deepPurple,
-                          activeTrackColor: Colors.deepPurple.shade300,
-                          inactiveThumbColor: Colors.blueGrey.shade600,
-                          inactiveTrackColor: Colors.grey.shade500,
                           value: showWeekly,
                           onChanged: (value) => setState(() {
                             showWeekly = value;
@@ -163,19 +159,21 @@ class StatsTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.grey,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
       ),
       child: ListTile(
         leading: icon,
-        textColor: Colors.black,
-        iconColor: Colors.black,
+        //textColor: Colors.black,
+        //iconColor: Colors.black,
         trailing: Text(
           value,
-          style: const TextStyle(fontSize: 20),
+          style: Theme.of(context).textTheme.headlineSmall,
         ),
-        title: Text(title),
+        title: Text(
+          title,
+          style: Theme.of(context).textTheme.titleSmall,
+        ),
       ),
     );
   }
@@ -190,6 +188,7 @@ class XPBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Column(
       children: [
         Row(
@@ -202,8 +201,8 @@ class XPBar extends StatelessWidget {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey, width: 2),
-                      color: const Color.fromRGBO(220, 220, 220, 1),
+                      border: Border.all(color: colorScheme.onTertiary, width: 2),
+                      color: colorScheme.tertiary,
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
@@ -211,7 +210,9 @@ class XPBar extends StatelessWidget {
                     widthFactor: xp / totalXp,
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Colors.purple,
+                        color: colorScheme.brightness == Brightness.light
+                            ? colorScheme.primary
+                            : colorScheme.secondary,
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
@@ -219,10 +220,16 @@ class XPBar extends StatelessWidget {
                 ],
               ),
             ),
-            Text("Lv $level"),
+            Text(
+              "Lv $level",
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
           ],
         ),
-        Text("$xp/$totalXp XP"),
+        Text(
+          "$xp/$totalXp XP",
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
       ],
     );
   }

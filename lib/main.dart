@@ -1,4 +1,5 @@
 import 'package:bike_buddy/hive/entities/ride_item.dart';
+import 'package:bike_buddy/constants/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -18,13 +19,14 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await LocalStorageService.init();
-  
+
   await Hive.initFlutter();
   Hive.registerAdapter(PositionTimestampAdapter());
   Hive.registerAdapter(RideItemAdapter());
-  
+
   await Hive.openBox('ride_items');
 
+  print(kBBLightTheme.colorScheme.toString());
   runApp(ChangeNotifierProvider(
     create: (context) => SettingsManager(),
     child: const BikeBuddy(),
@@ -39,11 +41,9 @@ class BikeBuddy extends StatelessWidget {
     final settings = context.watch<SettingsManager>();
     return MaterialApp(
       title: 'BikeBuddy',
-      theme: ThemeData(
-        primarySwatch: Colors.grey,
-      ),
       debugShowCheckedModeBanner: false,
-      darkTheme: ThemeData.dark(),
+      theme: kBBLightTheme,
+      darkTheme: kBBDarkTheme,
       themeMode: settings.isDarkModeEnabled ? ThemeMode.dark : ThemeMode.light,
       routes: {
         '/': (context) => const MainPage(),

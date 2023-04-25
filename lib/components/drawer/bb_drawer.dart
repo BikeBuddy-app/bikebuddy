@@ -15,14 +15,17 @@ class BBDrawer extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          const DrawerHeader(
-            decoration: BoxDecoration(
+          DrawerHeader(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage("images/drawer_header.jpeg"),
                 fit: BoxFit.cover,
               ),
             ),
-            child: Text("Menu"),
+            child: Text(
+              "Menu",
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.white),
+            ),
           ),
           DrawerButton(
             AppLocalizations.of(context)!.m_history,

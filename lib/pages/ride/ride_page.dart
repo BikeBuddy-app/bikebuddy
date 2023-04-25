@@ -36,7 +36,7 @@ class _RidePageState extends State<RidePage> {
     super.initState();
   }
 
-  void savePositionTimestamp(){
+  void savePositionTimestamp() {
     var positionTimestamp = PositionTimestamp(timerValue, currentPosition);
     rideItem.add(positionTimestamp);
   }
@@ -56,11 +56,10 @@ class _RidePageState extends State<RidePage> {
 
   void initializeTimer() {
     timer = Timer(
-      (timerValue) => setState(() {
-        this.timerValue = timerValue.toString();
-      }),
-      savePositionTimestamp
-    );
+        (timerValue) => setState(() {
+              this.timerValue = timerValue.toString();
+            }),
+        savePositionTimestamp);
     timer.start();
   }
 
@@ -119,6 +118,7 @@ class _RidePageState extends State<RidePage> {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
@@ -138,25 +138,29 @@ class _RidePageState extends State<RidePage> {
                 Expanded(
                   flex: 2,
                   child: Container(
-                    color: Colors.blue,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(timerValue),
-                        const Text("420km"),
-                        const Text("42.0"),
-                      ],
+                    color: Theme.of(context).colorScheme.secondary,
+                    child: DefaultTextStyle(
+                      style: textTheme.bodyMedium!,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(timerValue),
+                          const Text("420km"),
+                          const Text("42.0"),
+                        ],
+                      ),
                     ),
                   ),
                 ),
                 Expanded(
                   flex: 3,
                   child: Container(
-                    color: Colors.green,
-                    child: const Center(
+                    color: Theme.of(context).colorScheme.tertiary,
+                    child: Center(
                       child: Text(
                         "69km/h",
+                        style: textTheme.headlineMedium!,
                       ),
                     ),
                   ),
@@ -185,9 +189,7 @@ class _RidePageState extends State<RidePage> {
                   flex: 5,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: isRideActive == true
-                        ? activeRideButtons
-                        : inactiveRideButtons,
+                    children: isRideActive == true ? activeRideButtons : inactiveRideButtons,
                   ),
                 ),
               ],

@@ -28,12 +28,7 @@ class TripListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<String> trip = <String>['Trip1', 'Trip2', 'Trip3', 'Trip4'];
-    final List<String> date = <String>[
-      "01.01.1900",
-      "06.09.1969",
-      "02.12.2012",
-      "13.05.2020"
-    ];
+    final List<String> date = <String>["01.01.1900", "06.09.1969", "02.12.2012", "13.05.2020"];
 
     return ListView.separated(
       shrinkWrap: true,
@@ -41,25 +36,29 @@ class TripListWidget extends StatelessWidget {
       itemCount: trip.length,
       itemBuilder: (BuildContext context, int index) {
         return Card(
-          color: Colors.black38,
+          color: Theme.of(context).colorScheme.surface,
           borderOnForeground: true,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               ListTile(
-                title: Text(trip[index],
-                    style: const TextStyle(color: Colors.green)),
+                title: Text(
+                  trip[index],
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
                 subtitle: Text(
                   date[index],
-                  style: const TextStyle(color: Colors.deepOrange),
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   TextButton(
-                    child: const Text('Details',
-                        style: TextStyle(color: Colors.white10)),
+                    child: Text(
+                      'Details',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
                     onPressed: () {
                       Navigator.pushNamed(context, RideDetailsPage.routeName);
                     },
