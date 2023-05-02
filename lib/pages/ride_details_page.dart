@@ -14,28 +14,24 @@ class RideDetailsPage extends StatefulWidget {
 class _RideDetailsPageState extends State<RideDetailsPage> {
   @override
   Widget build(BuildContext context) {
-    const double TextSize = 16.0;
-    const DetailKeyTextStyle = TextStyle(
-      fontSize: TextSize,
-      fontWeight: FontWeight.bold,
-      color: Colors.black,
-    );
-    const DetailValTextStyle = TextStyle(fontSize: TextSize);
-    const double MapBorderRadius = 10.0;
+    final textTheme = Theme.of(context).textTheme;
     final translations = AppLocalizations.of(context)!;
+
+    final textSize = textTheme.titleMedium?.fontSize ?? 16;
+    const double MapBorderRadius = 10.0;
     return Scaffold(
       appBar: const BBAppBar(),
       body: ListView(
         children: [
           Card(
-            margin: const EdgeInsets.all(TextSize),
+            margin: EdgeInsets.all(textSize),
             child: Padding(
-              padding: const EdgeInsets.all(TextSize),
+              padding: EdgeInsets.all(textSize),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(translations.h_ride_details, style: const TextStyle(fontSize: 22.0)),
-                  const SizedBox(height: TextSize),
+                  SizedBox(height: textSize),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -43,9 +39,15 @@ class _RideDetailsPageState extends State<RideDetailsPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(translations.h_ride_details_total_distance, style: DetailKeyTextStyle,),
-                            const SizedBox(height: TextSize / 2),
-                            const Text('100 km', style: DetailValTextStyle,),
+                            Text(
+                              translations.h_ride_details_total_distance,
+                              style: textTheme.titleMedium,
+                            ),
+                            SizedBox(height: textSize / 2),
+                            Text(
+                              '100 km',
+                              style: textTheme.bodyLarge,
+                            ),
                           ],
                         ),
                       ),
@@ -53,15 +55,21 @@ class _RideDetailsPageState extends State<RideDetailsPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(translations.h_ride_details_ride_duration, style: DetailKeyTextStyle,),
-                            const SizedBox(height: TextSize / 2),
-                            const Text('45 minutes', style: DetailValTextStyle,),
+                            Text(
+                              translations.h_ride_details_ride_duration,
+                              style: textTheme.titleMedium,
+                            ),
+                            SizedBox(height: textSize / 2),
+                            Text(
+                              '45 minutes',
+                              style: textTheme.bodyLarge,
+                            ),
                           ],
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: TextSize),
+                  SizedBox(height: textSize),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -69,9 +77,15 @@ class _RideDetailsPageState extends State<RideDetailsPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(translations.h_ride_details_maximum_speed, style: DetailKeyTextStyle,),
-                            const SizedBox(height: TextSize / 2),
-                            const Text('30 km/h', style: DetailValTextStyle,),
+                            Text(
+                              translations.h_ride_details_maximum_speed,
+                              style: textTheme.titleMedium,
+                            ),
+                            SizedBox(height: textSize / 2),
+                            Text(
+                              '30 km/h',
+                              style: textTheme.bodyLarge,
+                            ),
                           ],
                         ),
                       ),
@@ -79,15 +93,21 @@ class _RideDetailsPageState extends State<RideDetailsPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(translations.h_ride_details_average_speed, style: DetailKeyTextStyle,),
-                            const SizedBox(height: TextSize / 2),
-                            const Text('15 km/h', style: DetailValTextStyle,),
+                            Text(
+                              translations.h_ride_details_average_speed,
+                              style: textTheme.titleMedium,
+                            ),
+                            SizedBox(height: textSize / 2),
+                            Text(
+                              '15 km/h',
+                              style: textTheme.bodyLarge,
+                            ),
                           ],
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: TextSize),
+                  SizedBox(height: textSize),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -95,21 +115,25 @@ class _RideDetailsPageState extends State<RideDetailsPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(translations.h_ride_details_calories_burnt, style: DetailKeyTextStyle,),
-                            const SizedBox(height: TextSize / 2),
-                            const Text('500 kcal', style: DetailValTextStyle,),
+                            Text(
+                              translations.h_ride_details_calories_burnt,
+                              style: textTheme.titleMedium,
+                            ),
+                            SizedBox(height: textSize / 2),
+                            Text(
+                              '500 kcal',
+                              style: textTheme.bodyLarge,
+                            ),
                           ],
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: TextSize * 2),
+                  SizedBox(height: textSize * 2),
                   Center(
                       child: ClipRRect(
                           borderRadius: BorderRadius.circular(MapBorderRadius),
-                          child: Image.asset("images/map1.png", fit: BoxFit.cover)
-                      )
-                  ),
+                          child: Image.asset("images/map1.png", fit: BoxFit.cover))),
                 ],
               ),
             ),

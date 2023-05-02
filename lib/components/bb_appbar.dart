@@ -30,11 +30,11 @@ class BBAppBar extends StatelessWidget implements PreferredSizeWidget {
             child: Icon(Icons.directions_bike),
           ),
           RichText(
-            text: const TextSpan(
-              style: TextStyle(fontSize: 25),
-              children: <TextSpan>[
+            text: TextSpan(
+              style: Theme.of(context).textTheme.headlineMedium,
+              children: const <TextSpan>[
                 TextSpan(text: "B", style: TextStyle(color: Colors.red)),
-                TextSpan(text: "ike", style: TextStyle()),
+                TextSpan(text: "ike"),
                 TextSpan(text: "B", style: TextStyle(color: Colors.red)),
                 TextSpan(text: "uddy")
               ],

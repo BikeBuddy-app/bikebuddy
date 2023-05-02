@@ -35,24 +35,22 @@ class _MainPageState extends State<MainPage> {
               alignment: const Alignment(.0, .6),
               child: TextButton(
                 style: TextButton.styleFrom(
-                  backgroundColor: Colors.grey,
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(100.0),
-                    side: const BorderSide(
-                      color: Color.fromARGB(255, 111, 111, 111),
+                    side: BorderSide(
+                      color: Theme.of(context).colorScheme.onSecondary,
                     ),
                   ),
                 ),
-                onPressed: () =>
-                    Navigator.pushNamed(context, RidePage.routeName),
+                onPressed: () => Navigator.pushNamed(context, RidePage.routeName),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 30.0, vertical: 10.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),
                   child: Text(
                     AppLocalizations.of(context)!.start_training,
-                    style: const TextStyle(
-                      color: Color.fromARGB(255, 40, 40, 40),
-                    ),
+                    style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                          color: Theme.of(context).colorScheme.onSecondary,
+                        ),
                   ),
                 ),
               ),
