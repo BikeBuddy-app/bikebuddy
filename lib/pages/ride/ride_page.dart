@@ -1,12 +1,17 @@
+import 'dart:math';
+
 import 'package:bike_buddy/components/bb_appbar.dart';
 import 'package:bike_buddy/components/custom_round_button.dart';
+import 'package:bike_buddy/components/map/bb_map.dart';
 import 'package:bike_buddy/hive/entities/ride_item.dart';
 import 'package:bike_buddy/pages/ride_details_page.dart';
+import 'package:bike_buddy/services/locator.dart';
 import 'package:bike_buddy/services/timer.dart';
-import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
-import '../../services/locator.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class RidePage extends StatefulWidget {
   const RidePage({super.key});
@@ -19,12 +24,16 @@ class RidePage extends StatefulWidget {
 
 class _RidePageState extends State<RidePage> {
   bool isRideActive = true;
-
-  late Timer timer;
-  late Locator locator;
-
   String timerValue = "00:00:00";
   String currentPosition = "None";
+
+  late final Timer timer;
+  late final Locator locator;
+  late final MapController mapController;
+
+  final List<Position> route = List.empty(growable: true);
+  GeoPoint currentGeoPoint =
+      GeoPoint(latitude: 47.4358055, longitude: 8.4737324);
 
   var rideItemsBox = Hive.box("ride_items");
   var rideItem = RideItem();
@@ -33,7 +42,15 @@ class _RidePageState extends State<RidePage> {
   void initState() {
     initializeTimer();
     initializeLocator();
+    initializeMapController();
     super.initState();
+  }
+
+  void initializeMapController() {
+    mapController = MapController(
+      initMapWithUserPosition: false,
+      initPosition: currentGeoPoint,
+    );
   }
 
   void savePositionTimestamp() {
@@ -47,8 +64,11 @@ class _RidePageState extends State<RidePage> {
 
   void initializeLocator() {
     locator = Locator(
-      (currentPosition) => setState(() {
-        this.currentPosition = currentPosition.toString();
+      (newPosition) => setState(() {
+        this.currentPosition = newPosition.toString();
+        this.currentGeoPoint = GeoPoint(
+            latitude: newPosition.latitude, longitude: newPosition.longitude);
+        this.route.add(newPosition);
       }),
     );
     locator.start();
@@ -56,10 +76,10 @@ class _RidePageState extends State<RidePage> {
 
   void initializeTimer() {
     timer = Timer(
-        (timerValue) => setState(() {
-              this.timerValue = timerValue.toString();
-            }),
-        savePositionTimestamp);
+      (timerValue) => setState(() {
+        this.timerValue = timerValue.toString();
+      }),
+    );
     timer.start();
   }
 
@@ -68,6 +88,8 @@ class _RidePageState extends State<RidePage> {
       isRideActive = true;
     });
     timer.resume();
+    zoomToDriver();
+    mapController.enableTracking();
   }
 
   void pauseButtonHandler() {
@@ -75,6 +97,43 @@ class _RidePageState extends State<RidePage> {
       isRideActive = false;
     });
     timer.pause();
+    mapController.disabledTracking();
+    zoomOutToShowWholeRoute();
+  }
+
+  void zoomOutToShowWholeRoute() {
+    if (route.isEmpty) {
+      return;
+    }
+    var minLat = route[0].latitude;
+    var maxLat = route[0].latitude;
+    var minLon = route[0].longitude;
+    var maxLon = route[0].longitude;
+
+    for (final position in route) {
+      minLat = min(minLat, position.latitude);
+      maxLat = max(maxLat, position.latitude);
+      minLon = min(minLon, position.longitude);
+      maxLon = max(maxLon, position.longitude);
+    }
+
+    BoundingBox box = BoundingBox(
+      north: maxLat,
+      east: maxLon,
+      south: minLat,
+      west: minLon,
+    );
+
+    mapController.zoomToBoundingBox(box);
+  }
+
+  void zoomToDriver() {
+    mapController.setZoom(zoomLevel: 19);
+  }
+
+  void resetMapPosition() {
+    mapController.currentLocation();
+    mapController.enableTracking();
   }
 
   void stopButtonHandler() {
@@ -118,19 +177,14 @@ class _RidePageState extends State<RidePage> {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
         appBar: const BBAppBar.hideBackArrow(),
         body: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage("images/map.png"),
-            ),
-          ),
-          child: Center(
+            child: Stack(children: [
+          BBMap(controller: mapController),
+          Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -138,29 +192,25 @@ class _RidePageState extends State<RidePage> {
                 Expanded(
                   flex: 2,
                   child: Container(
-                    color: Theme.of(context).colorScheme.secondary,
-                    child: DefaultTextStyle(
-                      style: textTheme.bodyMedium!,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(timerValue),
-                          const Text("420km"),
-                          const Text("42.0"),
-                        ],
-                      ),
+                    color: Colors.blue,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(timerValue),
+                        const Text("420km"),
+                        const Text("42.0"),
+                      ],
                     ),
                   ),
                 ),
                 Expanded(
                   flex: 3,
                   child: Container(
-                    color: Theme.of(context).colorScheme.tertiary,
-                    child: Center(
+                    color: Colors.green,
+                    child: const Center(
                       child: Text(
                         "69km/h",
-                        style: textTheme.headlineMedium!,
                       ),
                     ),
                   ),
@@ -180,7 +230,7 @@ class _RidePageState extends State<RidePage> {
                           Icons.location_pin,
                           size: 25,
                         ),
-                        onPressed: () {},
+                        onPressed: resetMapPosition,
                       )
                     ],
                   ),
@@ -189,13 +239,15 @@ class _RidePageState extends State<RidePage> {
                   flex: 5,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: isRideActive == true ? activeRideButtons : inactiveRideButtons,
+                    children: isRideActive == true
+                        ? activeRideButtons
+                        : inactiveRideButtons,
                   ),
                 ),
               ],
             ),
           ),
-        ),
+        ])),
       ),
     );
   }
