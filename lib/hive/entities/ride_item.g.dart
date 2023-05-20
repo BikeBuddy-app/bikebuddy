@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of '../entities/ride_item.dart';
+part of 'ride_item.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
@@ -53,15 +53,19 @@ class RideItemAdapter extends TypeAdapter<RideItem> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return RideItem()..positionTimestamps = (fields[3] as List).cast<dynamic>();
+    return RideItem()
+      ..positionTimestamps = (fields[3] as List).cast<dynamic>()
+      ..time = fields[4] as String;
   }
 
   @override
   void write(BinaryWriter writer, RideItem obj) {
     writer
-      ..writeByte(1)
+      ..writeByte(2)
       ..writeByte(3)
-      ..write(obj.positionTimestamps);
+      ..write(obj.positionTimestamps)
+      ..writeByte(4)
+      ..write(obj.time);
   }
 
   @override

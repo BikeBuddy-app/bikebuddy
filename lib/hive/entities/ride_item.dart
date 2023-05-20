@@ -1,6 +1,6 @@
 import 'package:hive_flutter/hive_flutter.dart';
 
-part '../adapters/ride_item.g.dart';
+part 'ride_item.g.dart';
 
 @HiveType(typeId: 1)
 class PositionTimestamp {
@@ -16,10 +16,16 @@ class PositionTimestamp {
 class RideItem {
   @HiveField(3)
   List positionTimestamps;
+  @HiveField(4)
+  String time;
 
-  RideItem() : positionTimestamps = List.empty(growable: true);
+  RideItem() : positionTimestamps = List.empty(growable: true), time = "";
 
   void add(PositionTimestamp positionTimestamp){
     positionTimestamps.add(positionTimestamp);
+  }
+
+  void setTime(String time){
+    this.time = time;
   }
 }

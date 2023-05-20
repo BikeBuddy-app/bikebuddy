@@ -59,6 +59,7 @@ class _RidePageState extends State<RidePage> {
   }
 
   void saveCurrentRide() {
+    rideItem.setTime(timerValue);
     rideItemsBox.add(rideItem);
   }
 
@@ -79,6 +80,7 @@ class _RidePageState extends State<RidePage> {
       (timerValue) => setState(() {
         this.timerValue = timerValue.toString();
       }),
+        savePositionTimestamp
     );
     timer.start();
   }
@@ -141,7 +143,7 @@ class _RidePageState extends State<RidePage> {
     timer.stop();
     saveCurrentRide();
 
-    Navigator.pushReplacementNamed(context, RideDetailsPage.routeName);
+    Navigator.pushReplacementNamed(context, RideDetailsPage.routeName, arguments: {'trip': rideItem});
   }
 
   late final List<Widget> activeRideButtons = [
