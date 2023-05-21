@@ -1,4 +1,4 @@
-import 'package:bike_buddy/hive/entities/ride_item.dart';
+import 'package:bike_buddy/hive/entities/ride_record.dart';
 import 'package:bike_buddy/utils/telemetry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -23,7 +23,7 @@ class _RideDetailsPageState extends State<RideDetailsPage> {
     const double MapBorderRadius = 10.0;
 
     var tripInfo = ModalRoute.of(context)?.settings.arguments as Map;
-    RideItem trip = tripInfo['trip'];
+    RideRecord trip = tripInfo['trip'];
 
     return Scaffold(
       appBar: const BBAppBar(),
@@ -51,7 +51,7 @@ class _RideDetailsPageState extends State<RideDetailsPage> {
                             ),
                             SizedBox(height: textSize / 2),
                             Text(
-                              '${calculateDistance(trip)}',
+                              '${calculateDistance(trip.route)}',
                               style: textTheme.bodyLarge,
                             ),
                           ],
@@ -67,7 +67,7 @@ class _RideDetailsPageState extends State<RideDetailsPage> {
                             ),
                             SizedBox(height: textSize / 2),
                             Text(
-                              trip.time,
+                              trip.time.toString(),
                               style: textTheme.bodyLarge,
                             ),
                           ],

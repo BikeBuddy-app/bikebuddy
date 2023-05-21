@@ -3,10 +3,13 @@ import 'dart:math';
 import 'package:bike_buddy/components/bb_appbar.dart';
 import 'package:bike_buddy/components/custom_round_button.dart';
 import 'package:bike_buddy/components/map/bb_map.dart';
-import 'package:bike_buddy/hive/entities/ride_item.dart';
+import 'package:bike_buddy/constants/default_values.dart' as default_values;
+import 'package:bike_buddy/hive/entities/ride_record.dart';
 import 'package:bike_buddy/pages/ride_details_page.dart';
 import 'package:bike_buddy/services/locator.dart';
 import 'package:bike_buddy/services/timer.dart';
+import 'package:bike_buddy/utils/position_helper.dart';
+import 'package:bike_buddy/utils/telemetry.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
@@ -24,19 +27,17 @@ class RidePage extends StatefulWidget {
 
 class _RidePageState extends State<RidePage> {
   bool isRideActive = true;
-  String timerValue = "00:00:00";
-  String currentPosition = "None";
+  Duration currentTime = Duration.zero;
+  Position currentPosition = default_values.position;
 
   late final Timer timer;
   late final Locator locator;
   late final MapController mapController;
 
-  final List<Position> route = List.empty(growable: true);
-  GeoPoint currentGeoPoint =
-      GeoPoint(latitude: 47.4358055, longitude: 8.4737324);
+  double currentDistance = 0.0;
 
-  var rideItemsBox = Hive.box("ride_items");
-  var rideItem = RideItem();
+  var rideRecordsBox = Hive.box("ride_records");
+  var rideRecord = RideRecord();
 
   @override
   void initState() {
@@ -49,27 +50,24 @@ class _RidePageState extends State<RidePage> {
   void initializeMapController() {
     mapController = MapController(
       initMapWithUserPosition: false,
-      initPosition: currentGeoPoint,
+      initPosition: getGeoPoint(currentPosition),
     );
   }
 
-  void savePositionTimestamp() {
-    var positionTimestamp = PositionTimestamp(timerValue, currentPosition);
-    rideItem.add(positionTimestamp);
+  void savePositionRecord() {
+    rideRecord.addRoutePoint(PositionRecord(currentTime, currentPosition));
   }
 
   void saveCurrentRide() {
-    rideItem.setTime(timerValue);
-    rideItemsBox.add(rideItem);
+    rideRecord.setTime(currentTime);
+    rideRecordsBox.add(rideRecord);
   }
 
   void initializeLocator() {
     locator = Locator(
       (newPosition) => setState(() {
-        this.currentPosition = newPosition.toString();
-        this.currentGeoPoint = GeoPoint(
-            latitude: newPosition.latitude, longitude: newPosition.longitude);
-        this.route.add(newPosition);
+        currentPosition = newPosition;
+        savePositionRecord();
       }),
     );
     locator.start();
@@ -77,10 +75,9 @@ class _RidePageState extends State<RidePage> {
 
   void initializeTimer() {
     timer = Timer(
-      (timerValue) => setState(() {
-        this.timerValue = timerValue.toString();
-      }),
-        savePositionTimestamp
+      (currentTime) => setState(() {
+        this.currentTime = currentTime;
+      })
     );
     timer.start();
   }
@@ -104,19 +101,22 @@ class _RidePageState extends State<RidePage> {
   }
 
   void zoomOutToShowWholeRoute() {
-    if (route.isEmpty) {
+
+    if (rideRecord.route.isEmpty) {
       return;
     }
-    var minLat = route[0].latitude;
-    var maxLat = route[0].latitude;
-    var minLon = route[0].longitude;
-    var maxLon = route[0].longitude;
+    var firstPos = rideRecord.route[0].position;
 
-    for (final position in route) {
-      minLat = min(minLat, position.latitude);
-      maxLat = max(maxLat, position.latitude);
-      minLon = min(minLon, position.longitude);
-      maxLon = max(maxLon, position.longitude);
+    var minLat = firstPos.latitude;
+    var maxLat = firstPos.latitude;
+    var minLon = firstPos.longitude;
+    var maxLon = firstPos.longitude;
+
+    for (final routeRecord in rideRecord.route) {
+      minLat = min(minLat, routeRecord.position.latitude);
+      maxLat = max(maxLat, routeRecord.position.latitude);
+      minLon = min(minLon, routeRecord.position.longitude);
+      maxLon = max(maxLon, routeRecord.position.longitude);
     }
 
     BoundingBox box = BoundingBox(
@@ -136,6 +136,9 @@ class _RidePageState extends State<RidePage> {
   void resetMapPosition() {
     mapController.currentLocation();
     mapController.enableTracking();
+    setState(() {
+      currentDistance = calculateDistance(rideRecord.route);    // just to test distance calculation
+    });
   }
 
   void stopButtonHandler() {
@@ -143,7 +146,7 @@ class _RidePageState extends State<RidePage> {
     timer.stop();
     saveCurrentRide();
 
-    Navigator.pushReplacementNamed(context, RideDetailsPage.routeName, arguments: {'trip': rideItem});
+    Navigator.pushReplacementNamed(context, RideDetailsPage.routeName, arguments: {'trip': rideRecord});
   }
 
   late final List<Widget> activeRideButtons = [
@@ -199,8 +202,8 @@ class _RidePageState extends State<RidePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(timerValue),
-                        const Text("420km"),
+                        Text(currentTime.toString()),
+                        Text("$currentDistance km"),
                         const Text("42.0"),
                       ],
                     ),
@@ -219,7 +222,7 @@ class _RidePageState extends State<RidePage> {
                 ),
                 Expanded(
                   flex: 15,
-                  child: Text(currentPosition),
+                  child: Text(currentPosition.toString()),
                 ),
                 Expanded(
                   flex: 2,

@@ -1,4 +1,4 @@
-import 'package:bike_buddy/hive/entities/ride_item.dart';
+import 'package:bike_buddy/hive/entities/ride_record.dart';
 import 'package:bike_buddy/constants/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -21,10 +21,10 @@ void main() async {
   await LocalStorageService.init();
 
   await Hive.initFlutter();
-  Hive.registerAdapter(PositionTimestampAdapter());
-  Hive.registerAdapter(RideItemAdapter());
+  Hive.registerAdapter(PositionRecordAdapter());
+  Hive.registerAdapter(RideRecordAdapter());
 
-  await Hive.openBox('ride_items');
+  await Hive.openBox('ride_records');
 
   print(kBBLightTheme.colorScheme.toString());
   runApp(ChangeNotifierProvider(

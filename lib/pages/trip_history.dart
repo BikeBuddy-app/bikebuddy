@@ -1,4 +1,4 @@
-import 'package:bike_buddy/hive/entities/ride_item.dart';
+import 'package:bike_buddy/hive/entities/ride_record.dart';
 import 'package:flutter/material.dart';
 import 'package:bike_buddy/components/bb_appbar.dart';
 import 'package:bike_buddy/pages/ride_details_page.dart';
@@ -28,9 +28,9 @@ class TripListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<RideItem> trips = List.empty(growable: true);
+    List<RideRecord> trips = List.empty(growable: true);
 
-    var box = Hive.box("ride_items");
+    var box = Hive.box("ride_records");
     for (var value in box.values) {
       trips.add(value);
     }

@@ -1,29 +1,29 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'ride_item.dart';
+part of 'ride_record.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class PositionTimestampAdapter extends TypeAdapter<PositionTimestamp> {
+class PositionRecordAdapter extends TypeAdapter<PositionRecord> {
   @override
   final int typeId = 1;
 
   @override
-  PositionTimestamp read(BinaryReader reader) {
+  PositionRecord read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return PositionTimestamp(
-      fields[1] as String,
-      fields[2] as String,
+    return PositionRecord(
+      fields[1] as Duration,
+      fields[2] as Position,
     );
   }
 
   @override
-  void write(BinaryWriter writer, PositionTimestamp obj) {
+  void write(BinaryWriter writer, PositionRecord obj) {
     writer
       ..writeByte(2)
       ..writeByte(1)
@@ -38,32 +38,32 @@ class PositionTimestampAdapter extends TypeAdapter<PositionTimestamp> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PositionTimestampAdapter &&
+      other is PositionRecordAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
 
-class RideItemAdapter extends TypeAdapter<RideItem> {
+class RideRecordAdapter extends TypeAdapter<RideRecord> {
   @override
   final int typeId = 2;
 
   @override
-  RideItem read(BinaryReader reader) {
+  RideRecord read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return RideItem()
-      ..positionTimestamps = (fields[3] as List).cast<dynamic>()
-      ..time = fields[4] as String;
+    return RideRecord()
+      ..route = (fields[3] as List).cast<PositionRecord>()
+      ..time = fields[4] as Duration;
   }
 
   @override
-  void write(BinaryWriter writer, RideItem obj) {
+  void write(BinaryWriter writer, RideRecord obj) {
     writer
       ..writeByte(2)
       ..writeByte(3)
-      ..write(obj.positionTimestamps)
+      ..write(obj.route)
       ..writeByte(4)
       ..write(obj.time);
   }
@@ -74,7 +74,7 @@ class RideItemAdapter extends TypeAdapter<RideItem> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is RideItemAdapter &&
+      other is RideRecordAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
