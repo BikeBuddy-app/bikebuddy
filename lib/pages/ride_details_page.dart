@@ -24,6 +24,10 @@ class _RideDetailsPageState extends State<RideDetailsPage> {
 
     var tripInfo = ModalRoute.of(context)?.settings.arguments as Map;
     RideRecord trip = tripInfo['trip'];
+    var distance = calculateDistance(trip.route);
+    var averageSpeed = double.parse((calculateAverageSpeed(trip.route) * 3.6).toStringAsFixed(1));
+    var burnedCalories = calculateBurnedCalories(trip.time);
+    var maxCurrentSpeed = trip.maxSpeed;
 
     return Scaffold(
       appBar: const BBAppBar(),
@@ -51,7 +55,7 @@ class _RideDetailsPageState extends State<RideDetailsPage> {
                             ),
                             SizedBox(height: textSize / 2),
                             Text(
-                              '${calculateDistance(trip.route)}',
+                              '${distance / 1000} km',
                               style: textTheme.bodyLarge,
                             ),
                           ],
@@ -89,7 +93,7 @@ class _RideDetailsPageState extends State<RideDetailsPage> {
                             ),
                             SizedBox(height: textSize / 2),
                             Text(
-                              '30 km/h',
+                              '$maxCurrentSpeed km/h',
                               style: textTheme.bodyLarge,
                             ),
                           ],
@@ -105,7 +109,7 @@ class _RideDetailsPageState extends State<RideDetailsPage> {
                             ),
                             SizedBox(height: textSize / 2),
                             Text(
-                              '15 km/h',
+                              '$averageSpeed km/h',
                               style: textTheme.bodyLarge,
                             ),
                           ],
@@ -127,7 +131,7 @@ class _RideDetailsPageState extends State<RideDetailsPage> {
                             ),
                             SizedBox(height: textSize / 2),
                             Text(
-                              '500 kcal',
+                              '$burnedCalories kcal',
                               style: textTheme.bodyLarge,
                             ),
                           ],

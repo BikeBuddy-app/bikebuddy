@@ -1,5 +1,7 @@
+import 'package:bike_buddy/hive/adapters/position_adapter.dart';
 import 'package:bike_buddy/hive/entities/ride_record.dart';
 import 'package:bike_buddy/constants/theme.dart';
+import 'package:bike_buddy/hive/adapters/standard_duration_adapter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -23,7 +25,10 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(PositionRecordAdapter());
   Hive.registerAdapter(RideRecordAdapter());
-
+  Hive.registerAdapter(DurationAdapter());
+  Hive.registerAdapter(StandardDurationAdapter());
+  Hive.registerAdapter(PositionAdapter());
+  
   await Hive.openBox('ride_records');
 
   print(kBBLightTheme.colorScheme.toString());

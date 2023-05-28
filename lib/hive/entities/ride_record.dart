@@ -1,7 +1,7 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-part 'ride_record.g.dart';
+part '../adapters/ride_record_adapter.dart';
 
 @HiveType(typeId: 1)
 class PositionRecord {
@@ -19,8 +19,10 @@ class RideRecord {
   List<PositionRecord> route;
   @HiveField(4)
   Duration time;
+  @HiveField(5)
+  double maxSpeed;
 
-  RideRecord() : route = List.empty(growable: true), time = Duration.zero;
+  RideRecord() : route = List.empty(growable: true), time = Duration.zero, maxSpeed = 0.0;
 
   void addRoutePoint(PositionRecord positionRecord){
     route.add(positionRecord);
@@ -28,5 +30,9 @@ class RideRecord {
 
   void setTime(Duration time){
     this.time = time;
+  }
+
+  void setMaxSpeed(double maxSpeed){
+    this.maxSpeed = maxSpeed;
   }
 }

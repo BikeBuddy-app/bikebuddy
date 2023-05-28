@@ -35,6 +35,9 @@ class _RidePageState extends State<RidePage> {
   late final MapController mapController;
 
   double currentDistance = 0.0;
+  double burnedCalories = 0.0;
+  double currentSpeed = 0.0;
+  double maxCurrentSpeed = 0.0;
 
   var rideRecordsBox = Hive.box("ride_records");
   var rideRecord = RideRecord();
@@ -60,6 +63,7 @@ class _RidePageState extends State<RidePage> {
 
   void saveCurrentRide() {
     rideRecord.setTime(currentTime);
+    rideRecord.setMaxSpeed(maxCurrentSpeed);
     rideRecordsBox.add(rideRecord);
   }
 
@@ -68,6 +72,10 @@ class _RidePageState extends State<RidePage> {
       (newPosition) => setState(() {
         currentPosition = newPosition;
         savePositionRecord();
+        currentDistance = calculateDistance(rideRecord.route) / 1000;
+        burnedCalories = calculateBurnedCalories(currentTime);
+        currentSpeed = double.parse((currentPosition.speed * 3.6).toStringAsFixed(1));
+        if (currentSpeed > maxCurrentSpeed) maxCurrentSpeed = currentSpeed;
       }),
     );
     locator.start();
@@ -136,9 +144,6 @@ class _RidePageState extends State<RidePage> {
   void resetMapPosition() {
     mapController.currentLocation();
     mapController.enableTracking();
-    setState(() {
-      currentDistance = calculateDistance(rideRecord.route);    // just to test distance calculation
-    });
   }
 
   void stopButtonHandler() {
@@ -146,7 +151,7 @@ class _RidePageState extends State<RidePage> {
     timer.stop();
     saveCurrentRide();
 
-    Navigator.pushReplacementNamed(context, RideDetailsPage.routeName, arguments: {'trip': rideRecord});
+    Navigator.pushReplacementNamed(context, RideDetailsPage.routeName, arguments: {'trip': rideRecord, 'maxCurrentSpeed': maxCurrentSpeed});
   }
 
   late final List<Widget> activeRideButtons = [
@@ -204,7 +209,7 @@ class _RidePageState extends State<RidePage> {
                       children: [
                         Text(currentTime.toString()),
                         Text("$currentDistance km"),
-                        const Text("42.0"),
+                        Text("$burnedCalories kcal"),
                       ],
                     ),
                   ),
@@ -213,9 +218,9 @@ class _RidePageState extends State<RidePage> {
                   flex: 3,
                   child: Container(
                     color: Colors.green,
-                    child: const Center(
+                    child: Center(
                       child: Text(
-                        "69km/h",
+                        "$currentSpeed km/h",
                       ),
                     ),
                   ),

@@ -16,3 +16,6 @@ final ButtonStyle kLargeRoundButtonStyle = ElevatedButton.styleFrom(
   minimumSize: const Size(100, 100),
   shape: const CircleBorder(),
 );
+
+const double MET = 7.75; // wartosc okreslajaca srednia intensywnosc wysilku
+const int weight = 75;
