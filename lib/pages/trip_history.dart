@@ -1,3 +1,4 @@
+import 'package:bike_buddy/constants/default_values.dart';
 import 'package:bike_buddy/hive/entities/ride_record.dart';
 import 'package:flutter/material.dart';
 import 'package:bike_buddy/components/bb_appbar.dart';
@@ -23,6 +24,29 @@ class _TripHistoryPageState extends State<TripHistoryPage> {
   }
 }
 
+List<Widget> tripDetails(BuildContext context, RideRecord trip) {
+  const padding = 10.0;
+  final duration = trip.time.toString();
+
+  return [
+    Padding(
+        padding: const EdgeInsets.symmetric(vertical: padding),
+        child: Text(
+          'Duration: $duration',
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+    ),
+    if (debugInfo)
+      Padding(
+        padding: const EdgeInsets.symmetric(vertical: padding),
+        child: Text(
+          '[DEBUG] liczba punktow: ${trip.route.length}',
+          style: Theme.of(context).textTheme.bodyText2,
+        ),
+      ),
+  ];
+}
+
 class TripListWidget extends StatelessWidget {
   const TripListWidget({super.key});
 
@@ -31,7 +55,7 @@ class TripListWidget extends StatelessWidget {
     List<RideRecord> trips = List.empty(growable: true);
 
     var box = Hive.box("ride_records");
-    for (var value in box.values) {
+    for (RideRecord value in box.values) {
       trips.add(value);
     }
     
@@ -49,11 +73,11 @@ class TripListWidget extends StatelessWidget {
               ListTile(
                 title: Text(
                   "Trip ${index + 1}",
-                  style: Theme.of(context).textTheme.bodyMedium,
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
-                subtitle: Text(
-                  "Data",
-                  style: Theme.of(context).textTheme.bodyMedium,
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: tripDetails(context, trips[index])
                 ),
               ),
               Row(

@@ -2,6 +2,8 @@
 // Default settings values
 import 'package:geolocator/geolocator.dart';
 
+const bool debugInfo = true;
+
 const bool darkMode = true;
 const String language = 'pl';
 const String distanceUnit = 'kilometer';
