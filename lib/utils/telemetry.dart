@@ -1,6 +1,5 @@
 import 'package:bike_buddy/constants/general_constants.dart';
 import 'package:bike_buddy/hive/entities/ride_record.dart';
-import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
 double calculateDistance(List<PositionRecord> route) {
@@ -24,6 +23,7 @@ double calculateAverageSpeed(List<PositionRecord> route) {
 }
 
 double calculateBurnedCalories(Duration time){
-  // Spalone kalorie = MET * waga ciała (kg) * czas trwania (godziny) * 5
-  return double.parse((MET * weight * time.inSeconds / 3600.0  * 5).toStringAsFixed(1));
+  // Spalone cal = MET * waga ciała (kg) * czas trwania (godziny) * 5
+  // cal / 1000 => kcal
+  return double.parse((MET * weight * time.inSeconds / 3600.0  * 5 / 1000).toStringAsFixed(1));
 }

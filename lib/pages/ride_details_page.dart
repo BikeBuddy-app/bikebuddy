@@ -45,37 +45,13 @@ class _RideDetailsPageState extends State<RideDetailsPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              translations.h_ride_details_total_distance,
-                              style: textTheme.titleMedium,
-                            ),
-                            SizedBox(height: textSize / 2),
-                            Text(
-                              '${distance / 1000} km',
-                              style: textTheme.bodyLarge,
-                            ),
-                          ],
-                        ),
+                      DetailItem(
+                        label: translations.h_ride_details_total_distance,
+                        value: '${distance / 1000} km',
                       ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              translations.h_ride_details_ride_duration,
-                              style: textTheme.titleMedium,
-                            ),
-                            SizedBox(height: textSize / 2),
-                            Text(
-                              trip.time.toString(),
-                              style: textTheme.bodyLarge,
-                            ),
-                          ],
-                        ),
+                      DetailItem(
+                        label: translations.h_ride_details_ride_duration,
+                        value: trip.time.toString(),
                       ),
                     ],
                   ),
@@ -83,37 +59,13 @@ class _RideDetailsPageState extends State<RideDetailsPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              translations.h_ride_details_maximum_speed,
-                              style: textTheme.titleMedium,
-                            ),
-                            SizedBox(height: textSize / 2),
-                            Text(
-                              '$maxCurrentSpeed km/h',
-                              style: textTheme.bodyLarge,
-                            ),
-                          ],
-                        ),
+                      DetailItem(
+                        label: translations.h_ride_details_maximum_speed,
+                        value: '$maxCurrentSpeed km/h',
                       ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              translations.h_ride_details_average_speed,
-                              style: textTheme.titleMedium,
-                            ),
-                            SizedBox(height: textSize / 2),
-                            Text(
-                              '$averageSpeed km/h',
-                              style: textTheme.bodyLarge,
-                            ),
-                          ],
-                        ),
+                      DetailItem(
+                        label: translations.h_ride_details_average_speed,
+                        value: '$averageSpeed km/h',
                       ),
                     ],
                   ),
@@ -121,21 +73,9 @@ class _RideDetailsPageState extends State<RideDetailsPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              translations.h_ride_details_calories_burnt,
-                              style: textTheme.titleMedium,
-                            ),
-                            SizedBox(height: textSize / 2),
-                            Text(
-                              '$burnedCalories kcal',
-                              style: textTheme.bodyLarge,
-                            ),
-                          ],
-                        ),
+                      DetailItem(
+                        label: translations.h_ride_details_calories_burnt,
+                        value: '$burnedCalories kcal',
                       ),
                     ],
                   ),
@@ -148,6 +88,40 @@ class _RideDetailsPageState extends State<RideDetailsPage> {
               ),
             ),
           )
+        ],
+      ),
+    );
+  }
+}
+
+class DetailItem extends StatelessWidget {
+  final String label;
+  final String value;
+
+  const DetailItem({
+    required this.label,
+    required this.value,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final TextTheme textTheme = Theme.of(context).textTheme;
+    final double textSize = textTheme.titleMedium?.fontSize ?? 16;
+
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            label,
+            style: textTheme.titleMedium,
+          ),
+          SizedBox(height: textSize / 2),
+          Text(
+            value,
+            style: textTheme.bodyLarge,
+          ),
         ],
       ),
     );

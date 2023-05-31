@@ -14,32 +14,28 @@ class BBMap extends StatefulWidget {
 }
 
 class _BBMapState extends State<BBMap> {
-
   @override
   Widget build(BuildContext context) {
     return OSMFlutter(
       controller: widget.controller,
       trackMyPosition: true,
       initZoom: 19,
-
       minZoomLevel: 8,
       maxZoomLevel: 19,
       stepZoom: 1.0,
       userLocationMarker: UserLocationMaker(
         personMarker: const MarkerIcon(
           icon: Icon(
-            Icons.home,
-            color: Colors.red,
-            size: 78,
+            null,
+            color: Colors.transparent,
+            size: 1,
           ),
-
         ),
         directionArrowMarker: const MarkerIcon(
           icon: Icon(
-            Icons.directions_bike_outlined,
-            color: Colors.black,
-            shadows: [Shadow(color: Colors.white, blurRadius: 20.0)],
-            size: 78,
+            null,
+            color: Colors.transparent,
+            size: 1,
           ),
         ),
       ),

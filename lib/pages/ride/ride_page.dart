@@ -1,18 +1,14 @@
-import 'dart:math';
-
 import 'package:bike_buddy/components/bb_appbar.dart';
 import 'package:bike_buddy/components/custom_round_button.dart';
 import 'package:bike_buddy/components/map/bb_map.dart';
 import 'package:bike_buddy/constants/default_values.dart' as default_values;
 import 'package:bike_buddy/hive/entities/ride_record.dart';
+import 'package:bike_buddy/pages/ride/map_drawer.dart';
 import 'package:bike_buddy/pages/ride_details_page.dart';
 import 'package:bike_buddy/services/locator.dart';
 import 'package:bike_buddy/services/timer.dart';
-import 'package:bike_buddy/utils/position_helper.dart';
 import 'package:bike_buddy/utils/telemetry.dart';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -32,29 +28,26 @@ class _RidePageState extends State<RidePage> {
 
   late final Timer timer;
   late final Locator locator;
-  late final MapController mapController;
+  late final MapDrawer mapDrawer;
 
   double currentDistance = 0.0;
   double burnedCalories = 0.0;
   double currentSpeed = 0.0;
-  double maxCurrentSpeed = 0.0;
 
-  var rideRecordsBox = Hive.box("ride_records");
-  var rideRecord = RideRecord();
+  double maxCurrentSpeed = 0.0;
+  Box<dynamic> rideRecordsBox = Hive.box("ride_records");
+  RideRecord rideRecord = RideRecord();
 
   @override
   void initState() {
-    initializeTimer();
+    initializeTimer(); //todo sprobowac inicializowac jako constructor initializer list??
     initializeLocator();
-    initializeMapController();
+    initializeMapDrawer();
     super.initState();
   }
 
-  void initializeMapController() {
-    mapController = MapController(
-      initMapWithUserPosition: false,
-      initPosition: getGeoPoint(currentPosition),
-    );
+  void initializeMapDrawer() {
+    mapDrawer = MapDrawer(currentPosition);
   }
 
   void savePositionRecord() {
@@ -70,11 +63,16 @@ class _RidePageState extends State<RidePage> {
   void initializeLocator() {
     locator = Locator(
       (newPosition) => setState(() {
+        //todo nie uzywac setState w ten sposob, setstate tylko do zmiany stanu
         currentPosition = newPosition;
-        savePositionRecord();
-        currentDistance = calculateDistance(rideRecord.route) / 1000;
-        burnedCalories = calculateBurnedCalories(currentTime);
-        currentSpeed = double.parse((currentPosition.speed * 3.6).toStringAsFixed(1));
+        mapDrawer.draw(rideRecord);
+        if (isRideActive == true) {
+          savePositionRecord();
+          currentDistance = calculateDistance(rideRecord.route) / 1000;
+          burnedCalories = calculateBurnedCalories(currentTime);
+        }
+        currentSpeed =
+            double.parse((currentPosition.speed * 3.6).toStringAsFixed(1));
         if (currentSpeed > maxCurrentSpeed) maxCurrentSpeed = currentSpeed;
       }),
     );
@@ -82,11 +80,9 @@ class _RidePageState extends State<RidePage> {
   }
 
   void initializeTimer() {
-    timer = Timer(
-      (currentTime) => setState(() {
-        this.currentTime = currentTime;
-      })
-    );
+    timer = Timer((currentTime) => setState(() {
+          this.currentTime = currentTime;
+        }));
     timer.start();
   }
 
@@ -95,8 +91,7 @@ class _RidePageState extends State<RidePage> {
       isRideActive = true;
     });
     timer.resume();
-    zoomToDriver();
-    mapController.enableTracking();
+    mapDrawer.resume();
   }
 
   void pauseButtonHandler() {
@@ -104,46 +99,7 @@ class _RidePageState extends State<RidePage> {
       isRideActive = false;
     });
     timer.pause();
-    mapController.disabledTracking();
-    zoomOutToShowWholeRoute();
-  }
-
-  void zoomOutToShowWholeRoute() {
-
-    if (rideRecord.route.isEmpty) {
-      return;
-    }
-    var firstPos = rideRecord.route[0].position;
-
-    var minLat = firstPos.latitude;
-    var maxLat = firstPos.latitude;
-    var minLon = firstPos.longitude;
-    var maxLon = firstPos.longitude;
-
-    for (final routeRecord in rideRecord.route) {
-      minLat = min(minLat, routeRecord.position.latitude);
-      maxLat = max(maxLat, routeRecord.position.latitude);
-      minLon = min(minLon, routeRecord.position.longitude);
-      maxLon = max(maxLon, routeRecord.position.longitude);
-    }
-
-    BoundingBox box = BoundingBox(
-      north: maxLat,
-      east: maxLon,
-      south: minLat,
-      west: minLon,
-    );
-
-    mapController.zoomToBoundingBox(box);
-  }
-
-  void zoomToDriver() {
-    mapController.setZoom(zoomLevel: 19);
-  }
-
-  void resetMapPosition() {
-    mapController.currentLocation();
-    mapController.enableTracking();
+    mapDrawer.pause(rideRecord);
   }
 
   void stopButtonHandler() {
@@ -151,7 +107,8 @@ class _RidePageState extends State<RidePage> {
     timer.stop();
     saveCurrentRide();
 
-    Navigator.pushReplacementNamed(context, RideDetailsPage.routeName, arguments: {'trip': rideRecord, 'maxCurrentSpeed': maxCurrentSpeed});
+    Navigator.pushReplacementNamed(context, RideDetailsPage.routeName,
+        arguments: {'trip': rideRecord, 'maxCurrentSpeed': maxCurrentSpeed});
   }
 
   late final List<Widget> activeRideButtons = [
@@ -183,6 +140,10 @@ class _RidePageState extends State<RidePage> {
       onPressed: () {},
       onLongPress: stopButtonHandler,
     ),
+    CustomRoundButton.medium(
+      onPressed: () {},
+      icon: const Icon(Icons.abc),
+    ),
   ];
 
   @override
@@ -191,73 +152,75 @@ class _RidePageState extends State<RidePage> {
       onWillPop: () async => false,
       child: Scaffold(
         appBar: const BBAppBar.hideBackArrow(),
-        body: Container(
-            child: Stack(children: [
-          BBMap(controller: mapController),
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Expanded(
-                  flex: 2,
-                  child: Container(
-                    color: Colors.blue,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(currentTime.toString()),
-                        Text("$currentDistance km"),
-                        Text("$burnedCalories kcal"),
-                      ],
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: Container(
-                    color: Colors.green,
-                    child: Center(
-                      child: Text(
-                        "$currentSpeed km/h",
+        body: Stack(
+          children: [
+            BBMap(controller: mapDrawer.mapController),
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Expanded(
+                    flex: 2,
+                    child: Container(
+                      color: Colors.blue,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(currentTime.toString()),
+                          Text("$currentDistance km"),
+                          Text("$burnedCalories kcal"),
+                        ],
                       ),
                     ),
                   ),
-                ),
-                Expanded(
-                  flex: 15,
-                  child: Text(currentPosition.toString()),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      CustomRoundButton.small(
-                        icon: const Icon(
-                          Icons.location_pin,
-                          size: 25,
+                  Expanded(
+                    flex: 3,
+                    child: Container(
+                      color: Colors.green,
+                      child: Center(
+                        child: Text(
+                          "$currentSpeed km/h",
                         ),
-                        onPressed: resetMapPosition,
-                      )
-                    ],
+                      ),
+                    ),
                   ),
-                ),
-                Expanded(
-                  flex: 5,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: isRideActive == true
-                        ? activeRideButtons
-                        : inactiveRideButtons,
+                  Expanded(
+                    flex: 15,
+                    child: Text(currentPosition.toString()),
                   ),
-                ),
-              ],
+                  Expanded(
+                    flex: 2,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        CustomRoundButton.small(
+                          icon: const Icon(
+                            Icons.location_pin,
+                            size: 25,
+                          ),
+                          onPressed:
+                              () {}, //todo jezeli bedzie przesuwanie mapy palcem to zaimplementowac, jak nie - wywalic przycisk
+                        )
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 5,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: isRideActive == true
+                          ? activeRideButtons
+                          : inactiveRideButtons,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ])),
+          ],
+        ),
       ),
     );
   }
