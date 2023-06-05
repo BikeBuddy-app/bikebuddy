@@ -18,12 +18,12 @@ class _BBMapState extends State<BBMap> {
   Widget build(BuildContext context) {
     return OSMFlutter(
       controller: widget.controller,
-      trackMyPosition: true,
+      trackMyPosition: false,
       initZoom: 19,
       minZoomLevel: 8,
       maxZoomLevel: 19,
       stepZoom: 1.0,
-      userLocationMarker: UserLocationMaker(
+      userLocationMarker: UserLocationMaker( //todo test if default marker can be successfully set here
         personMarker: const MarkerIcon(
           icon: Icon(
             null,

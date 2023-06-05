@@ -106,9 +106,13 @@ class _RidePageState extends State<RidePage> {
     locator.stop();
     timer.stop();
     saveCurrentRide();
-
+    print(mapDrawer.toString());
     Navigator.pushReplacementNamed(context, RideDetailsPage.routeName,
-        arguments: {'trip': rideRecord, 'maxCurrentSpeed': maxCurrentSpeed});
+        arguments: {
+          'trip': rideRecord,
+          'maxCurrentSpeed': maxCurrentSpeed,
+          'mapDrawer': mapDrawer,
+        });
   }
 
   late final List<Widget> activeRideButtons = [
@@ -139,10 +143,6 @@ class _RidePageState extends State<RidePage> {
       ),
       onPressed: () {},
       onLongPress: stopButtonHandler,
-    ),
-    CustomRoundButton.medium(
-      onPressed: () {},
-      icon: const Icon(Icons.abc),
     ),
   ];
 

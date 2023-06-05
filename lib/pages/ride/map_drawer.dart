@@ -20,6 +20,13 @@ class MapDrawer {
           initPosition: getGeoPoint(initialPosition),
         );
 
+  MapDrawer.fromGeoPoint(GeoPoint initialPosition)
+      : markerPosition = initialPosition,
+        mapController = MapController(
+          initMapWithUserPosition: false,
+          initPosition: initialPosition,
+        );
+
   Future<void> draw(RideRecord rideRecord) async {
     prepareMarker();
     List<GeoPoint> points = [
@@ -29,19 +36,23 @@ class MapDrawer {
     markerPosition = points.last;
     mapController.changeLocation(markerPosition);
     if (drawRoads == true && points.length > 1) {
-      final roadKey = await mapController.drawRoadManually(
-        points,
-        const RoadOption(
-          roadColor: Colors.pink,
-          roadWidth: 10,
-          zoomInto: false,
-        ),
-      );
+      final roadKey = await drawRoad(points);
       if (previousRoadKey != null) {
         mapController.removeRoad(roadKey: previousRoadKey!);
       }
       previousRoadKey = roadKey;
     }
+  }
+
+  Future<String> drawRoad(List<GeoPoint> points) async {
+    return await mapController.drawRoadManually(
+      points,
+      const RoadOption(
+        roadColor: Colors.pink,
+        roadWidth: 10,
+        zoomInto: false,
+      ),
+    );
   }
 
   void prepareMarker() {
@@ -60,7 +71,7 @@ class MapDrawer {
   }
 
   void pause(RideRecord rideRecord) {
-    zoomOutToShowWholeRoute(rideRecord);
+    // zoomOutToShowWholeRoute(rideRecord);
     disableRoadDrawing();
   }
 
@@ -88,12 +99,11 @@ class MapDrawer {
     }
 
     BoundingBox box = BoundingBox(
-      north: maxLat,
-      east: maxLon,
-      south: minLat,
-      west: minLon,
+      north: maxLat + 0.001,
+      east: maxLon + 0.0001,
+      south: minLat - 0.0001,
+      west: minLon - 0.0001,
     );
-
     mapController.zoomToBoundingBox(box);
   }
 
