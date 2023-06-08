@@ -12,7 +12,7 @@ pipelines:
           caches:
             - gradle
             - android-sdk
-          name: Build a flutter version
+          name: Build a Flutter version
           runs-on:
             - self.hosted
             - linux
@@ -21,18 +21,22 @@ pipelines:
             - flutter pub get
             - flutter build apk --no-tree-shake-icons
           artifacts:
-          - build/app/outputs/flutter-apk/*.apk
+            - build/app/outputs/flutter-apk/*.apk
+
   tags:
     '*.*.*':
       - step:
-          name: Build a flutter version
+          name: Build a Flutter version
           runs-on:
             - self.hosted
             - linux
           size: 2x
           script:
             - flutter pub get
-            - flutter build apk -no-tree-shake-icons
+            - flutter build apk --no-tree-shake-icons
+          artifacts:
+            - build/app/outputs/flutter-apk/*.apk
+
   custom:
     BuildAPKonRunner:
       - step:
@@ -47,20 +51,18 @@ pipelines:
             - flutter pub get
             - flutter build apk --no-tree-shake-icons
           artifacts:
-          - build/app/outputs/flutter-apk/*.apk
+            - build/app/outputs/flutter-apk/*.apk
+
     BuildAPKonBitbucket:
       - step:
-          caches:
-            - gradle
-            - android-sdk
           name: Build APK
           script:
             - flutter pub get
             - flutter build apk --no-tree-shake-icons
           artifacts:
-          - build/app/outputs/flutter-apk/*.apk
-          
+            - build/app/outputs/flutter-apk/*.apk
+
 definitions:
-    caches:
-        android-sdk: android-sdk
+  caches:
+    android-sdk: android-sdk
 
