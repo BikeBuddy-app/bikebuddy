@@ -19,6 +19,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   settings_ui: 2.0.2
   sticky_headers: "^0.1.8"
+  numberpicker: ^2.1.2
   shared_preferences: "2.0.8"
   geolocator: ^9.0.2
   hive: ^2.2.3

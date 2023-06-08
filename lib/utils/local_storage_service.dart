@@ -16,4 +16,9 @@ class LocalStorageService {
 
   static Future<bool> writeString(String key, String value) =>
       instance.setString(key, value);
+
+  static int? readInt(String key) => instance.getInt(key);
+
+  static Future<bool> writeInt(String key, int value) =>
+      instance.setInt(key, value);
 }

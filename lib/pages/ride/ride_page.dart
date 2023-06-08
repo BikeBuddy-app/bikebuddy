@@ -7,10 +7,13 @@ import 'package:bike_buddy/pages/ride/map_drawer.dart';
 import 'package:bike_buddy/pages/ride_details_page.dart';
 import 'package:bike_buddy/services/locator.dart';
 import 'package:bike_buddy/services/timer.dart';
+import 'package:bike_buddy/utils/settings_manager.dart';
 import 'package:bike_buddy/utils/telemetry.dart';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart' as provider;
 
 class RidePage extends StatefulWidget {
   const RidePage({super.key});
@@ -30,6 +33,8 @@ class _RidePageState extends State<RidePage> {
   late final Locator locator;
   late final MapDrawer mapDrawer;
 
+  late final int riderWeight;
+
   double currentDistance = 0.0;
   double burnedCalories = 0.0;
   double currentSpeed = 0.0;
@@ -43,6 +48,7 @@ class _RidePageState extends State<RidePage> {
     initializeTimer(); //todo sprobowac inicializowac jako constructor initializer list??
     initializeLocator();
     initializeMapDrawer();
+    initializeRiderInfo();
     super.initState();
   }
 
@@ -60,6 +66,11 @@ class _RidePageState extends State<RidePage> {
     rideRecordsBox.add(rideRecord);
   }
 
+  void initializeRiderInfo() {
+    final settings = context.read<SettingsManager>();
+    riderWeight = settings.riderWeight;
+  }
+
   void initializeLocator() {
     locator = Locator(
       (newPosition) => setState(() {
@@ -69,7 +80,8 @@ class _RidePageState extends State<RidePage> {
         if (isRideActive == true) {
           savePositionRecord();
           currentDistance = calculateDistance(rideRecord.route) / 1000;
-          burnedCalories = calculateBurnedCalories(currentTime);
+          burnedCalories =
+              calculateBurnedCalories(currentTime, riderWeight);
         }
         currentSpeed =
             double.parse((currentPosition.speed * 3.6).toStringAsFixed(1));

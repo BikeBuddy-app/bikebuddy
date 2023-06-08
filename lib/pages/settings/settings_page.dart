@@ -1,12 +1,12 @@
+import 'package:bike_buddy/components/bb_appbar.dart';
+import 'package:bike_buddy/constants/general_constants.dart';
+import 'package:bike_buddy/utils/l10n/l10n.dart';
+import 'package:bike_buddy/utils/settings_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:numberpicker/numberpicker.dart';
 import 'package:provider/provider.dart';
 import 'package:settings_ui/settings_ui.dart';
-
-import 'package:bike_buddy/constants/general_constants.dart';
-import 'package:bike_buddy/components/bb_appbar.dart';
-import 'package:bike_buddy/utils/settings_manager.dart';
-import 'package:bike_buddy/utils/l10n/l10n.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -50,13 +50,50 @@ class _SettingsPageState extends State<SettingsPage> {
                                         language['name'].toString(),
                                       ),
                                       onTap: () {
-                                        settings.applicationLanguage = language['code'].toString();
+                                        settings.applicationLanguage =
+                                            language['code'].toString();
                                         Navigator.pop(context);
                                       },
                                     ),
                                   )
                                   .toList(),
                             );
+                          },
+                        );
+                      },
+                    ),
+                    SettingsTile.navigation(
+                      title: Text(translations.your_weight_title),
+                      leading: const Icon(Icons.accessibility_new),
+                      value: Text(
+                          '${settings.riderWeight} ${settings.weightUnit}'),
+                      onPressed: (BuildContext context) {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            return StatefulBuilder(
+                                builder: (context, setStateChild) {
+                              return Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    NumberPicker(
+                                        value: settings.riderWeight,
+                                        minValue: 1,
+                                        maxValue: 200,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(16),
+                                          border: Border.all(
+                                              color: Theme.of(context)
+                                                  .colorScheme.secondary
+                                          ),
+                                        ),
+                                        textMapper: (value) =>
+                                            '$value ${settings.weightUnit}',
+                                        onChanged: (value) => {
+                                              settings.riderWeight = value,
+                                            }),
+                                  ]);
+                            });
                           },
                         );
                       },

@@ -36,6 +36,10 @@
     "@language_title": {
            "description": "Title in settings"
     },
+    "your_weight_title": "Rider Weight",
+    "@your_weight_title": {
+           "description": "Title in settings"
+    },
 
     "set_notifications": "Enable app notifications",
     "@set_notifications": {

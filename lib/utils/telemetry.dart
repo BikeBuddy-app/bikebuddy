@@ -1,4 +1,4 @@
-import 'package:bike_buddy/constants/general_constants.dart';
+import 'package:bike_buddy/constants/general_constants.dart' as constants;
 import 'package:bike_buddy/hive/entities/ride_record.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -22,8 +22,8 @@ double calculateAverageSpeed(List<PositionRecord> route) {
   return result;
 }
 
-double calculateBurnedCalories(Duration time){
+double calculateBurnedCalories(Duration time, int weight){
   // Spalone cal = MET * waga ciała (kg) * czas trwania (godziny) * 5
   // cal / 1000 => kcal
-  return double.parse((MET * weight * time.inSeconds / 3600.0  * 5 / 1000).toStringAsFixed(1));
+  return double.parse((constants.MET * weight * time.inSeconds / 3600.0  * 5 / 1000).toStringAsFixed(1));
 }
