@@ -16,14 +16,13 @@ double calculateDistance(List<PositionRecord> route) {
   return distance;
 }
 
-double calculateAverageSpeed(List<PositionRecord> route) {
-  var distance = calculateDistance(route);
-  var result = double.parse((distance / route[route.length-1].timestamp.inSeconds).toStringAsFixed(1));
+double calculateAverageSpeed(Duration duration, double distance) {
+  var result = double.parse((distance / duration.inSeconds).toStringAsFixed(1));
   return result;
 }
 
-double calculateBurnedCalories(Duration time, int weight){
+double calculateBurnedCalories(List<PositionRecord> route, int weight){
   // Spalone cal = MET * waga ciała (kg) * czas trwania (godziny) * 5
   // cal / 1000 => kcal
-  return double.parse((constants.MET * weight * time.inSeconds / 3600.0  * 5 / 1000).toStringAsFixed(1));
+  return double.parse((constants.MET * weight * route[route.length-1].timestamp.inSeconds / 3600.0 * 1.5).toStringAsFixed(1));
 }

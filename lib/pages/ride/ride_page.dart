@@ -81,7 +81,7 @@ class _RidePageState extends State<RidePage> {
           savePositionRecord();
           currentDistance = calculateDistance(rideRecord.route) / 1000;
           burnedCalories =
-              calculateBurnedCalories(currentTime, riderWeight);
+              calculateBurnedCalories(rideRecord.route, riderWeight);
         }
         currentSpeed =
             double.parse((currentPosition.speed * 3.6).toStringAsFixed(1));

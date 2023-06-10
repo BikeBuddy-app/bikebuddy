@@ -65,8 +65,8 @@ class _RideDetailsPageState extends State<RideDetailsPage> {
     // MapDrawer mapDrawer = MapDrawer(route.last.position);
     double distance = calculateDistance(route);
     double averageSpeed =
-        double.parse((calculateAverageSpeed(route) * 3.6).toStringAsFixed(1));
-    double burnedCalories = calculateBurnedCalories(rideRecord.time, riderWeight);
+        double.parse((calculateAverageSpeed(rideRecord.time, distance) * 3.6).toStringAsFixed(1));
+    double burnedCalories = calculateBurnedCalories(rideRecord.route, riderWeight);
     double maxCurrentSpeed = rideRecord.maxSpeed;
 
     points = [for (PositionRecord p in route) getGeoPoint(p.position)];
@@ -126,7 +126,7 @@ class _RideDetailsPageState extends State<RideDetailsPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               DetailItem(
-                                label: translations.h_ride_details_calories_burnt,
+                                label: translations.h_ride_details_calories_burned,
                                 value: '$burnedCalories kcal',
                               ),
                             ],
