@@ -1,7 +1,8 @@
+import 'package:flutter/material.dart';
+
 import 'package:bike_buddy/constants/default_values.dart' as default_value;
 import 'package:bike_buddy/constants/general_constants.dart' as constants;
 import 'package:bike_buddy/utils/local_storage_service.dart';
-import 'package:flutter/material.dart';
 
 class SettingsManager extends ChangeNotifier {
   // keys used to store values in local memory
@@ -56,11 +57,8 @@ class SettingsManager extends ChangeNotifier {
   }
 
   void loadSettingsFromMemory() {
-    _isDarkModeEnabled =
-        LocalStorageService.readBool(_darkModeKey) ?? default_value.darkMode;
-    _applicationLanguage =
-        LocalStorageService.readString(_languageKey) ?? default_value.language;
-    _distanceUnit = LocalStorageService.readString(_distanceUnitKey) ??
-        default_value.distanceUnit;
+    _isDarkModeEnabled = LocalStorageService.readBool(_darkModeKey) ?? default_value.darkMode;
+    _applicationLanguage = LocalStorageService.readString(_languageKey) ?? default_value.language;
+    _distanceUnit = LocalStorageService.readString(_distanceUnitKey) ?? default_value.distanceUnit;
   }
 }

@@ -1,7 +1,14 @@
+import 'package:bike_buddy/components/countdown.dart';
+import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart' as provider;
+
 import 'package:bike_buddy/components/bb_appbar.dart';
 import 'package:bike_buddy/components/custom_round_button.dart';
 import 'package:bike_buddy/components/map/bb_map.dart';
 import 'package:bike_buddy/constants/default_values.dart' as default_values;
+import 'package:bike_buddy/extensions/position_extension.dart';
 import 'package:bike_buddy/hive/entities/ride_record.dart';
 import 'package:bike_buddy/pages/ride/map_drawer.dart';
 import 'package:bike_buddy/pages/ride_details_page.dart';
@@ -9,11 +16,6 @@ import 'package:bike_buddy/services/locator.dart';
 import 'package:bike_buddy/services/timer.dart';
 import 'package:bike_buddy/utils/settings_manager.dart';
 import 'package:bike_buddy/utils/telemetry.dart';
-
-import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:provider/provider.dart' as provider;
 
 class RidePage extends StatefulWidget {
   const RidePage({super.key});
@@ -24,14 +26,16 @@ class RidePage extends StatefulWidget {
   State<RidePage> createState() => _RidePageState();
 }
 
-class _RidePageState extends State<RidePage> {
+class _RidePageState extends State<RidePage> with TickerProviderStateMixin {
   bool isRideActive = true;
+  bool isCountdownActive = true;
   Duration currentTime = Duration.zero;
   Position currentPosition = default_values.position;
 
   late final Timer timer;
   late final Locator locator;
   late final MapDrawer mapDrawer;
+  late final AnimationController _countdownController;
 
   late final int riderWeight;
 
@@ -49,11 +53,13 @@ class _RidePageState extends State<RidePage> {
     initializeLocator();
     initializeMapDrawer();
     initializeRiderInfo();
+    initializeCountdown();
+    initializeCurrentLocation();
     super.initState();
   }
 
   void initializeMapDrawer() {
-    mapDrawer = MapDrawer(currentPosition);
+    mapDrawer = MapDrawer();
   }
 
   void savePositionRecord() {
@@ -72,22 +78,7 @@ class _RidePageState extends State<RidePage> {
   }
 
   void initializeLocator() {
-    locator = Locator(
-      (newPosition) => setState(() {
-        //todo nie uzywac setState w ten sposob, setstate tylko do zmiany stanu
-        currentPosition = newPosition;
-        mapDrawer.draw(rideRecord);
-        if (isRideActive == true) {
-          savePositionRecord();
-          currentDistance = calculateDistance(rideRecord.route) / 1000;
-          burnedCalories =
-              calculateBurnedCalories(rideRecord.route, riderWeight);
-        }
-        currentSpeed =
-            double.parse((currentPosition.speed * 3.6).toStringAsFixed(1));
-        if (currentSpeed > maxCurrentSpeed) maxCurrentSpeed = currentSpeed;
-      }),
-    );
+    locator = Locator((newPosition) => updatePosition(newPosition));
     locator.start();
   }
 
@@ -96,6 +87,43 @@ class _RidePageState extends State<RidePage> {
           this.currentTime = currentTime;
         }));
     timer.start();
+  }
+
+  void initializeCountdown() {
+    _countdownController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 3),
+    )
+      ..addListener(
+        () => setState(() {}),
+      )
+      ..reverse(from: 1.0).whenComplete(
+        () => setState(() => isCountdownActive = false),
+      );
+  }
+
+  void initializeCurrentLocation() async {
+    final loc = await locator.currentPosition;
+    setState(() {
+      currentPosition = loc;
+    });
+    mapDrawer.mapController.goToLocation(loc.toGeoPoint());
+    updatePosition(loc);
+  }
+
+  void updatePosition(Position pos) {
+    setState(() {
+      //todo nie uzywac setState w ten sposob, setstate tylko do zmiany stanu
+      currentPosition = pos;
+      if (isRideActive == true) {
+        savePositionRecord();
+        currentDistance = calculateDistance(rideRecord.route) / 1000;
+        burnedCalories = calculateBurnedCalories(rideRecord.route, riderWeight);
+      }
+      currentSpeed = double.parse((currentPosition.speed * 3.6).toStringAsFixed(1));
+      if (currentSpeed > maxCurrentSpeed) maxCurrentSpeed = currentSpeed;
+      mapDrawer.draw(rideRecord);
+    });
   }
 
   void resumeButtonHandler() {
@@ -118,13 +146,15 @@ class _RidePageState extends State<RidePage> {
     locator.stop();
     timer.stop();
     saveCurrentRide();
-    print(mapDrawer.toString());
-    Navigator.pushReplacementNamed(context, RideDetailsPage.routeName,
-        arguments: {
-          'trip': rideRecord,
-          'maxCurrentSpeed': maxCurrentSpeed,
-          'mapDrawer': mapDrawer,
-        });
+    Navigator.pushReplacementNamed(
+      context,
+      RideDetailsPage.routeName,
+      arguments: {
+        'trip': rideRecord,
+        'maxCurrentSpeed': maxCurrentSpeed,
+        'mapDrawer': mapDrawer,
+      },
+    );
   }
 
   late final List<Widget> activeRideButtons = [
@@ -223,14 +253,17 @@ class _RidePageState extends State<RidePage> {
                     flex: 5,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: isRideActive == true
-                          ? activeRideButtons
-                          : inactiveRideButtons,
+                      children: isRideActive == true ? activeRideButtons : inactiveRideButtons,
                     ),
                   ),
                 ],
               ),
             ),
+            if (isCountdownActive)
+              Container(
+                color: Theme.of(context).colorScheme.secondary,
+                child: Countdown(controller: _countdownController),
+              )
           ],
         ),
       ),

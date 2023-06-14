@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class DrawerButton extends StatelessWidget {
-  const DrawerButton(this.text, this.navigateTo, {super.key});
+class BBDrawerButton extends StatelessWidget {
+  const BBDrawerButton(this.text, this.navigateTo, {super.key});
 
   final String text;
   final String navigateTo;

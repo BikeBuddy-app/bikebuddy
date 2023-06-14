@@ -1,40 +1,26 @@
 import 'dart:math';
 
+import 'package:bike_buddy/extensions/position_extension.dart';
 import 'package:bike_buddy/hive/entities/ride_record.dart';
-import 'package:bike_buddy/utils/position_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:bike_buddy/constants/default_values.dart' as defaults;
 
 class MapDrawer {
   String? previousRoadKey;
-  GeoPoint markerPosition;
+  GeoPoint? markerPosition;
   final MapController mapController;
 
   bool drawRoads = true;
 
-  MapDrawer(Position initialPosition)
-      : markerPosition = getGeoPoint(initialPosition),
-        mapController = MapController(
-          initMapWithUserPosition: false,
-          initPosition: getGeoPoint(initialPosition),
-        );
-
-  MapDrawer.fromGeoPoint(GeoPoint initialPosition)
-      : markerPosition = initialPosition,
-        mapController = MapController(
-          initMapWithUserPosition: false,
-          initPosition: initialPosition,
-        );
+  MapDrawer() : mapController = MapController(initPosition: defaults.position.toGeoPoint());
 
   Future<void> draw(RideRecord rideRecord) async {
-    prepareMarker();
-    List<GeoPoint> points = [
-      for (PositionRecord p in rideRecord.route) getGeoPoint(p.position)
-    ];
-    mapController.removeMarker(markerPosition);
+    await prepareMarker();
+    List<GeoPoint> points = [for (PositionRecord p in rideRecord.route) p.position.toGeoPoint()];
+    if (markerPosition != null) mapController.removeMarker(markerPosition!);
     markerPosition = points.last;
-    mapController.changeLocation(markerPosition);
+    mapController.changeLocation(markerPosition!);
     if (drawRoads == true && points.length > 1) {
       final roadKey = await drawRoad(points);
       if (previousRoadKey != null) {
@@ -55,14 +41,16 @@ class MapDrawer {
     );
   }
 
-  void prepareMarker() {
-    mapController.changeIconMarker(MarkerIcon(
-      icon: Icon(
-        Icons.directions_bike_outlined,
-        size: 78,
-        color: Colors.pink.shade300,
+  Future<void> prepareMarker() async {
+    return mapController.changeIconMarker(
+      MarkerIcon(
+        icon: Icon(
+          Icons.directions_bike_outlined,
+          size: 78,
+          color: Colors.pink.shade300,
+        ),
       ),
-    ));
+    );
   }
 
   void resume() {
@@ -85,8 +73,8 @@ class MapDrawer {
     }
     var firstPos = rideRecord.route[0].position;
 
-    var minLat = firstPos
-        .latitude; //todo mozna zapisywac w tej klasie na biezaco jak punkty przybywaja
+    var minLat =
+        firstPos.latitude; //todo mozna zapisywac w tej klasie na biezaco jak punkty przybywaja
     var maxLat = firstPos.latitude;
     var minLon = firstPos.longitude;
     var maxLon = firstPos.longitude;

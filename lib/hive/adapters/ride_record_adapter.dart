@@ -38,9 +38,7 @@ class PositionRecordAdapter extends TypeAdapter<PositionRecord> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PositionRecordAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
+      other is PositionRecordAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
 }
 
 class RideRecordAdapter extends TypeAdapter<RideRecord> {
@@ -74,7 +72,5 @@ class RideRecordAdapter extends TypeAdapter<RideRecord> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is RideRecordAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
+      other is RideRecordAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
 }

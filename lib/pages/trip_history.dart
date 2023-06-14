@@ -30,18 +30,18 @@ List<Widget> tripDetails(BuildContext context, RideRecord trip) {
 
   return [
     Padding(
-        padding: const EdgeInsets.symmetric(vertical: padding),
-        child: Text(
-          'Duration: $duration',
-          style: Theme.of(context).textTheme.bodyMedium,
-        ),
+      padding: const EdgeInsets.symmetric(vertical: padding),
+      child: Text(
+        'Duration: $duration',
+        style: Theme.of(context).textTheme.bodyMedium,
+      ),
     ),
     if (debugInfo)
       Padding(
         padding: const EdgeInsets.symmetric(vertical: padding),
         child: Text(
           '[DEBUG] liczba punktow: ${trip.route.length}',
-          style: Theme.of(context).textTheme.bodyText2,
+          style: Theme.of(context).textTheme.bodyMedium,
         ),
       ),
   ];
@@ -58,7 +58,7 @@ class TripListWidget extends StatelessWidget {
     for (RideRecord value in box.values) {
       trips.add(value);
     }
-    
+
     return ListView.separated(
       shrinkWrap: true,
       padding: const EdgeInsets.all(4),
@@ -76,9 +76,8 @@ class TripListWidget extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: tripDetails(context, trips[index])
-                ),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: tripDetails(context, trips[index])),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -89,7 +88,8 @@ class TripListWidget extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     onPressed: () {
-                      Navigator.pushNamed(context, RideDetailsPage.routeName, arguments: {'trip': trips[index]});
+                      Navigator.pushNamed(context, RideDetailsPage.routeName,
+                          arguments: {'trip': trips[index]});
                     },
                   ),
                   const SizedBox(width: 8),

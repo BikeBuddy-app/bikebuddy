@@ -22,17 +22,20 @@ class RideRecord {
   @HiveField(5)
   double maxSpeed;
 
-  RideRecord() : route = List.empty(growable: true), time = Duration.zero, maxSpeed = 0.0;
+  RideRecord()
+      : route = List.empty(growable: true),
+        time = Duration.zero,
+        maxSpeed = 0.0;
 
-  void addRoutePoint(PositionRecord positionRecord){
+  void addRoutePoint(PositionRecord positionRecord) {
     route.add(positionRecord);
   }
 
-  void setTime(Duration time){
+  void setTime(Duration time) {
     this.time = time;
   }
 
-  void setMaxSpeed(double maxSpeed){
+  void setMaxSpeed(double maxSpeed) {
     this.maxSpeed = maxSpeed;
   }
 }

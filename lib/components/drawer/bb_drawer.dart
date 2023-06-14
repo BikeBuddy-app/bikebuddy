@@ -27,15 +27,15 @@ class BBDrawer extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.white),
             ),
           ),
-          DrawerButton(
+          BBDrawerButton(
             AppLocalizations.of(context)!.m_history,
             TripHistoryPage.routeName,
           ),
-          DrawerButton(
+          BBDrawerButton(
             AppLocalizations.of(context)!.m_user,
             UserPage.routeName,
           ),
-          DrawerButton(
+          BBDrawerButton(
             AppLocalizations.of(context)!.m_settings,
             SettingsPage.routeName,
           ),

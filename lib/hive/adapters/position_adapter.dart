@@ -6,10 +6,8 @@ class PositionAdapter extends TypeAdapter<Position> {
   final typeId = 5;
 
   @override
-  void write(BinaryWriter writer, Position pos) =>
-      writer.writeMap(pos.toJson());
+  void write(BinaryWriter writer, Position obj) => writer.writeMap(obj.toJson());
 
   @override
-  Position read(BinaryReader reader) =>
-      Position.fromMap(reader.readMap());
+  Position read(BinaryReader reader) => Position.fromMap(reader.readMap());
 }

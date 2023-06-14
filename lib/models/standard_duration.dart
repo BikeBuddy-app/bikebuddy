@@ -1,6 +1,5 @@
 class StandardDuration extends Duration {
-  StandardDuration(Duration duration)
-      : super(microseconds: duration.inMicroseconds);
+  StandardDuration(Duration duration) : super(microseconds: duration.inMicroseconds);
 
   @override
   String toString() {

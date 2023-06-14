@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:bike_buddy/components/bb_appbar.dart';
 import 'package:bike_buddy/components/map/bb_map.dart';
+import 'package:bike_buddy/extensions/position_extension.dart';
 import 'package:bike_buddy/hive/entities/ride_record.dart';
 import 'package:bike_buddy/pages/ride/map_drawer.dart';
-import 'package:bike_buddy/utils/position_helper.dart';
 import 'package:bike_buddy/utils/settings_manager.dart';
 import 'package:bike_buddy/utils/telemetry.dart';
 
@@ -39,7 +39,7 @@ class _RideDetailsPageState extends State<RideDetailsPage> {
 
   @override
   void initState() {
-    mapDrawer = MapDrawer.fromGeoPoint(GeoPoint(latitude: 100, longitude: 100));
+    mapDrawer = MapDrawer();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Timer(const Duration(seconds: 2), zoomOut);
     });
@@ -69,7 +69,7 @@ class _RideDetailsPageState extends State<RideDetailsPage> {
     double burnedCalories = calculateBurnedCalories(rideRecord.route, riderWeight);
     double maxCurrentSpeed = rideRecord.maxSpeed;
 
-    points = [for (PositionRecord p in route) getGeoPoint(p.position)];
+    points = [for (PositionRecord p in route) p.position.toGeoPoint()];
 
     return Scaffold(
       appBar: const BBAppBar(),
@@ -78,66 +78,65 @@ class _RideDetailsPageState extends State<RideDetailsPage> {
           BBMap(controller: mapDrawer.mapController),
           Opacity(
             opacity: 0.85,
-              child: Column(
-                children: [
-                  Card(
-                    margin: EdgeInsets.all(textSize),
-                    elevation: 5,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all( Radius.circular(16)),
+            child: Column(
+              children: [
+                Card(
+                  margin: EdgeInsets.all(textSize),
+                  elevation: 5,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(16)),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(textSize),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(translations.h_ride_details, style: const TextStyle(fontSize: 22.0)),
+                        SizedBox(height: textSize),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            DetailItem(
+                              label: translations.h_ride_details_total_distance,
+                              value: '${distance / 1000} km',
+                            ),
+                            DetailItem(
+                              label: translations.h_ride_details_ride_duration,
+                              value: rideRecord.time.toString(),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: textSize),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            DetailItem(
+                              label: translations.h_ride_details_maximum_speed,
+                              value: '$maxCurrentSpeed km/h',
+                            ),
+                            DetailItem(
+                              label: translations.h_ride_details_average_speed,
+                              value: '$averageSpeed km/h',
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: textSize),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            DetailItem(
+                              label: translations.h_ride_details_calories_burned,
+                              value: '$burnedCalories kcal',
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: textSize * 2),
+                      ],
                     ),
-                    child: Padding(
-                      padding: EdgeInsets.all(textSize),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(translations.h_ride_details,
-                              style: const TextStyle(fontSize: 22.0)),
-                          SizedBox(height: textSize),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              DetailItem(
-                                label: translations.h_ride_details_total_distance,
-                                value: '${distance / 1000} km',
-                              ),
-                              DetailItem(
-                                label: translations.h_ride_details_ride_duration,
-                                value: rideRecord.time.toString(),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: textSize),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              DetailItem(
-                                label: translations.h_ride_details_maximum_speed,
-                                value: '$maxCurrentSpeed km/h',
-                              ),
-                              DetailItem(
-                                label: translations.h_ride_details_average_speed,
-                                value: '$averageSpeed km/h',
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: textSize),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              DetailItem(
-                                label: translations.h_ride_details_calories_burned,
-                                value: '$burnedCalories kcal',
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: textSize * 2),
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
+                  ),
+                )
+              ],
+            ),
           ),
         ],
       ),

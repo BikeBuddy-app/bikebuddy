@@ -14,13 +14,13 @@ class PausePage extends StatefulWidget {
 class _PausePageState extends State<PausePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const BBAppBar(),
+    return const Scaffold(
+      appBar: BBAppBar(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: const <Widget>[
+          children: <Widget>[
             Text(
               'Text for test',
             ),

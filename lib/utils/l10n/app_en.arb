@@ -104,6 +104,9 @@
     "u_max_distance": "Longest distance:",
     "@u_max_distance_details": {
         "description": "Max distance tile title in user page"
+    },
+    "ready_text": "Get Ready!",
+    "@ready_text_details": {
+        "description": "Text displayed during the starting countdown"
     }
-    
 }
