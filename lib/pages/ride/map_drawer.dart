@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:bike_buddy/constants/default_values.dart' as defaults;
 
+import 'package:bike_buddy/utils/telemetry.dart';
+import 'package:geolocator/geolocator.dart';
+
 class MapDrawer {
   String? previousRoadKey;
   GeoPoint? markerPosition;
@@ -30,11 +33,11 @@ class MapDrawer {
     }
   }
 
-  Future<String> drawRoad(List<GeoPoint> points) async {
+  Future<String> drawRoad(List<GeoPoint> points, [Color? color]) async {
     return await mapController.drawRoadManually(
       points,
-      const RoadOption(
-        roadColor: Colors.pink,
+      RoadOption(
+        roadColor: color ?? Colors.pink,
         roadWidth: 10,
         zoomInto: false,
       ),
@@ -51,6 +54,21 @@ class MapDrawer {
         ),
       ),
     );
+  }
+
+  void drawMarker(Position position, MarkerIcon icon, [double rotation = 0.0]) {
+    mapController.addMarker(position.toGeoPoint(), markerIcon: icon, angle: convertDegToRad(position.heading + rotation));
+  }
+
+  void removeMarker(Position position) {
+    mapController.removeMarker(position.toGeoPoint());
+  }
+
+  void changeMarkerLocation(Position oldPosition, Position newPosition, MarkerIcon icon) {
+    print("przeniesienie markera");
+    print(oldPosition.toJson().toString());
+    print(newPosition.toJson().toString());
+    mapController.changeLocationMarker(oldLocation: oldPosition.toGeoPoint(), newLocation: newPosition.toGeoPoint(), markerIcon: icon);
   }
 
   void resume() {

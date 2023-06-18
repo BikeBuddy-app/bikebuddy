@@ -5,9 +5,10 @@ import 'package:bike_buddy/components/map/bb_map.dart';
 import 'package:bike_buddy/extensions/position_extension.dart';
 import 'package:bike_buddy/hive/entities/ride_record.dart';
 import 'package:bike_buddy/pages/ride/map_drawer.dart';
+import 'package:bike_buddy/pages/ride/ride_page.dart';
+import 'package:bike_buddy/pages/ride/ride_page.dart';
 import 'package:bike_buddy/utils/settings_manager.dart';
 import 'package:bike_buddy/utils/telemetry.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
@@ -73,6 +74,18 @@ class _RideDetailsPageState extends State<RideDetailsPage> {
 
     return Scaffold(
       appBar: const BBAppBar(),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.amberAccent,
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (context) {
+              return ReplayRideModal(rideRecord: rideRecord);
+            },
+          );
+        },
+        child: const Icon(Icons.play_circle_outline),
+      ),
       body: Stack(
         children: [
           BBMap(controller: mapDrawer.mapController),
@@ -91,7 +104,8 @@ class _RideDetailsPageState extends State<RideDetailsPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(translations.h_ride_details, style: const TextStyle(fontSize: 22.0)),
+                        Text(translations.h_ride_details,
+                            style: const TextStyle(fontSize: 22.0)),
                         SizedBox(height: textSize),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -175,5 +189,36 @@ class DetailItem extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class ReplayRideModal extends StatelessWidget {
+  final RideRecord rideRecord;
+  const ReplayRideModal({
+    required this.rideRecord,
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final translations = AppLocalizations.of(context)!;
+    return Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(translations.bb_ride_title, style: const TextStyle(fontSize: 22.0)),
+            const SizedBox(height: 16.0),
+            Text(translations.bb_ride_description),
+            const SizedBox(height: 16.0),
+            TextButton(
+              onPressed: () => {
+                Navigator.pushNamed(context, RidePage.routeName,
+                    arguments: {'trackedRide': rideRecord})
+              },
+              child: Text(translations.bb_ride_button),
+            ),
+          ],
+        ));
   }
 }

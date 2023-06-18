@@ -12,6 +12,7 @@ import 'package:bike_buddy/extensions/position_extension.dart';
 import 'package:bike_buddy/hive/entities/ride_record.dart';
 import 'package:bike_buddy/pages/ride/map_drawer.dart';
 import 'package:bike_buddy/pages/ride_details_page.dart';
+import 'package:bike_buddy/services/buddy_drawer.dart';
 import 'package:bike_buddy/services/locator.dart';
 import 'package:bike_buddy/services/timer.dart';
 import 'package:bike_buddy/utils/settings_manager.dart';
@@ -32,18 +33,21 @@ class _RidePageState extends State<RidePage> with TickerProviderStateMixin {
   Duration currentTime = Duration.zero;
   Position currentPosition = default_values.position;
 
+  late final BBMap map;
   late final Timer timer;
   late final Locator locator;
   late final MapDrawer mapDrawer;
   late final AnimationController _countdownController;
+  late final RideRecord buddyRideRecord;
+  BuddyDrawer? buddyDrawer;
 
   late final int riderWeight;
 
   double currentDistance = 0.0;
   double burnedCalories = 0.0;
   double currentSpeed = 0.0;
-
   double maxCurrentSpeed = 0.0;
+
   Box<dynamic> rideRecordsBox = Hive.box("ride_records");
   RideRecord rideRecord = RideRecord();
 
@@ -51,14 +55,44 @@ class _RidePageState extends State<RidePage> with TickerProviderStateMixin {
   void initState() {
     initializeTimer(); //todo sprobowac inicializowac jako constructor initializer list??
     initializeLocator();
-    initializeMapDrawer();
+    initializeMap();
     initializeRiderInfo();
     initializeCountdown();
     initializeCurrentLocation();
     super.initState();
   }
 
-  void initializeMapDrawer() {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    initializeBuddyIfEnabled();
+    startTimers();
+  }
+
+  void initializeBuddyIfEnabled() {
+    final Map<String, dynamic>? arguments = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    final rideRecord = arguments?['trackedRide'] as RideRecord?;
+    if (rideRecord == null) return;
+    buddyRideRecord = rideRecord;
+
+    // wait for map and controllers to initialize
+    Future.delayed(const Duration(milliseconds: 500), () {
+      buddyDrawer = BuddyDrawer(buddyRideRecord, mapDrawer);
+      buddyDrawer?.drawRoute();
+
+      //mapDrawer.drawBuddyRoad(buddyRideRecord);
+      //buddyDrawer?.start();
+    });
+  }
+
+  void startTimers() {
+    Future.delayed(const Duration(milliseconds: 500), () {
+      timer.start();
+      buddyDrawer?.start();
+    });
+  }
+
+  void initializeMap() {
     mapDrawer = MapDrawer();
   }
 
@@ -86,7 +120,6 @@ class _RidePageState extends State<RidePage> with TickerProviderStateMixin {
     timer = Timer((currentTime) => setState(() {
           this.currentTime = currentTime;
         }));
-    timer.start();
   }
 
   void initializeCountdown() {
@@ -131,6 +164,7 @@ class _RidePageState extends State<RidePage> with TickerProviderStateMixin {
       isRideActive = true;
     });
     timer.resume();
+    buddyDrawer?.resume();
     mapDrawer.resume();
   }
 
@@ -139,12 +173,14 @@ class _RidePageState extends State<RidePage> with TickerProviderStateMixin {
       isRideActive = false;
     });
     timer.pause();
+    buddyDrawer?.pause();
     mapDrawer.pause(rideRecord);
   }
 
   void stopButtonHandler() {
     locator.stop();
     timer.stop();
+    buddyDrawer?.stop();
     saveCurrentRide();
     Navigator.pushReplacementNamed(
       context,
@@ -244,7 +280,9 @@ class _RidePageState extends State<RidePage> with TickerProviderStateMixin {
                             size: 25,
                           ),
                           onPressed:
-                              () {}, //todo jezeli bedzie przesuwanie mapy palcem to zaimplementowac, jak nie - wywalic przycisk
+                              () {
+                                buddyDrawer?.zoomOutToShowWholeRoute();
+                              }, //todo jezeli bedzie przesuwanie mapy palcem to zaimplementowac, jak nie - wywalic przycisk
                         )
                       ],
                     ),

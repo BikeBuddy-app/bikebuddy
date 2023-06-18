@@ -108,5 +108,18 @@
     "ready_text": "Get Ready!",
     "@ready_text_details": {
         "description": "Text displayed during the starting countdown"
+    },
+    "bb_ride_title": "Start a new ride with Buddy",
+    "@bb_ride_title_details": {
+        "description": "Title of Buddy feature"
+    },
+    "bb_ride_description": "By starting new ride with Buddy you will be able to compare your current performance with this ride performed previously. You will be able to se a ghost rider on the map and compare your current speed with the speed of the ghost rider.",
+    "@bb_ride_description_details": {
+        "description": "Description of the Buddy feature, when starting new ride with Buddy"
+    },
+    "bb_ride_button": "Start",
+    "@bb_ride_button_details": {
+        "description": "Text on button to start ride with Buddy"
     }
+    
 }

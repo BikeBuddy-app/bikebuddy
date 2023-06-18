@@ -20,3 +20,4 @@ final ButtonStyle kLargeRoundButtonStyle = ElevatedButton.styleFrom(
 );
 
 const double MET = 7.75; // wartosc okreslajaca srednia intensywnosc wysilku
+const mean_Earth_radius = 6371008.8;

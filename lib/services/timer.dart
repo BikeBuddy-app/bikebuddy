@@ -5,10 +5,10 @@ import 'package:bike_buddy/models/standard_duration.dart';
 class Timer {
   late flutter_timer.Timer _timer;
   Duration _duration = const Duration(seconds: 0);
-  final Duration interval = const Duration(seconds: 1);
+  final Duration interval;
   final void Function(Duration) changeCallback;
 
-  Timer(this.changeCallback);
+  Timer(this.changeCallback, {this.interval = const Duration(seconds: 1)});
 
   void start() {
     _timer = flutter_timer.Timer.periodic(

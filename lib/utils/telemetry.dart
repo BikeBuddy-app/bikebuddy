@@ -1,5 +1,8 @@
 import 'package:bike_buddy/constants/general_constants.dart' as constants;
 import 'package:bike_buddy/extensions/double_extension.dart';
+import 'package:vector_math/vector_math.dart' as vector_math;
+import 'dart:math' as math;
+import 'package:bike_buddy/extensions/double_extension.dart';
 import 'package:bike_buddy/hive/entities/ride_record.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -32,4 +35,16 @@ double calculateBurnedCalories(List<PositionRecord> route, int weight) {
   final calories =
       constants.MET * weight * route[route.length - 1].timestamp.inSeconds / 3600.0 * 1.5;
   return calories.toPrecision(1);
+}
+
+// convert degrees to radians in range <-pi, pi>
+double convertDegToRad(double deg) {
+  //var rad = deg * constants.PI / 180;
+  var rad = vector_math.radians(deg) % (2 * math.pi);
+  if (rad > math.pi) {
+    rad -= 2 * math.pi;
+  } else if (rad < -math.pi) {
+    rad += 2 * math.pi;
+  }
+  return rad;
 }
