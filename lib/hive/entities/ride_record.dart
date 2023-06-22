@@ -21,21 +21,27 @@ class RideRecord {
   Duration time;
   @HiveField(5)
   double maxSpeed;
+  @HiveField(6)
+  DateTime date;
 
   RideRecord()
       : route = List.empty(growable: true),
         time = Duration.zero,
-        maxSpeed = 0.0;
+        maxSpeed = 0.0,
+        date = DateTime.now();
 
   void addRoutePoint(PositionRecord positionRecord) {
     route.add(positionRecord);
   }
 
-  void setTime(Duration time) {
-    this.time = time;
-  }
+  bool get fromThisWeek => DateTime.now().difference(date) < const Duration(days: 7);
 
-  void setMaxSpeed(double maxSpeed) {
-    this.maxSpeed = maxSpeed;
+  @override
+  String toString() {
+    return """Ride Record: 
+    time - $time, 
+    max speed - $maxSpeed, 
+    route length - ${route.length} points
+    date - $date""";
   }
 }

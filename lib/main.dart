@@ -30,7 +30,7 @@ void main() async {
   Hive.registerAdapter(StandardDurationAdapter());
   Hive.registerAdapter(PositionAdapter());
 
-  await Hive.openBox('ride_records');
+  await Hive.openBox<RideRecord>('ride_records');
 
   runApp(
     ChangeNotifierProvider(

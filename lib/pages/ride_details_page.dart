@@ -6,7 +6,6 @@ import 'package:bike_buddy/extensions/position_extension.dart';
 import 'package:bike_buddy/hive/entities/ride_record.dart';
 import 'package:bike_buddy/pages/ride/map_drawer.dart';
 import 'package:bike_buddy/pages/ride/ride_page.dart';
-import 'package:bike_buddy/pages/ride/ride_page.dart';
 import 'package:bike_buddy/utils/settings_manager.dart';
 import 'package:bike_buddy/utils/telemetry.dart';
 import 'package:flutter/material.dart';

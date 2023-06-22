@@ -47,18 +47,16 @@ class _RidePageState extends State<RidePage> with TickerProviderStateMixin {
   double burnedCalories = 0.0;
   double currentSpeed = 0.0;
   double maxCurrentSpeed = 0.0;
-
-  Box<dynamic> rideRecordsBox = Hive.box("ride_records");
+  final Box<RideRecord> rideRecordsBox = Hive.box("ride_records");
   RideRecord rideRecord = RideRecord();
 
   @override
   void initState() {
     initializeTimer(); //todo sprobowac inicializowac jako constructor initializer list??
-    initializeLocator();
+    initializeLocator().then((_) => initializeCurrentLocation());
     initializeMap();
     initializeRiderInfo();
     initializeCountdown();
-    initializeCurrentLocation();
     super.initState();
   }
 
@@ -70,7 +68,8 @@ class _RidePageState extends State<RidePage> with TickerProviderStateMixin {
   }
 
   void initializeBuddyIfEnabled() {
-    final Map<String, dynamic>? arguments = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    final Map<String, dynamic>? arguments =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
     final rideRecord = arguments?['trackedRide'] as RideRecord?;
     if (rideRecord == null) return;
     buddyRideRecord = rideRecord;
@@ -101,8 +100,8 @@ class _RidePageState extends State<RidePage> with TickerProviderStateMixin {
   }
 
   void saveCurrentRide() {
-    rideRecord.setTime(currentTime);
-    rideRecord.setMaxSpeed(maxCurrentSpeed);
+    rideRecord.time = currentTime;
+    rideRecord.maxSpeed = maxCurrentSpeed;
     rideRecordsBox.add(rideRecord);
   }
 
@@ -111,9 +110,9 @@ class _RidePageState extends State<RidePage> with TickerProviderStateMixin {
     riderWeight = settings.riderWeight;
   }
 
-  void initializeLocator() {
+  Future<void> initializeLocator() async {
     locator = Locator((newPosition) => updatePosition(newPosition));
-    locator.start();
+    await locator.start();
   }
 
   void initializeTimer() {
@@ -279,10 +278,9 @@ class _RidePageState extends State<RidePage> with TickerProviderStateMixin {
                             Icons.location_pin,
                             size: 25,
                           ),
-                          onPressed:
-                              () {
-                                buddyDrawer?.zoomOutToShowWholeRoute();
-                              }, //todo jezeli bedzie przesuwanie mapy palcem to zaimplementowac, jak nie - wywalic przycisk
+                          onPressed: () {
+                            buddyDrawer?.zoomOutToShowWholeRoute();
+                          }, //todo jezeli bedzie przesuwanie mapy palcem to zaimplementowac, jak nie - wywalic przycisk
                         )
                       ],
                     ),

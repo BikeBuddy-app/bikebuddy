@@ -54,7 +54,7 @@ class TripListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     List<RideRecord> trips = List.empty(growable: true);
 
-    var box = Hive.box("ride_records");
+    final Box<RideRecord> box = Hive.box("ride_records");
     for (RideRecord value in box.values) {
       trips.add(value);
     }

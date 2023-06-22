@@ -1,4 +1,9 @@
+import 'package:bike_buddy/hive/entities/ride_record.dart';
+import 'package:bike_buddy/utils/settings_manager.dart';
+import 'package:bike_buddy/utils/telemetry.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
 
 import 'package:bike_buddy/components/bb_appbar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -14,19 +19,37 @@ class UserPage extends StatefulWidget {
 
 class _UserPageState extends State<UserPage> {
   //temp variables to be replace with data from a provider
-  final username = "Username";
-  final distance = 420;
-  final calories = 7;
-  final time = const Duration(hours: 2, minutes: 10, seconds: 37);
-  final streak = 9;
-  final maxDistance = 200;
+  late String username = "Username";
+  late double distance = 0;
+  late double calories = 0;
+  late Duration time;
+  late int streak = 0;
+  late double maxDistance = 0;
 
   bool showWeekly = false;
+
+  void loadStats() {
+    final Box<RideRecord> box = Hive.box('ride_records');
+    final settings = context.read<SettingsManager>();
+    final records = showWeekly ? box.values.where((e) => e.fromThisWeek) : box.values;
+    distance = calcTotalDistance(records);
+    calories = calcTotalCalories(records, settings.riderWeight);
+    time = calcTotalRideDuration(records);
+    streak = calcStreak(records);
+    maxDistance = calcMaxDistance(records);
+  }
+
+  @override
+  void initState() {
+    loadStats();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final localization = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: const BBAppBar(),
       body: Column(
@@ -103,6 +126,7 @@ class _UserPageState extends State<UserPage> {
                           value: showWeekly,
                           onChanged: (value) => setState(() {
                             showWeekly = value;
+                            loadStats();
                           }),
                         ),
                       ],
@@ -113,7 +137,7 @@ class _UserPageState extends State<UserPage> {
                           StatsTile(
                             icon: const Icon(Icons.pedal_bike),
                             title: localization.u_distance,
-                            value: "${distance}km",
+                            value: "${distance / 1000}km",
                           ),
                           StatsTile(
                             icon: const Icon(Icons.local_fire_department),
@@ -133,7 +157,7 @@ class _UserPageState extends State<UserPage> {
                           StatsTile(
                             icon: const Icon(Icons.emoji_events),
                             title: localization.u_max_distance,
-                            value: "${maxDistance}km",
+                            value: "${maxDistance / 1000}km",
                           ),
                         ],
                       ),

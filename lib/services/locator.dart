@@ -18,7 +18,7 @@ class Locator {
     return await Geolocator.getCurrentPosition();
   }
 
-  void start() async {
+  Future<void> start() async {
     LocationPermission permission = await Geolocator.requestPermission();
     if (permission != LocationPermission.denied) {
       try {

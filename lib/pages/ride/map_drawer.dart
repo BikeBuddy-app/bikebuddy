@@ -57,7 +57,8 @@ class MapDrawer {
   }
 
   void drawMarker(Position position, MarkerIcon icon, [double rotation = 0.0]) {
-    mapController.addMarker(position.toGeoPoint(), markerIcon: icon, angle: convertDegToRad(position.heading + rotation));
+    mapController.addMarker(position.toGeoPoint(),
+        markerIcon: icon, angle: convertDegToRad(position.heading + rotation));
   }
 
   void removeMarker(Position position) {
@@ -65,10 +66,11 @@ class MapDrawer {
   }
 
   void changeMarkerLocation(Position oldPosition, Position newPosition, MarkerIcon icon) {
-    print("przeniesienie markera");
-    print(oldPosition.toJson().toString());
-    print(newPosition.toJson().toString());
-    mapController.changeLocationMarker(oldLocation: oldPosition.toGeoPoint(), newLocation: newPosition.toGeoPoint(), markerIcon: icon);
+    mapController.changeLocationMarker(
+      oldLocation: oldPosition.toGeoPoint(),
+      newLocation: newPosition.toGeoPoint(),
+      markerIcon: icon,
+    );
   }
 
   void resume() {
