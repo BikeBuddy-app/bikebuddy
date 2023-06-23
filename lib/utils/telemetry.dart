@@ -113,3 +113,17 @@ int calcStreak(Iterable<RideRecord> records) {
 
   return streak;
 }
+
+int calculateTotalXp(Iterable<RideRecord> records) {
+  return calcTotalDistance(records).floor();
+}
+
+int calculateLevel(int xp) {
+  //wygląda strasznie ale wzór prosty
+  //pierszy lvl wymaga 500xp, drugi 1000xp, trzeci 1500xp etc.
+  return (0.02 * (-25 + math.sqrt(625 + 10 * xp))).floor() + 1;
+}
+
+int calculateTotalXpToReachLvl(int level) {
+  return 250 * level * (level - 1);
+}

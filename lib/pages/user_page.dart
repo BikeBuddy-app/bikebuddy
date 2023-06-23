@@ -18,13 +18,17 @@ class UserPage extends StatefulWidget {
 }
 
 class _UserPageState extends State<UserPage> {
-  //temp variables to be replace with data from a provider
+  late final int totalXp;
+  late final int level;
+  late final int xp;
+  late final int requiredXp;
+
   late String username = "Username";
-  late double distance = 0;
-  late double calories = 0;
+  late double distance;
+  late double calories;
   late Duration time;
-  late int streak = 0;
-  late double maxDistance = 0;
+  late int streak;
+  late double maxDistance;
 
   bool showWeekly = false;
 
@@ -41,6 +45,13 @@ class _UserPageState extends State<UserPage> {
 
   @override
   void initState() {
+    final Box<RideRecord> box = Hive.box('ride_records');
+
+    totalXp = calculateTotalXp(box.values);
+    level = calculateLevel(totalXp);
+    xp = totalXp - calculateTotalXpToReachLvl(level);
+    requiredXp = calculateTotalXpToReachLvl(level + 1) - calculateTotalXpToReachLvl(level);
+
     loadStats();
     super.initState();
   }
@@ -94,9 +105,13 @@ class _UserPageState extends State<UserPage> {
               ),
             ),
           ),
-          const Expanded(
+          Expanded(
             flex: 1,
-            child: XPBar(),
+            child: XPBar(
+              xp: xp,
+              requiredXp: requiredXp,
+              level: level,
+            ),
           ),
           Expanded(
             flex: 6,
@@ -204,11 +219,16 @@ class StatsTile extends StatelessWidget {
 }
 
 class XPBar extends StatelessWidget {
-  const XPBar({super.key});
+  final int xp;
+  final int requiredXp;
+  final int level;
 
-  final level = 69;
-  final totalXp = 37;
-  final xp = 21;
+  const XPBar({
+    required this.xp,
+    required this.requiredXp,
+    required this.level,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -231,7 +251,7 @@ class XPBar extends StatelessWidget {
                     ),
                   ),
                   FractionallySizedBox(
-                    widthFactor: xp / totalXp,
+                    widthFactor: xp / requiredXp,
                     child: Container(
                       decoration: BoxDecoration(
                         color: colorScheme.brightness == Brightness.light
@@ -251,7 +271,7 @@ class XPBar extends StatelessWidget {
           ],
         ),
         Text(
-          "$xp/$totalXp XP",
+          "$xp/$requiredXp XP",
           style: Theme.of(context).textTheme.bodyMedium,
         ),
       ],
