@@ -3,10 +3,12 @@ import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 
 class BBMap extends StatefulWidget {
   final MapController controller;
+  final Function(bool)? onLoaded;
 
   const BBMap({
     super.key,
     required this.controller,
+    this.onLoaded,
   });
 
   @override
@@ -17,6 +19,7 @@ class _BBMapState extends State<BBMap> {
   @override
   Widget build(BuildContext context) {
     return OSMFlutter(
+      onMapIsReady: widget.onLoaded,
       controller: widget.controller,
       initZoom: 19,
       minZoomLevel: 8,

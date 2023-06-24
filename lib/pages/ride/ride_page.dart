@@ -30,6 +30,7 @@ class RidePage extends StatefulWidget {
 class _RidePageState extends State<RidePage> with TickerProviderStateMixin {
   bool isRideActive = true;
   bool isCountdownActive = true;
+  bool isMapReady = true;
   Duration currentTime = Duration.zero;
   Position currentPosition = default_values.position;
 
@@ -231,7 +232,16 @@ class _RidePageState extends State<RidePage> with TickerProviderStateMixin {
         appBar: const BBAppBar.hideBackArrow(),
         body: Stack(
           children: [
-            BBMap(controller: mapDrawer.mapController),
+            BBMap(
+              controller: mapDrawer.mapController,
+              onLoaded: (isReady) {
+                if (isReady) {
+                  setState(() {
+                    isMapReady = true;
+                  });
+                }
+              },
+            ),
             Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -295,11 +305,17 @@ class _RidePageState extends State<RidePage> with TickerProviderStateMixin {
                 ],
               ),
             ),
-            if (isCountdownActive)
-              Container(
-                color: Theme.of(context).colorScheme.secondary,
-                child: Countdown(controller: _countdownController),
-              )
+            IgnorePointer(
+              ignoring: !isCountdownActive && isMapReady,
+              child: AnimatedOpacity(
+                opacity: isCountdownActive || !isMapReady ? 1.0 : 0.0,
+                duration: const Duration(milliseconds: 500),
+                child: Container(
+                  color: Theme.of(context).colorScheme.secondary,
+                  child: Countdown(controller: _countdownController),
+                ),
+              ),
+            )
           ],
         ),
       ),

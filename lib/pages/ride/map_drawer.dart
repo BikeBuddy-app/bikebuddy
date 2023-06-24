@@ -4,7 +4,6 @@ import 'package:bike_buddy/extensions/position_extension.dart';
 import 'package:bike_buddy/hive/entities/ride_record.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
-import 'package:bike_buddy/constants/default_values.dart' as defaults;
 
 import 'package:bike_buddy/utils/telemetry.dart';
 import 'package:geolocator/geolocator.dart';
@@ -16,7 +15,13 @@ class MapDrawer {
 
   bool drawRoads = true;
 
-  MapDrawer() : mapController = MapController(initPosition: defaults.position.toGeoPoint());
+  MapDrawer()
+      : mapController = MapController(
+          initMapWithUserPosition: const UserTrackingOption(
+            enableTracking: true,
+            unFollowUser: true,
+          ),
+        );
 
   Future<void> draw(RideRecord rideRecord) async {
     await prepareMarker();

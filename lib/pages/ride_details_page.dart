@@ -30,11 +30,10 @@ class _RideDetailsPageState extends State<RideDetailsPage> {
 
   late final int riderWeight;
 
-  zoomOut() {
+  void zoomOut() {
     mapDrawer.zoomOutToShowWholeRoute(rideRecord);
     mapDrawer.enableRoadDrawing();
     mapDrawer.drawRoad(points);
-    return;
   }
 
   @override
@@ -103,8 +102,7 @@ class _RideDetailsPageState extends State<RideDetailsPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(translations.h_ride_details,
-                            style: const TextStyle(fontSize: 22.0)),
+                        Text(translations.h_ride_details, style: const TextStyle(fontSize: 22.0)),
                         SizedBox(height: textSize),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -193,10 +191,7 @@ class DetailItem extends StatelessWidget {
 
 class ReplayRideModal extends StatelessWidget {
   final RideRecord rideRecord;
-  const ReplayRideModal({
-    required this.rideRecord,
-    super.key
-  });
+  const ReplayRideModal({required this.rideRecord, super.key});
 
   @override
   Widget build(BuildContext context) {
