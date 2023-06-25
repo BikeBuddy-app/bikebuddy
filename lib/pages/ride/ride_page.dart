@@ -112,14 +112,22 @@ class _RidePageState extends State<RidePage> with TickerProviderStateMixin {
   }
 
   Future<void> initializeLocator() async {
-    locator = Locator((newPosition) => updatePosition(newPosition));
+    locator = Locator((newPosition) {
+      updatePosition(newPosition);
+      timer.registerMove();
+    });
     await locator.start();
   }
 
   void initializeTimer() {
-    timer = Timer((currentTime) => setState(() {
-          this.currentTime = currentTime;
-        }));
+    timer = Timer(
+      changeCallback: (currentTime) => setState(() {
+        this.currentTime = currentTime;
+      }),
+      onNotMoving: () => setState(() {
+        currentSpeed = 0;
+      }),
+    );
   }
 
   void initializeCountdown() {
@@ -153,7 +161,8 @@ class _RidePageState extends State<RidePage> with TickerProviderStateMixin {
         currentDistance = calculateDistance(rideRecord.route) / 1000;
         burnedCalories = calculateBurnedCalories(rideRecord.route, riderWeight);
       }
-      currentSpeed = double.parse((currentPosition.speed * 3.6).toStringAsFixed(1));
+      currentSpeed =
+          double.parse((currentPosition.speed * 3.6).toStringAsFixed(1));
       if (currentSpeed > maxCurrentSpeed) maxCurrentSpeed = currentSpeed;
       mapDrawer.draw(rideRecord);
     });
@@ -299,7 +308,9 @@ class _RidePageState extends State<RidePage> with TickerProviderStateMixin {
                     flex: 5,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: isRideActive == true ? activeRideButtons : inactiveRideButtons,
+                      children: isRideActive == true
+                          ? activeRideButtons
+                          : inactiveRideButtons,
                     ),
                   ),
                 ],

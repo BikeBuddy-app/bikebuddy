@@ -13,12 +13,11 @@ import 'package:vector_math/vector_math.dart' as vector_math;
 
 class BuddyDrawer {
   MarkerIcon buddyIcon = const MarkerIcon(
-    icon: Icon(
-      Icons.directions_bike,
-      color: Colors.black,
-      size: 50,
-    )
-  );
+      icon: Icon(
+    Icons.directions_bike,
+    color: Colors.black,
+    size: 50,
+  ));
 
   late final RideRecord rideRecord;
   late final MapDrawer mapDrawer;
@@ -36,7 +35,9 @@ class BuddyDrawer {
 
   BuddyDrawer(this.rideRecord, this.mapDrawer) {
     debugPrint("Initializing Buddy: [points: ${rideRecord.route.length}");
-    timer = Timer((duration) => drawBuddyPosition(duration), interval: const Duration(milliseconds: 500));
+    timer = Timer(
+        changeCallback: (duration) => drawBuddyPosition(duration),
+        interval: const Duration(milliseconds: 500));
     currentPosition = rideRecord.route[currentRouteIndex].position;
     mapDrawer.drawMarker(currentPosition, buddyIcon);
     lastRouteIndex = rideRecord.route.length - 1;
@@ -51,14 +52,17 @@ class BuddyDrawer {
     debugPrint("Buddy started his ride");
     timer.start();
   }
+
   void pause() {
     debugPrint("Buddy paused his ride");
     timer.pause();
   }
+
   void resume() {
     debugPrint("Buddy resumed his ride");
     timer.resume();
   }
+
   void stop() {
     debugPrint("Buddy stopped his ride");
     timer.stop();
@@ -75,7 +79,8 @@ class BuddyDrawer {
       return;
     }
 
-    if (currentDuration.inMilliseconds >= rideRecord.route[currentRouteIndex + 1].timestamp.inMilliseconds) {
+    if (currentDuration.inMilliseconds >=
+        rideRecord.route[currentRouteIndex + 1].timestamp.inMilliseconds) {
       mapDrawer.removeMarker(prevPosition);
 
       prevPosition = currentPosition;
@@ -84,9 +89,11 @@ class BuddyDrawer {
 
       mapDrawer.drawMarker(currentPosition, buddyIcon, -90);
       mapDrawer.removeMarker(prevPosition);
-
     } else {
-      PositionRecord calculatedPos = getIntermediatePosition(rideRecord.route[currentRouteIndex], rideRecord.route[currentRouteIndex + 1], currentDuration);
+      PositionRecord calculatedPos = getIntermediatePosition(
+          rideRecord.route[currentRouteIndex],
+          rideRecord.route[currentRouteIndex + 1],
+          currentDuration);
       mapDrawer.removeMarker(prevPosition);
       prevPosition = currentPosition;
       currentPosition = calculatedPos.position;
@@ -100,23 +107,40 @@ class BuddyDrawer {
     mapDrawer.zoomOutToShowWholeRoute(rideRecord);
   }
 
-  PositionRecord getIntermediatePosition(PositionRecord currentPos, PositionRecord nextPos, Duration currentDuration) {
-
-    double distance = Geolocator.distanceBetween(currentPos.position.latitude, currentPos.position.longitude, nextPos.position.latitude, nextPos.position.longitude);
-    double speed = distance / (nextPos.timestamp.inMilliseconds - currentPos.timestamp.inMilliseconds);
-    int time = currentDuration.inMilliseconds - currentPos.timestamp.inMilliseconds;
+  PositionRecord getIntermediatePosition(PositionRecord currentPos,
+      PositionRecord nextPos, Duration currentDuration) {
+    double distance = Geolocator.distanceBetween(
+        currentPos.position.latitude,
+        currentPos.position.longitude,
+        nextPos.position.latitude,
+        nextPos.position.longitude);
+    double speed = distance /
+        (nextPos.timestamp.inMilliseconds -
+            currentPos.timestamp.inMilliseconds);
+    int time =
+        currentDuration.inMilliseconds - currentPos.timestamp.inMilliseconds;
     double distanceTravelled = speed * time;
-    double bearing = vector_math.radians(Geolocator.bearingBetween(currentPos.position.latitude, currentPos.position.longitude, nextPos.position.latitude, nextPos.position.longitude));
+    double bearing = vector_math.radians(Geolocator.bearingBetween(
+        currentPos.position.latitude,
+        currentPos.position.longitude,
+        nextPos.position.latitude,
+        nextPos.position.longitude));
 
     double deltaLat = distanceTravelled * math.cos(bearing);
     double deltaLon = distanceTravelled * math.sin(bearing);
 
-    double newLat = currentPos.position.latitude + (deltaLat / (constants.mean_Earth_radius * math.pi / 180.0));
-    double newLon = currentPos.position.longitude + (deltaLon / ((constants.mean_Earth_radius * math.pi / 180.0) * math.cos(currentPos.position.latitude)));
+    double newLat = currentPos.position.latitude +
+        (deltaLat / (constants.mean_Earth_radius * math.pi / 180.0));
+    double newLon = currentPos.position.longitude +
+        (deltaLon /
+            ((constants.mean_Earth_radius * math.pi / 180.0) *
+                math.cos(currentPos.position.latitude)));
 
     PositionRecord intermediatePos = PositionRecord(
         Duration(milliseconds: currentDuration.inMilliseconds),
-        Position(latitude: newLat, longitude: newLon,
+        Position(
+            latitude: newLat,
+            longitude: newLon,
             timestamp: currentPos.position.timestamp,
             accuracy: currentPosition.accuracy,
             altitude: currentPosition.altitude,
@@ -126,5 +150,4 @@ class BuddyDrawer {
 
     return intermediatePos;
   }
-
 }
