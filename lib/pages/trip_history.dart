@@ -72,7 +72,7 @@ class TripListWidget extends StatelessWidget {
         return Card(
           color: Theme.of(context).colorScheme.tertiary,
           borderOnForeground: true,
-          margin: EdgeInsets.all(10),
+          margin: const EdgeInsets.all(10),
           elevation: 5,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(16)),

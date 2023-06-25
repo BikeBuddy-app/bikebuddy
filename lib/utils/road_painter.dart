@@ -22,7 +22,7 @@ class RoadPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(CustomPainter old) {
+  bool shouldRepaint(CustomPainter oldDelegate) {
     return false;
   }
 
@@ -33,6 +33,7 @@ class RoadPainter extends CustomPainter {
 
     var points = route
         .map((e) => e.position)
+        // ignore: unnecessary_null_comparison
         .where((e) => e.longitude != null && e.latitude != null)
         .toList();
 
