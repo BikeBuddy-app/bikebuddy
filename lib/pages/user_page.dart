@@ -45,13 +45,14 @@ class _UserPageState extends State<UserPage> {
 
   @override
   void initState() {
+    final settings = context.read<SettingsManager>();
     final Box<RideRecord> box = Hive.box('ride_records');
 
     totalXp = calculateTotalXp(box.values);
     level = calculateLevel(totalXp);
     xp = totalXp - calculateTotalXpToReachLvl(level);
     requiredXp = calculateTotalXpToReachLvl(level + 1) - calculateTotalXpToReachLvl(level);
-
+    username = settings.username;
     loadStats();
     super.initState();
   }

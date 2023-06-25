@@ -4,6 +4,9 @@ const List<String> SUPPORTED_DISTANCE_UNITS = ["kilometer", "mile"];
 
 const List<String> SUPPORTED_WEIGHT_UNITS = ["kg"];
 
+const int MIN_RIDER_WEIGHT = 20;
+const int MAX_RIDER_WEIGHT = 200;
+
 final ButtonStyle kSmallRoundButtonStyle = ElevatedButton.styleFrom(
   minimumSize: const Size(40, 40),
   shape: const CircleBorder(),

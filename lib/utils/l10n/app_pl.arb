@@ -35,6 +35,17 @@
 
     "bb_ride_title": "Rozpocznij przejazd z Buddy'm",
     "bb_ride_description": "Rozpoczynając nowy przejazd z Buddy'm będziesz mógł porównać swoje obecne osiągnięcia z poprzednim treningiem. Na mapie będziesz widział ikonkę Buddiego oznaczającą twoją poprzednią pozycję, dzięki czemu w łatwy sposób porównasz swoją prędkość z prędkością duszka.",
-    "bb_ride_button": "Rozpocznij"
+    "bb_ride_button": "Rozpocznij",
+
+    "ob_welcome": "Cześć!",
+    "ob_intro_text": "BikeBuddy pomoże Ci śledzić Twoje przejażdżki rowerowe i podejmować nowe wyzwania! Odkryj wspaniałe możliwości naszej aplikacji i zdobądź motywację do pokonywania kolejnych celów. Bądź na bieżąco z postępami i ciesz się niezapomnianymi przeżyciami na twoim rowerze!",
+    "ob_name_input_title": "Jak masz na imię?",
+    "ob_weight_input_title": "Ile ważysz?",
+    "ob_no_username_title": "BikeBuddy potrzebuje twojej nazwy!",
+    "ob_no_username_text": "Podaj swoją nazwę użytkownika",
+    "ob_no_username_button": "Wróć",
+    "ob_onboarding_finished_title": "To wszystko <username>, jesteś gotowy by rozpocząć przygodę!",
+    "ob_onboarding_finished_text": "Wykonaj pierwszy przejazd by odblokowac możliwość jazdy z Buddym!",
+    "ob_onboarding_finished_button": "Rozpocznij!"
 
 }

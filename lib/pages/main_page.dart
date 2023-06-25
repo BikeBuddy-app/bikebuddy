@@ -1,9 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 import 'package:bike_buddy/components/bb_appbar.dart';
 import 'package:bike_buddy/components/drawer/bb_drawer.dart';
+import 'package:bike_buddy/pages/intro/onboarding_page.dart';
 import 'package:bike_buddy/pages/ride/ride_page.dart';
+import 'package:bike_buddy/utils/settings_manager.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -15,6 +17,17 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final settings = context.read<SettingsManager>();
+      if (!settings.onboardingCompleted) {
+        Navigator.pushReplacementNamed(context, OnboardingScreen.routeName);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,9 +56,11 @@ class _MainPageState extends State<MainPage> {
                     ),
                   ),
                 ),
-                onPressed: () => Navigator.pushNamed(context, RidePage.routeName),
+                onPressed: () =>
+                    Navigator.pushNamed(context, RidePage.routeName),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 30.0, vertical: 10.0),
                   child: Text(
                     AppLocalizations.of(context)!.start_training,
                     style: Theme.of(context).textTheme.headlineSmall!.copyWith(

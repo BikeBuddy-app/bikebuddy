@@ -1,3 +1,4 @@
+import 'package:bike_buddy/pages/intro/onboarding_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -54,6 +55,8 @@ class BikeBuddy extends StatelessWidget {
       themeMode: settings.isDarkModeEnabled ? ThemeMode.dark : ThemeMode.light,
       routes: {
         '/': (context) => const MainPage(),
+        MainPage.routeName: (context) => const MainPage(),
+        OnboardingScreen.routeName: (context) => const OnboardingScreen(),
         RidePage.routeName: (context) => const RidePage(),
         UserPage.routeName: (context) => const UserPage(),
         SettingsPage.routeName: (context) => const SettingsPage(),

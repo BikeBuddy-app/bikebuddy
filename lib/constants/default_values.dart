@@ -8,6 +8,7 @@ const String language = 'pl';
 const String distanceUnit = 'kilometer';
 
 const int riderWeight = 70;
+const String username = 'Guest';
 
 const Position position = Position(
   longitude: 8.4737324,

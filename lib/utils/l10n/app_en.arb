@@ -120,6 +120,48 @@
     "bb_ride_button": "Start",
     "@bb_ride_button_details": {
         "description": "Text on button to start ride with Buddy"
+    },
+    "ob_welcome": "Welcome",
+    "@onbording_welcome_details": {
+        "description": "Title displayed on first onboarding page"
+    },
+    "ob_intro_text": "BikeBuddy will assist you in tracking your bike rides and embracing new challenges! Discover the amazing features of our app and find the motivation to conquer new goals. Stay updated on your progress and enjoy unforgettable experiences on your bike.",
+    "@onbording_intro_text_details": {
+        "description": "Text displayed on first onboarding page"
+    },
+    "ob_name_input_title": "What's your name?",
+    "@onbording_name_input_title_details": {
+        "description": "Title displayed on second onboarding page"
+    },
+    "ob_weight_input_title": "What's your weight?",
+    "@onbording_weight_input_title_details": {
+        "description": "Title displayed on third onboarding page"
+    },
+    "ob_no_username_title": "BikeBuddy wants to know you",
+    "@onbording_no_username_title_details": {
+        "description": "Title displayed on onboarding page, when no username is provided"
+    },
+    "ob_no_username_text": "Please go back and enter your name",
+    "@onbording_no_username_text_details": {
+        "description": "Text displayed on onboarding page, when no username is provided"
+    },
+    "ob_no_username_button": "Go back",
+    "@onbording_no_username_button_details": {
+        "description": "Button displayed on onboarding page, when no username is provided"
+    },
+    "ob_onboarding_finished_title": "All right <username>, you're all set!",
+    "@onbording_onboarding_finished_title_details": {
+        "description": "Title displayed on onboarding page, when onboarding is finished ('{}' is replaced with username)"
+    },
+    "ob_onboarding_finished_text": "Take your first ride to unlock the ability to ride with Buddy!",
+    "@onbording_onboarding_finished_text_details": {
+        "description": "Text displayed on onboarding page, when onboarding is finished"
+    },
+    "ob_onboarding_finished_button": "Let's go!",
+    "@onbording_onboarding_finished_button_details": {
+        "description": "Button displayed on onboarding page, when onboarding is finished"
     }
+
+
     
 }
