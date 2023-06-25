@@ -1,5 +1,6 @@
 import 'package:bike_buddy/constants/default_values.dart';
 import 'package:bike_buddy/hive/entities/ride_record.dart';
+import 'package:bike_buddy/utils/road_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:bike_buddy/components/bb_appbar.dart';
 import 'package:bike_buddy/pages/ride_details_page.dart';
@@ -36,6 +37,10 @@ List<Widget> tripDetails(BuildContext context, RideRecord trip) {
         style: Theme.of(context).textTheme.bodyMedium,
       ),
     ),
+    CustomPaint(
+      size: const Size(100, 100),
+      painter: RoadPainter(trip.route, 100, 100),
+    ),
     if (debugInfo)
       Padding(
         padding: const EdgeInsets.symmetric(vertical: padding),
@@ -65,8 +70,13 @@ class TripListWidget extends StatelessWidget {
       itemCount: trips.length,
       itemBuilder: (BuildContext context, int index) {
         return Card(
-          color: Theme.of(context).colorScheme.surface,
+          color: Theme.of(context).colorScheme.tertiary,
           borderOnForeground: true,
+          margin: EdgeInsets.all(10),
+          elevation: 5,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(16)),
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
