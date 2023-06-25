@@ -96,8 +96,8 @@ class _RidePageState extends State<RidePage> with TickerProviderStateMixin {
     mapDrawer = MapDrawer();
   }
 
-  void savePositionRecord() {
-    rideRecord.addRoutePoint(PositionRecord(currentTime, currentPosition));
+  void savePositionRecord(Position position) {
+    rideRecord.addRoutePoint(PositionRecord(currentTime, position));
   }
 
   void saveCurrentRide() {
@@ -157,14 +157,14 @@ class _RidePageState extends State<RidePage> with TickerProviderStateMixin {
       //todo nie uzywac setState w ten sposob, setstate tylko do zmiany stanu
       currentPosition = pos;
       if (isRideActive == true) {
-        savePositionRecord();
+        savePositionRecord(pos);
         currentDistance = calculateDistance(rideRecord.route) / 1000;
         burnedCalories = calculateBurnedCalories(rideRecord.route, riderWeight);
       }
       currentSpeed =
           double.parse((currentPosition.speed * 3.6).toStringAsFixed(1));
       if (currentSpeed > maxCurrentSpeed) maxCurrentSpeed = currentSpeed;
-      mapDrawer.draw(rideRecord);
+      mapDrawer.draw(pos);
     });
   }
 

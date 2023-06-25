@@ -46,11 +46,11 @@ class _BBMapState extends State<BBMap> {
         roadColor: Colors.yellowAccent,
       ),
       markerOption: MarkerOption(
-        defaultMarker: const MarkerIcon(
+        defaultMarker: MarkerIcon(
           icon: Icon(
-            Icons.person_pin_circle,
-            color: Colors.blue,
-            size: 56,
+            Icons.directions_bike_outlined,
+            size: 78,
+            color: Colors.pink.shade300,
           ),
         ),
       ),
