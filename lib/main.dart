@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:l10n_esperanto/l10n_esperanto.dart';
 
 import 'package:bike_buddy/constants/theme.dart';
 import 'package:bike_buddy/hive/adapters/position_adapter.dart';
@@ -69,6 +70,8 @@ class BikeBuddy extends StatelessWidget {
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
+        MaterialLocalizationsEo.delegate,
+        CupertinoLocalizationsEo.delegate,
       ],
     );
   }

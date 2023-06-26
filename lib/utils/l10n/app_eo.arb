@@ -1,0 +1,40 @@
+{
+    "language": "esperanto",
+
+    "m_path": "itinero",
+    "m_history": "historio",
+    "m_user": "profilo",
+    "m_achievements": "atingoj",
+    "m_settings": "agordoj",
+
+    "search": "serĉu",
+    "start_training": "veturu",
+    "language_title": "Lingvo",
+    "your_weight_title": "Pezo de la biciklisto",
+
+    "set_notifications": "Ebligu malhelan reĝimon",
+    "set_darkmode": "Malhela reĝimo",
+    "set_distance_unit": "Unuo de listanco",
+    "set_placeholder": "Lorem ipsum",
+
+    "h_ride_details": "Via veturo",
+    "h_ride_details_total_distance": "Vojaĝita distanco",
+    "h_ride_details_ride_duration": "Vojaĝdaŭro",
+    "h_ride_details_maximum_speed": "Maksimuma rapideco",
+    "h_ride_details_average_speed": "Averaĝa rapideco",
+    "h_ride_details_calories_burned": "Bruligitaj kalorioj",
+
+    "u_statistics": "Statistikoj",
+    "u_distance": "Vojaĝita distanco:",
+    "u_calories": "Bruligitaj kalorioj:",
+    "u_time": "Vojaĝdaŭro:",
+    "u_streak": "Tagoj en vico:",
+    "u_max_distance": "La plej longa veturo:",
+
+    "ready_text": "Preparu!",
+
+    "bb_ride_title": "Komencu novan veturon kun Buddy",
+    "bb_ride_description": "Komencante novan veturon kun Buddy, vi povos kompari vian nunajn kapablojn kun ĉi tiu veturo. Vi povos vidi fantoman rajdanton sur la mapo kaj kompari vian nunan rapidon kun la rapideco de ĝi.",
+    "bb_ride_button": "Komencu"
+
+}
