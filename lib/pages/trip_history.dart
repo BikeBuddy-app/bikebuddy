@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:bike_buddy/components/bb_appbar.dart';
 import 'package:bike_buddy/pages/ride_details_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TripHistoryPage extends StatefulWidget {
   const TripHistoryPage({super.key});
@@ -28,12 +29,13 @@ class _TripHistoryPageState extends State<TripHistoryPage> {
 List<Widget> tripDetails(BuildContext context, RideRecord trip) {
   const padding = 10.0;
   final duration = trip.time.toString();
+  final translations = AppLocalizations.of(context)!;
 
   return [
     Padding(
       padding: const EdgeInsets.symmetric(vertical: padding),
       child: Text(
-        'Duration: $duration',
+        "${translations.trip_detail_duration}$duration",
         style: Theme.of(context).textTheme.bodyMedium,
       ),
     ),
@@ -64,6 +66,8 @@ class TripListWidget extends StatelessWidget {
       trips.add(value);
     }
 
+    final translations = AppLocalizations.of(context)!;
+
     return ListView.separated(
       shrinkWrap: true,
       padding: const EdgeInsets.all(4),
@@ -82,7 +86,7 @@ class TripListWidget extends StatelessWidget {
             children: <Widget>[
               ListTile(
                 title: Text(
-                  "Trip ${index + 1}",
+                  "${translations.trip_tile_title}${index + 1}",
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 subtitle: Column(
@@ -94,7 +98,7 @@ class TripListWidget extends StatelessWidget {
                 children: <Widget>[
                   TextButton(
                     child: Text(
-                      'Details',
+                      translations.trip_tile_button_text,
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     onPressed: () {

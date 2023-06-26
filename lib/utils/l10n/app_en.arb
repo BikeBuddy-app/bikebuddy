@@ -160,8 +160,18 @@
     "ob_onboarding_finished_button": "Let's go!",
     "@onbording_onboarding_finished_button_details": {
         "description": "Button displayed on onboarding page, when onboarding is finished"
+    },
+
+    "trip_tile_title": "Trip",
+    "@trip_tile_title_details": {
+        "description": "Tile title in trip history page"
+    },
+    "trip_detail_duration": "Duration: ",
+    "@trip_detail_duration": {
+        "description": "Text displayed in trip details before duration numeric value"
+    },
+    "trip_tile_button_text": "Details",
+    "@trip_tile_button_text_details": {
+        "description": "Tile details button text in trip history page"
     }
-
-
-    
 }

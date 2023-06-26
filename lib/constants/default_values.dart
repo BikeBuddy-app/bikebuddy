@@ -1,7 +1,7 @@
 // Default settings values
 import 'package:geolocator/geolocator.dart';
 
-const bool debugInfo = true;
+const bool debugInfo = false;
 
 const bool darkMode = true;
 const String language = 'pl';

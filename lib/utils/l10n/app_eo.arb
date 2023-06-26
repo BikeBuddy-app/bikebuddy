@@ -35,6 +35,10 @@
 
     "bb_ride_title": "Komencu novan veturon kun Buddy",
     "bb_ride_description": "Komencante novan veturon kun Buddy, vi povos kompari vian nunajn kapablojn kun ĉi tiu veturo. Vi povos vidi fantoman rajdanton sur la mapo kaj kompari vian nunan rapidon kun la rapideco de ĝi.",
-    "bb_ride_button": "Komencu"
+    "bb_ride_button": "Komencu",
+
+    "trip_tile_title": "Veturo",
+    "trip_detail_duration": "Daŭro: ",
+    "trip_tile_button_text": "Detaloj"
 
 }

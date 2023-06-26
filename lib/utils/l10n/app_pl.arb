@@ -46,6 +46,9 @@
     "ob_no_username_button": "Wróć",
     "ob_onboarding_finished_title": "To wszystko <username>, jesteś gotowy by rozpocząć przygodę!",
     "ob_onboarding_finished_text": "Wykonaj pierwszy przejazd by odblokowac możliwość jazdy z Buddym!",
-    "ob_onboarding_finished_button": "Rozpocznij!"
+    "ob_onboarding_finished_button": "Rozpocznij!",
 
+    "trip_tile_title": "Przejazd",
+    "trip_detail_duration": "Czas trwania: ",
+    "trip_tile_button_text": "Szczegóły"
 }
