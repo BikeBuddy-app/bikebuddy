@@ -52,7 +52,7 @@ class RideRecordAdapter extends TypeAdapter<RideRecord> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return RideRecord()
-      ..route = (fields[3] as List).cast<PositionRecord>()
+      .._route = (fields[3] as List).cast<PositionRecord>()
       ..time = fields[4] as Duration;
   }
 
@@ -61,7 +61,7 @@ class RideRecordAdapter extends TypeAdapter<RideRecord> {
     writer
       ..writeByte(2)
       ..writeByte(3)
-      ..write(obj.route)
+      ..write(obj._route)
       ..writeByte(4)
       ..write(obj.time);
   }

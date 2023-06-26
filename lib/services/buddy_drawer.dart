@@ -34,17 +34,17 @@ class BuddyDrawer {
   bool drawRoads = true;
 
   BuddyDrawer(this.rideRecord, this.mapDrawer) {
-    debugPrint("Initializing Buddy: [points: ${rideRecord.route.length}");
+    debugPrint("Initializing Buddy: [points: ${rideRecord.getRouteWithoutPause().length}");
     timer = Timer(
         changeCallback: (duration) => drawBuddyPosition(duration),
         interval: const Duration(milliseconds: 500));
-    currentPosition = rideRecord.route[currentRouteIndex].position;
+    currentPosition = rideRecord.getRouteWithoutPause()[currentRouteIndex].position;
     mapDrawer.drawMarker(currentPosition, buddyIcon);
-    lastRouteIndex = rideRecord.route.length - 1;
+    lastRouteIndex = rideRecord.getRouteWithoutPause().length - 1;
   }
 
   Future<void> drawRoute() async {
-    var route = rideRecord.route.map((e) => e.position.toGeoPoint()).toList();
+    var route = rideRecord.getRouteWithoutPause().map((e) => e.position.toGeoPoint()).toList();
     await mapDrawer.drawRoad(route, routeColor);
   }
 
@@ -80,19 +80,19 @@ class BuddyDrawer {
     }
 
     if (currentDuration.inMilliseconds >=
-        rideRecord.route[currentRouteIndex + 1].timestamp.inMilliseconds) {
+        rideRecord.getRouteWithoutPause()[currentRouteIndex + 1].timestamp.inMilliseconds) {
       mapDrawer.removeMarker(prevPosition);
 
       prevPosition = currentPosition;
       currentRouteIndex++;
-      currentPosition = rideRecord.route[currentRouteIndex].position;
+      currentPosition = rideRecord.getRouteWithoutPause()[currentRouteIndex].position;
 
       mapDrawer.drawMarker(currentPosition, buddyIcon, -90);
       mapDrawer.removeMarker(prevPosition);
     } else {
       PositionRecord calculatedPos = getIntermediatePosition(
-          rideRecord.route[currentRouteIndex],
-          rideRecord.route[currentRouteIndex + 1],
+          rideRecord.getRouteWithoutPause()[currentRouteIndex],
+          rideRecord.getRouteWithoutPause()[currentRouteIndex + 1],
           currentDuration);
       mapDrawer.removeMarker(prevPosition);
       prevPosition = currentPosition;

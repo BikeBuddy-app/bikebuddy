@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:vector_math/vector_math.dart' as vector_math;
 
@@ -9,19 +10,20 @@ import 'package:bike_buddy/extensions/double_extension.dart';
 import 'package:bike_buddy/hive/entities/ride_record.dart';
 
 /// Zwraca długość trasy __w metrach__
-double calculateDistance(List<PositionRecord> route) {
-  if (route.length < 2) return 0.0;
-
-  var distance = 0.0;
-  for (var i = 0; i < route.length - 1; i++) {
-    var start = route[i].position;
-    var end = route[i + 1].position;
-    distance += Geolocator.distanceBetween(
-      start.latitude,
-      start.longitude,
-      end.latitude,
-      end.longitude,
-    ).roundToDouble();
+double calculateDistance(Map<int, List<GeoPoint>> segments) {
+  double distance = 0;
+  for (List<GeoPoint> segment in segments.values) {
+    if (segment.length < 2) continue;
+    for (var i = 0; i < segment.length - 1; i++) {
+      var start = segment[i];
+      var end = segment[i + 1];
+      distance += Geolocator.distanceBetween(
+        start.latitude,
+        start.longitude,
+        end.latitude,
+        end.longitude,
+      ).roundToDouble();
+    }
   }
 
   return distance;
@@ -32,11 +34,11 @@ double calculateAverageSpeed(Duration duration, double distance) {
   return result;
 }
 
-double calculateBurnedCalories(List<PositionRecord> route, int weight) {
+double calculateBurnedCalories(Duration trainingDuration, int weight) {
   // Spalone cal = MET * waga ciała (kg) * czas trwania (godziny) * 5
   // cal / 1000 => kcal
   final calories =
-      constants.MET * weight * route[route.length - 1].timestamp.inSeconds / 3600.0 * 1.5;
+      constants.MET * weight * trainingDuration.inSeconds / 3600.0 * 1.5;
   return calories.toPrecision(1);
 }
 
@@ -64,14 +66,14 @@ Duration calcTotalRideDuration(Iterable<RideRecord> records) {
 /// Zwraca sume długości tras __w metrach__
 double calcTotalDistance(Iterable<RideRecord> records) {
   return records.fold(0, (double distance, value) {
-    return distance + calculateDistance(value.route);
+    return distance + calculateDistance(value.asSegments());
   });
 }
 
 /// Zwraca długość najdłuższej z podanych tras __w metrach__
 double calcMaxDistance(Iterable<RideRecord> records) {
   return records.fold(0, (double max, value) {
-    final distance = calculateDistance(value.route);
+    final distance = calculateDistance(value.asSegments());
     return distance > max ? distance : max;
   });
 }
@@ -79,7 +81,7 @@ double calcMaxDistance(Iterable<RideRecord> records) {
 /// Zwraca sumę spalonych kalorii
 double calcTotalCalories(Iterable<RideRecord> records, int weight) {
   return records.fold(0, (double distance, value) {
-    return distance + calculateBurnedCalories(value.route, weight);
+    return distance + calculateBurnedCalories(value.time, weight);
   });
 }
 
@@ -107,7 +109,8 @@ int calcStreak(Iterable<RideRecord> records) {
     }
   }
 
-  if (date == null || DateUtils.dateOnly(DateTime.now()).difference(date).inDays > 1) {
+  if (date == null ||
+      DateUtils.dateOnly(DateTime.now()).difference(date).inDays > 1) {
     streak = 0;
   }
 

@@ -7,6 +7,7 @@ import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 
 import 'package:bike_buddy/utils/telemetry.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:bike_buddy/constants/default_values.dart' as defaults;
 
 class MapDrawer {
   String? previousRoadKey;
@@ -20,12 +21,8 @@ class MapDrawer {
   bool drawRoads = true;
 
   MapDrawer()
-      : mapController = MapController(
-    initMapWithUserPosition: const UserTrackingOption(
-      enableTracking: true,
-      unFollowUser: true,
-    ),
-  );
+      : mapController =
+            MapController(initPosition: defaults.position.toGeoPoint());
 
   Future<void> draw(Position position) async {
     if (markerPosition != null) removeMarker(markerPosition!);
@@ -39,7 +36,7 @@ class MapDrawer {
     }
     currentRoad.add(position.toGeoPoint());
 
-    adjustCurrentRoad();
+    currentRoad = adjustRoad(currentRoad);
 
     final roadKey = await drawRoad(currentRoad);
     if (previousRoadKey != null) {
@@ -48,10 +45,14 @@ class MapDrawer {
     previousRoadKey = roadKey;
   }
 
-  void adjustCurrentRoad() {
-    if (currentRoad.length == 1) {
-      GeoPoint point = currentRoad.first;
-      currentRoad = [
+  List<GeoPoint> adjustRoad(List<GeoPoint> road) {
+    List<GeoPoint> adjustedRoad = [];
+    for (GeoPoint geoPoint in road) {
+      adjustedRoad.add(geoPoint);
+    }
+    if (adjustedRoad.length == 1) {
+      GeoPoint point = adjustedRoad.first;
+      adjustedRoad = [
         GeoPoint(
             latitude: point.latitude - double.minPositive * 2,
             longitude: point.longitude - double.minPositive * 2),
@@ -60,17 +61,19 @@ class MapDrawer {
             longitude: point.longitude - double.minPositive),
         point
       ];
-    } else if (currentRoad.length == 2) {
-      GeoPoint first = currentRoad.first;
-      GeoPoint last = currentRoad.last;
-      currentRoad = [
+    } else if (adjustedRoad.length == 2) {
+      GeoPoint first = adjustedRoad.first;
+      GeoPoint last = adjustedRoad.last;
+      adjustedRoad = [
         first,
         GeoPoint(
-            latitude: (last.latitude - first.latitude) / 2,
-            longitude: (last.longitude - first.longitude)),
+          latitude: first.latitude + (last.latitude - first.latitude) / 2,
+          longitude: first.longitude + (last.longitude - first.longitude) / 2,
+        ),
         last
       ];
     }
+    return adjustedRoad;
   }
 
   void startFollowingSegment() {
@@ -95,6 +98,14 @@ class MapDrawer {
         zoomInto: false,
       ),
     );
+  }
+
+  void drawRoute(Map<int, List<GeoPoint>> route, [Color? color]) async {
+    for (List<GeoPoint> segment in route.values) {
+      if (segment.isNotEmpty) {
+        await drawRoad(adjustRoad(segment), color);
+      }
+    }
   }
 
   void drawMarker(Position position, MarkerIcon icon, [double rotation = 0.0]) {
@@ -132,31 +143,31 @@ class MapDrawer {
   }
 
   void zoomOutToShowWholeRoute(RideRecord rideRecord) {
-    if (rideRecord.route.isEmpty) {
+    var route = rideRecord.asSegments();
+    var minLat = double
+        .infinity; //todo mozna zapisywac w tej klasie na biezaco jak punkty przybywaja
+    var maxLat = double.negativeInfinity;
+    var minLon = double.infinity;
+    var maxLon = double.negativeInfinity;
+    if (route.isEmpty) {
       return;
     }
-    var firstPos = rideRecord.route[0].position;
+    for (List<GeoPoint> segment in route.values) {
+      for (GeoPoint position in segment) {
+        minLat = min(minLat, position.latitude);
+        maxLat = max(maxLat, position.latitude);
+        minLon = min(minLon, position.longitude);
+        maxLon = max(maxLon, position.longitude);
+      }
 
-    var minLat = firstPos
-        .latitude; //todo mozna zapisywac w tej klasie na biezaco jak punkty przybywaja
-    var maxLat = firstPos.latitude;
-    var minLon = firstPos.longitude;
-    var maxLon = firstPos.longitude;
-
-    for (final routeRecord in rideRecord.route) {
-      minLat = min(minLat, routeRecord.position.latitude);
-      maxLat = max(maxLat, routeRecord.position.latitude);
-      minLon = min(minLon, routeRecord.position.longitude);
-      maxLon = max(maxLon, routeRecord.position.longitude);
+      BoundingBox box = BoundingBox(
+        north: maxLat + 0.001,
+        east: maxLon + 0.0001,
+        south: minLat - 0.0001,
+        west: minLon - 0.0001,
+      );
+      mapController.zoomToBoundingBox(box);
     }
-
-    BoundingBox box = BoundingBox(
-      north: maxLat + 0.001,
-      east: maxLon + 0.0001,
-      south: minLat - 0.0001,
-      west: minLon - 0.0001,
-    );
-    mapController.zoomToBoundingBox(box);
   }
 
   void enableRoadDrawing() {

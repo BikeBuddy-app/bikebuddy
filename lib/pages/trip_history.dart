@@ -39,13 +39,13 @@ List<Widget> tripDetails(BuildContext context, RideRecord trip) {
     ),
     CustomPaint(
       size: const Size(100, 100),
-      painter: RoadPainter(trip.route, 100, 100),
+      painter: RoadPainter(trip.getRouteWithoutPause(), 100, 100),
     ),
     if (debugInfo)
       Padding(
         padding: const EdgeInsets.symmetric(vertical: padding),
         child: Text(
-          '[DEBUG] liczba punktow: ${trip.route.length}',
+          '[DEBUG] liczba punktow: ${trip.getRouteWithoutPause().length}',
           style: Theme.of(context).textTheme.bodyMedium,
         ),
       ),

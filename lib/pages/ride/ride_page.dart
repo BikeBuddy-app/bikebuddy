@@ -158,8 +158,8 @@ class _RidePageState extends State<RidePage> with TickerProviderStateMixin {
       currentPosition = pos;
       if (isRideActive == true) {
         savePositionRecord(pos);
-        currentDistance = calculateDistance(rideRecord.route) / 1000;
-        burnedCalories = calculateBurnedCalories(rideRecord.route, riderWeight);
+        currentDistance = calculateDistance(rideRecord.asSegments()) / 1000;
+        burnedCalories = calculateBurnedCalories(currentTime, riderWeight);
       }
       currentSpeed =
           double.parse((currentPosition.speed * 3.6).toStringAsFixed(1));
@@ -175,6 +175,7 @@ class _RidePageState extends State<RidePage> with TickerProviderStateMixin {
     timer.resume();
     buddyDrawer?.resume();
     mapDrawer.resume();
+    savePositionRecord(currentPosition);
   }
 
   void pauseButtonHandler() {
@@ -183,6 +184,7 @@ class _RidePageState extends State<RidePage> with TickerProviderStateMixin {
     });
     timer.pause();
     buddyDrawer?.pause();
+    rideRecord.addPause();
     mapDrawer.pause(rideRecord);
   }
 

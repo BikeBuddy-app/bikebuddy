@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bike_buddy/components/bb_appbar.dart';
 import 'package:bike_buddy/components/map/bb_map.dart';
-import 'package:bike_buddy/extensions/position_extension.dart';
 import 'package:bike_buddy/hive/entities/ride_record.dart';
 import 'package:bike_buddy/pages/ride/map_drawer.dart';
 import 'package:bike_buddy/pages/ride/ride_page.dart';
@@ -26,21 +25,21 @@ class _RideDetailsPageState extends State<RideDetailsPage> {
   late final MapDrawer mapDrawer;
   late final SettingsManager settings;
   late RideRecord rideRecord;
-  late List<GeoPoint> points;
+  late Map<int, List<GeoPoint>> points;
 
   late final int riderWeight;
 
-  void zoomOut() {
-    mapDrawer.zoomOutToShowWholeRoute(rideRecord);
+  void createMap() {
+    mapDrawer.zoomOutToShowWholeRoute(rideRecord); //todo riderecord?
     mapDrawer.enableRoadDrawing();
-    mapDrawer.drawRoad(points);
+    mapDrawer.drawRoute(points);
   }
 
   @override
   void initState() {
     mapDrawer = MapDrawer();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Timer(const Duration(seconds: 2), zoomOut);
+      Timer(const Duration(seconds: 2), createMap);
     });
 
     initializeRiderInfo();
@@ -60,15 +59,15 @@ class _RideDetailsPageState extends State<RideDetailsPage> {
 
     var tripInfo = ModalRoute.of(context)?.settings.arguments as Map;
     rideRecord = tripInfo['trip'];
-    List<PositionRecord> route = rideRecord.route;
-    // MapDrawer mapDrawer = MapDrawer(route.last.position);
-    double distance = calculateDistance(route);
-    double averageSpeed =
-        double.parse((calculateAverageSpeed(rideRecord.time, distance) * 3.6).toStringAsFixed(1));
-    double burnedCalories = calculateBurnedCalories(rideRecord.route, riderWeight);
+    points = rideRecord.asSegments();
+    // MapDrawer mapDrawer = MapDrawer(routeWithPauses.last.position);
+    double distance = calculateDistance(points); //todo powinno byc rowniez w ride record a nie liczyc za kazdym razem
+    double averageSpeed = double.parse(
+        (calculateAverageSpeed(rideRecord.time, distance) * 3.6)
+            .toStringAsFixed(1));
+    double burnedCalories =
+        calculateBurnedCalories(rideRecord.time, riderWeight);
     double maxCurrentSpeed = rideRecord.maxSpeed;
-
-    points = [for (PositionRecord p in route) p.position.toGeoPoint()];
 
     return Scaffold(
       appBar: const BBAppBar(),
@@ -102,7 +101,8 @@ class _RideDetailsPageState extends State<RideDetailsPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(translations.h_ride_details, style: const TextStyle(fontSize: 22.0)),
+                        Text(translations.h_ride_details,
+                            style: const TextStyle(fontSize: 22.0)),
                         SizedBox(height: textSize),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -136,7 +136,8 @@ class _RideDetailsPageState extends State<RideDetailsPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             DetailItem(
-                              label: translations.h_ride_details_calories_burned,
+                              label:
+                                  translations.h_ride_details_calories_burned,
                               value: '$burnedCalories kcal',
                             ),
                           ],
@@ -191,6 +192,7 @@ class DetailItem extends StatelessWidget {
 
 class ReplayRideModal extends StatelessWidget {
   final RideRecord rideRecord;
+
   const ReplayRideModal({required this.rideRecord, super.key});
 
   @override
@@ -201,7 +203,8 @@ class ReplayRideModal extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(translations.bb_ride_title, style: const TextStyle(fontSize: 22.0)),
+            Text(translations.bb_ride_title,
+                style: const TextStyle(fontSize: 22.0)),
             const SizedBox(height: 16.0),
             Text(translations.bb_ride_description),
             const SizedBox(height: 16.0),
