@@ -86,11 +86,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           PageViewModel(
             title: translations.ob_welcome,
             body: translations.ob_intro_text,
-            image: Center(
-              child: Image.network(
-                  "https://www.pngall.com/wp-content/uploads/8/Sample-Transparent.png", //temp ofc
-                  height: 175.0),
-            ),
+            image: const Center(child: Icon(Icons.directions_bike)),
             decoration: const PageDecoration(
               pageColor: Colors.blue,
             ),
@@ -105,7 +101,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 });
               },
             ),
-            image: const Center(child: Icon(Icons.android)),
+            image: const Center(child: Icon(Icons.person_pin_rounded)),
           ),
           PageViewModel(
             title: translations.ob_weight_input_title,
