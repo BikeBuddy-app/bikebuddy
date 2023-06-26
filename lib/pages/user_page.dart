@@ -1,3 +1,4 @@
+import 'package:bike_buddy/extensions/double_extension.dart';
 import 'package:bike_buddy/hive/entities/ride_record.dart';
 import 'package:bike_buddy/utils/settings_manager.dart';
 import 'package:bike_buddy/utils/telemetry.dart';
@@ -153,12 +154,12 @@ class _UserPageState extends State<UserPage> {
                           StatsTile(
                             icon: const Icon(Icons.pedal_bike),
                             title: localization.u_distance,
-                            value: "${distance / 1000}km",
+                            value: "${(distance / 1000).toPrecision(2)}km",
                           ),
                           StatsTile(
                             icon: const Icon(Icons.local_fire_department),
                             title: localization.u_calories,
-                            value: "${calories}kcal",
+                            value: "${calories.toPrecision(1)}kcal",
                           ),
                           StatsTile(
                             icon: const Icon(Icons.timer),
@@ -173,7 +174,7 @@ class _UserPageState extends State<UserPage> {
                           StatsTile(
                             icon: const Icon(Icons.emoji_events),
                             title: localization.u_max_distance,
-                            value: "${maxDistance / 1000}km",
+                            value: "${(maxDistance / 1000).toPrecision(2)}km",
                           ),
                         ],
                       ),

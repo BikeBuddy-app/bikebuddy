@@ -27,6 +27,8 @@ dependencies:
   build_runner: ^2.3.3
   hive_generator: ^2.0.0
   vector_math: 2.1.4
+  auto_size_text: ^3.0.0
+  rainbow_color: ^2.0.1
   l10n_esperanto: ^2.0.5
   introduction_screen: ^3.1.9
 
@@ -41,3 +43,12 @@ flutter:
   uses-material-design: true
   assets:
     - images/
+  fonts:
+    - family: RobotoSlab
+      fonts:
+        - asset: fonts/RobotoSlab-Regular.ttf
+        - asset: fonts/RobotoSlab-Medium.ttf
+          weight: 500
+        - asset: fonts/RobotoSlab-Bold.ttf
+          weight: 700
+

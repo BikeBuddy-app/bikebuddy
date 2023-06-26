@@ -22,9 +22,8 @@ class Countdown extends StatelessWidget {
                   color: Theme.of(context).colorScheme.onSecondary,
                 ),
           ),
-          const Divider(
+          const SizedBox(
             height: 10,
-            thickness: 0,
           ),
           SizedBox(
             width: 100,

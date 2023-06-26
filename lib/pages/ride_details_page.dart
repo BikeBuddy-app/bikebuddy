@@ -30,9 +30,11 @@ class _RideDetailsPageState extends State<RideDetailsPage> {
   late final int riderWeight;
 
   void createMap() {
-    mapDrawer.zoomOutToShowWholeRoute(rideRecord); //todo riderecord?
-    mapDrawer.enableRoadDrawing();
-    mapDrawer.drawRoute(points);
+    if (mounted) {
+      mapDrawer.zoomOutToShowWholeRoute(rideRecord);
+      mapDrawer.enableRoadDrawing();
+      mapDrawer.drawRoute(points);
+    }
   }
 
   @override
@@ -61,7 +63,7 @@ class _RideDetailsPageState extends State<RideDetailsPage> {
     rideRecord = tripInfo['trip'];
     points = rideRecord.asSegments();
     // MapDrawer mapDrawer = MapDrawer(routeWithPauses.last.position);
-    double distance = calculateDistance(points); //todo powinno byc rowniez w ride record a nie liczyc za kazdym razem
+    double distance = calculateDistance(points);
     double averageSpeed = double.parse(
         (calculateAverageSpeed(rideRecord.time, distance) * 3.6)
             .toStringAsFixed(1));

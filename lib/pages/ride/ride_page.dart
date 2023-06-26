@@ -1,4 +1,7 @@
+import 'package:bike_buddy/components/speed_display.dart';
+import 'package:bike_buddy/components/value_display.dart';
 import 'package:bike_buddy/components/countdown.dart';
+import 'package:bike_buddy/extensions/double_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -161,8 +164,7 @@ class _RidePageState extends State<RidePage> with TickerProviderStateMixin {
         currentDistance = calculateDistance(rideRecord.asSegments()) / 1000;
         burnedCalories = calculateBurnedCalories(currentTime, riderWeight);
       }
-      currentSpeed =
-          double.parse((currentPosition.speed * 3.6).toStringAsFixed(1));
+      currentSpeed = double.parse((currentPosition.speed * 3.6).toStringAsFixed(1));
       if (currentSpeed > maxCurrentSpeed) maxCurrentSpeed = currentSpeed;
       mapDrawer.draw(pos);
     });
@@ -253,69 +255,61 @@ class _RidePageState extends State<RidePage> with TickerProviderStateMixin {
                 }
               },
             ),
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Expanded(
-                    flex: 2,
-                    child: Container(
-                      color: Colors.blue,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(currentTime.toString()),
-                          Text("$currentDistance km"),
-                          Text("$burnedCalories kcal"),
-                        ],
-                      ),
+            Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    ValueDisplay(
+                      width: 100,
+                      value: currentTime.toString(),
                     ),
-                  ),
-                  Expanded(
-                    flex: 3,
-                    child: Container(
-                      color: Colors.green,
-                      child: Center(
-                        child: Text(
-                          "$currentSpeed km/h",
-                        ),
-                      ),
+                    ValueDisplay(
+                      width: 100,
+                      value: "${currentDistance.toPrecision(2)} km",
                     ),
-                  ),
-                  Expanded(
-                    flex: 15,
-                    child: Text(currentPosition.toString()),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        CustomRoundButton.small(
-                          icon: const Icon(
-                            Icons.location_pin,
-                            size: 25,
-                          ),
-                          onPressed: () {
-                            buddyDrawer?.zoomOutToShowWholeRoute();
-                          }, //todo jezeli bedzie przesuwanie mapy palcem to zaimplementowac, jak nie - wywalic przycisk
-                        )
-                      ],
+                    ValueDisplay(
+                      width: 125,
+                      value: "${burnedCalories.toPrecision(1)} kcal",
                     ),
-                  ),
-                  Expanded(
-                    flex: 5,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: isRideActive == true
-                          ? activeRideButtons
-                          : inactiveRideButtons,
-                    ),
-                  ),
-                ],
+                  ],
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: isRideActive == true ? activeRideButtons : inactiveRideButtons,
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: SpeedDisplay(
+                  width: 100,
+                  value: currentSpeed,
+                ),
+              ),
+            ),
+            Positioned(
+              right: 10,
+              bottom: 200,
+              child: CustomRoundButton.small(
+                icon: const Icon(
+                  Icons.location_pin,
+                  size: 25,
+                ),
+                onPressed: () {
+                  buddyDrawer?.zoomOutToShowWholeRoute();
+                },
               ),
             ),
             IgnorePointer(
@@ -324,7 +318,9 @@ class _RidePageState extends State<RidePage> with TickerProviderStateMixin {
                 opacity: isCountdownActive || !isMapReady ? 1.0 : 0.0,
                 duration: const Duration(milliseconds: 500),
                 child: Container(
-                  color: Theme.of(context).colorScheme.secondary,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Theme.of(context).colorScheme.secondary
+                      : Theme.of(context).colorScheme.background,
                   child: Countdown(controller: _countdownController),
                 ),
               ),
